@@ -26,50 +26,26 @@ Il casinò da la possibilità di terminare la partita in maniera definitiva ed e
 
 ## Analisi e modello del dominio
 
-In questa sezione si descrive il modello del *dominio applicativo*,
-descrivendo le *entità* in gioco ed i rapporti fra loro. Si possono
-sollevare eventuali aspetti particolarmente impegnativi, descrivendo
-perché lo sono, senza inserire idee circa possibili soluzioni, ovvero
-sull'organizzazione interna del software. Infatti, la fase di analisi va
-effettuata **prima** del progetto: né il progetto né il software
-esistono nel momento in cui si effettua l'analisi. La discussione di
-aspetti propri del software (ossia, della *soluzione* al problema e non
-del problema stesso) appartengono alla sfera della progettazione, e
-vanno discussi successivamente.
+All'interno dell'applicazione esistono diverse entità ma la principale è sicuramente **Player** che potrà scegliere di divertirsi nei vari **Game**
 
-È obbligatorio fornire uno schema UML del dominio, che diventerà anche
-lo scheletro della parte "entity" del modello dell'applicazione, ovvero
-degli elementi costitutivi del modello (in ottica MVC - Model View
-Controller): se l'analisi è ben fatta, dovreste ottenere una gerarchia
-di concetti che rappresentano le entità che compongono il problema da
-risolvere. Un'analisi ben svolta **prima** di cimentarsi con lo sviluppo
-rappresenta un notevole aiuto per le fasi successive: è sufficiente
-descrivere a parole il dominio, quindi estrarre i sostantivi utilizzati,
-capire il loro ruolo all'interno del problema, le relazioni che
-intercorrono fra loro, e reificarli in interfacce.
 
-### Elementi positivi
 
--   Viene descritto accuratamente il modello del dominio.
--   Alcuni problemi, se non risolubili in assoluto o nel monte ore,
-    vengono dichiarati come problemi che non saranno risolti o sarano
-    risolti in futuro.
--   Si modella il dominio in forma di UML, descrivendolo
-    appropriatamente.
+```mermaid
+classDiagram
 
-### Elementi negativi
+class Player {
+    +Bet(amount)()
+    +getAccount(): Account
+    +addWin(amount)
+    +removeLost(amount)
+}
+<<interface>> Player
 
--   Manca una descrizione a parole del modello del dominio.
--   Manca una descrizione UML delle entità del dominio e delle relazioni
-    che intercorrono fra loro.
--   Vengono elencate soluzioni ai problemi, invece della descrizione
-    degli stessi.
--   Vengono presentati elementi di design, o peggio aspetti
-    implementativi.
--   Viene mostrato uno schema UML che include elementi implementativi o
-    non utili alla descrizione del dominio, ma volti alla soluzione (non
-    devono vedersi, ad esempio, campi o metodi privati, o cose che non
-    siano equivalenti ad interfacce).
+class Game {
+    +nextRound()
+    +showResult()    
+}
+<<interface>> Game
 
 ### Esempio
 
