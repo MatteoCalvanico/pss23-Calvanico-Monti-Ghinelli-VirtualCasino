@@ -47,6 +47,33 @@ class Game {
 }
 <<interface>> Game
 
+class Blackjack {
+    -setDeck(): List<Card>
+    +isBlackjack(): boolean
+    +Draw(): Card
+}
+<<interface>> Blackjack
+
+class Card {
+
+}
+<<interface>> Card
+
+class Roulette {
+
+}
+<<interface>> Roulette
+
+class Dice {
+
+}
+<<interface>> Dice
+
+Game <|-- Blackjack
+Game <|-- Roulette
+Game <|-- Dice
+BlackJack o-- Card
+
 ```
 
 # Design
