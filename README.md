@@ -31,10 +31,11 @@ All'interno dell'applicazione esistono diverse entità ma la principale è sicur
 
 
 ```mermaid
+
 classDiagram
 class Player {
     +Bet(amount)()
-    +getAccount(): Account
+    +getAccount() Account
     +addWin(amount)
     +removeLost(amount)
 }
@@ -47,31 +48,34 @@ class Game {
 <<interface>> Game
 
 class Blackjack {
-    -setDeck(): List~Card~
-    +isBlackjack(): boolean
+    -setDeck() List~Card~
+    +isBlackjack() boolean
     +Draw(): Card
 }
 <<interface>> Blackjack
 
 class Card {
-
+    +getNumber() Integer
+    +getSeed() String
+    +getColor() String
 }
 <<interface>> Card
 
 class Roulette {
-
+    +isZero() boolean 
 }
 <<interface>> Roulette
 
 class Dice {
-
+    
 }
 <<interface>> Dice
 
+Player -- Game
 Game <|-- Blackjack
 Game <|-- Roulette
 Game <|-- Dice
-BlackJack o-- Card
+Blackjack o-- Card
 ```
 
 # Design
