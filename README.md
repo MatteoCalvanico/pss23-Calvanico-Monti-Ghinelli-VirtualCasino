@@ -2,78 +2,27 @@
 
 # Analisi
 
-In questo capitolo andrà fatta l'analisi dei requisiti e quella del
-problema, ossia verranno elencate le cose che l'applicazione dovrà fare
-(requisiti) e verrà descritto il dominio applicativo (analisi del
-problema). In fase di analisi, è molto importante tenere a mente che non
-vi deve essere alcun riferimento al design né tantomeno alle tecnologie
-implementative, ovvero, non si deve indicare come il software sarà
-internamente realizzato. La fase di analisi, infatti, *precede*
-qualunque azione di design o di implementazione.
-
 ## Requisiti
 
-Nell'analisi dei *requisiti* dell'applicazione si dovrà spiegare cosa
-l'applicazione dovrà fare. Non ci si deve concentrare sui particolari
-problemi, ma esclusivamente su cosa si desidera che l'applicazione
-faccia. Al termine della lettura della sezione, il docente deve avere
-un'idea molto chiara di cosa l'applicazione sia.
+Il gruppo si pone come obiettivo la realizzazione di un Casinò simulato con diversi giochi e classifiche.
 
-### Elementi positivi
-
--   Si fornisce una descrizione in linguaggio naturale di ciò che il
-    software dovrà fare.
--   Gli obiettivi sono spiegati con chiarezza, per punti.
--   Se vi sono termini il cui significato non è immediatamente
-    intuibile, essi vengono spiegati.
--   Considerato a un paio di pagine un limite ragionevole alla lunghezza
-    della parte sui requisiti, in quello spazio si deve cercare di
-    chiarire *tutti* gli aspetti dell'applicazione, non lasciando
-    decisioni che impattano la parte "esterna" alla discussione del
-    design (che dovrebbe solo occuparsi della parte "interna").
-
-### Elementi negativi
-
--   Si forniscono indicazioni circa le soluzioni che si vogliono
-    adottare.
--   Si forniscono dettagli di tipo tecnico o implementativo (parlando di
-    classi, linguaggi di programmazione, librerie, eccetera).
-
-### Esempio
-
-Il software, commissionato dal gestore del centro di ricerca [Aperture
-Laboratories Inc.](https://theportalwiki.com/wiki/Aperture_Science), mira alla costruzione di una intelligenza
-artificiale di nome GLaDOS (Genetic Lifeform and Disk Operating System).
-Per intelligenza artificiale si intende un software in grado di assumere
-decisioni complesse in maniera semi autonoma sugli argomenti di sua
-competenza, a partire dai vincoli e dagli obiettivi datigli dall'utente.
+In modo da dare il brivido del gioco senza la paura di perdere vero capitale, infatti il giocatore potrà giocare liberamente finchè il suo credito sarà positivo (>0) e appena andrà in rosso verrà espulso.
+Il casinò da la possibilità di terminare la partita in maniera definitiva ed entrare in classifica (se il punteggio sarà abbastanza grande) ma prima di inserire il proprio punteggio il giocatore potrà scegliere se tentare la fortuna ai dadi, dove il profitto verrà raddoppiato o dimezzato in base al risultato del gioco.
 
 #### Requisiti funzionali
--   La suddetta intelligenza artificiale dovrà occuparsi di coordinare
-    le attività all'interno delle camere di test di Aperture, guidando
-    l'utente attraverso un certo numero di sfide di difficoltà
-    crescente. Una camera di test è un ambiente realizzato da Aperture
-    Laboratories Inc. al fine di mettere alla prova le proprie
-    tecnologie di manipolazione dell'ambiente. All'interno della camera
-    di test, un soggetto qualificato è incaricato di sfruttare gli
-    strumenti messi a disposizione da Aperture per risolvere alcuni
-    rompicapi. I rompicapi sono di tipo fisico (ad esempio,
-    manipolazione di oggetti, pressione di pulsanti, azionamento di
-    leve), e si ritengono conclusi una volta che il soggetto riesce a
-    trovare l'uscita dalla camera di test.
--   Il piano preciso ed il numero delle sfide sarà variabile, e GLaDOS
-    dovrà essere in grado di adattarsi dinamicamente e di fornire
-    indicazioni di guida.
--   La personalità di GLaDOS dovrà essere modificabile.
--   GLaDOS dovrà essere in grado di comunicare col reparto cucina di
-    Aperture, per ordinare torte da donare agli utenti che completassero
-    l'ultima camera di test con successo.
+- Menù principale: schermata che verrà mostrata all'avvio del software, qui sarà possibile decidere se iniziare a giocare inserendo il proprio nome o se visionare la classifica;
+- Realizzazione simulata di giochi da banco, nello specifico:
+    - Blackjack: tramite interfaccia apposita i giocatori potranno ricevere carte e decidere se "restare" o richiedere carte, il banco si occuperà di dare e mescolare le carte;
+    - Roulette: tramite tabellone sarà possibile fare le proprie puntate e aspettare il verdetto controllando la roulette;
+    - Dadi [gioco bonus]: opzione bonus e facoltativa che si attiva alla decisione dell'utente di terminare la sessione di gioco per salvare il proprio punteggio, il giocatore dovrà inserire un numero cercando di indovinare la combinazione dei dadi;
+- Organizzazione vincite tramite classifica: i records rappresenteranno nome, profitto blackjack, profitto roulette, fattore dado e il profitto totale.
 
 #### Requisiti non funzionali
 
--   GLaDOS dovrà essere estremamente efficiente nell'uso delle risorse.
-    Le specifiche tecniche parlano della possibilità di funzionare su
-    dispositivi alimentati da una [batteria a patata](https://www.youtube.com/watch?v=0lBKEOXMBcU).
+- Funzionalità drag and drop nella roulette, prendi le fiches e le trascini nelle caselle del tabellone per puntare.
+- Funzionalità drag and "throw" nei dadi, sarà possibile trascinare un bicchiere che prende i dadi al suo interno, si potranno mischiare tramite   movimento del cursore e al rilascio i dadi verranno lanciati.
+- Classifica non più locale ma online, tramite librerie per lo scambio di messaggi in rete la classifica si aggiornerà con i nomi di tutti coloro che hanno fatto un buon punteggio anche in istanze diverse dell'applicazione.
+- Salvataggio partita a metà, possibilità di mettere in pausa la partita attuale per riprenderla successivamente anche alla chiusura dell'applicazione.
 
 ## Analisi e modello del dominio
 
