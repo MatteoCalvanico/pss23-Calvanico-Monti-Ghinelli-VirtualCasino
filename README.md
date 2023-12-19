@@ -47,7 +47,7 @@ class Game {
 <<interface>> Game
 
 class Blackjack {
-    -setDeck(): List<Card>
+    -setDeck(): List~Card~
     +isBlackjack(): boolean
     +Draw(): Card
 }
