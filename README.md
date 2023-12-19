@@ -32,7 +32,6 @@ All'interno dell'applicazione esistono diverse entità ma la principale è sicur
 
 ```mermaid
 classDiagram
-
 class Player {
     +Bet(amount)()
     +getAccount(): Account
@@ -73,7 +72,6 @@ Game <|-- Blackjack
 Game <|-- Roulette
 Game <|-- Dice
 BlackJack o-- Card
-
 ```
 
 # Design
