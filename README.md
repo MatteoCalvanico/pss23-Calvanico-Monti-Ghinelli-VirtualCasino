@@ -47,6 +47,8 @@ class Game {
 }
 <<interface>> Game
 
+```
+
 # Design
 
 In questo capitolo si spiegano le strategie messe in campo per
