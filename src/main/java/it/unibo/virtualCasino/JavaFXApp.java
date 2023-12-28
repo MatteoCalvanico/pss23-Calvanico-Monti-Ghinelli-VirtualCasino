@@ -1,4 +1,4 @@
-package it.unibo.samplejavafx;
+package it.unibo.virtualCasino;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
