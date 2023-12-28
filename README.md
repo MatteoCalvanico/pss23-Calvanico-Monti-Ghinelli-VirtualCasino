@@ -26,15 +26,15 @@ Il casinò da la possibilità di terminare la partita in maniera definitiva ed e
 
 ## Analisi e modello del dominio
 
-All'interno dell'applicazione esistono diverse entità ma la principale è sicuramente **Player** che potrà scegliere di divertirsi nei vari **Game**
-
+All'interno dell'applicazione esistono diverse entità ma la principale è sicuramente **Player** che potrà scegliere di divertirsi nei vari **Game** divisi in **Blackjack**, **Roulette** e **Dice**; dove per ogni gioco sarà possibile scommettere.
+**Dice** essendo un bonus si attiverà solo qunando l'utente deciderà di smettere di giocare.
+Nel **Blackjack** il mazzo sarà composto da un'insieme di **Card** caratterizzate da seme, numero e colore.
 
 
 ```mermaid
 
 classDiagram
 class Player {
-    +Bet(amount)()
     +getAccount() Account
     +addWin(amount)
     +removeLost(amount)
@@ -42,6 +42,7 @@ class Player {
 <<interface>> Player
 
 class Game {
+    +Bet()
     +nextRound()
     +showResult()    
 }
