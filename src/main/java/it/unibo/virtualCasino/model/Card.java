@@ -45,7 +45,7 @@ public class Card {
     */
     @Override
     public String toString() {
-        return "[" + this.number.getValue() + "," + this.seed + "," + this.color + "]";
+        return "[" + this.number.getName() + "," + this.seed + "," + this.color + "]";
     }
     
 }
