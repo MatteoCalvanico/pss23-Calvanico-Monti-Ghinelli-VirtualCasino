@@ -41,7 +41,7 @@ public class Card {
     }
 
     /**
-     * Return the info of the card in this syntax: [10,HEART,RED] 
+     * @return the info of the card in this syntax: [10,HEART,RED] 
     */
     @Override
     public String toString() {
