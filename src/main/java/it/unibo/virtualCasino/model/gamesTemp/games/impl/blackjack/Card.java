@@ -1,8 +1,8 @@
-package it.unibo.virtualCasino.model;
+package it.unibo.virtualCasino.model.games.impl.blackjack;
 
-import it.unibo.virtualCasino.model.utils.CardColor;
-import it.unibo.virtualCasino.model.utils.CardNumber;
-import it.unibo.virtualCasino.model.utils.CardSeed;
+import it.unibo.virtualCasino.model.games.impl.blackjack.utils.CardColor;
+import it.unibo.virtualCasino.model.games.impl.blackjack.utils.CardNumber;
+import it.unibo.virtualCasino.model.games.impl.blackjack.utils.CardSeed;
 
 /**
 *  the class simulates a generic playing card of a French deck

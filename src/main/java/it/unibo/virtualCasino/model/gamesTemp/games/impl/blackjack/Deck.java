@@ -1,10 +1,12 @@
-package it.unibo.virtualCasino.model;
+package it.unibo.virtualCasino.model.games.impl.blackjack;
 
-import it.unibo.virtualCasino.model.utils.CardSeed;
-import it.unibo.virtualCasino.model.utils.CardColor;
-import it.unibo.virtualCasino.model.utils.CardNumber;
 import java.util.Collections;
 import java.util.List;
+
+import it.unibo.virtualCasino.model.games.impl.blackjack.utils.CardColor;
+import it.unibo.virtualCasino.model.games.impl.blackjack.utils.CardNumber;
+import it.unibo.virtualCasino.model.games.impl.blackjack.utils.CardSeed;
+
 import java.util.ArrayList;
 
 public class Deck {

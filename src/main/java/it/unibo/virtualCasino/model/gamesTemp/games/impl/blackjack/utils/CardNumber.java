@@ -1,4 +1,4 @@
-package it.unibo.virtualCasino.model.utils;
+package it.unibo.virtualCasino.model.games.impl.blackjack.utils;
 
 /**
  * Enums representing the number of French cards
