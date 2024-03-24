@@ -1,6 +1,6 @@
-package it.unibo.virtualCasino.model.Games.Impl;
+package it.unibo.virtualCasino.model.games.impl.dice;
 
-import it.unibo.virtualCasino.model.Games.Games;
+import it.unibo.virtualCasino.model.games.Games;
 
 public class Dice implements Games{
 

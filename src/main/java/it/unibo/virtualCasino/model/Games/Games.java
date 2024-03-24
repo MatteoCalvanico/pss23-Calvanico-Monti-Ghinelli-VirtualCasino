@@ -1,4 +1,4 @@
-package it.unibo.virtualCasino.model.Games;
+package it.unibo.virtualCasino.model.games;
 
 /**
 * Interface that defines the basic structure of all games.

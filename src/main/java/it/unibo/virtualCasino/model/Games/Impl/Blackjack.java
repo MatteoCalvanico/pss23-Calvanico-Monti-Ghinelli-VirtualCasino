@@ -1,7 +1,7 @@
-package it.unibo.virtualCasino.model.Games.Impl;
+package it.unibo.virtualCasino.model.games.impl;
 
-import it.unibo.virtualCasino.model.Games.Games;
 import it.unibo.virtualCasino.model.Deck;
+import it.unibo.virtualCasino.model.games.Games;
 import it.unibo.virtualCasino.model.Card;
 import java.util.List;
 import java.util.ArrayList;

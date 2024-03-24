@@ -1,12 +1,12 @@
-package it.unibo.virtualCasino.model.Games.Impl;
+package it.unibo.virtualCasino.model.games.impl.roulette;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import it.unibo.virtualCasino.model.Player;
-import it.unibo.virtualCasino.model.Games.Games;
-import it.unibo.virtualCasino.model.Games.Impl.Utils.RouletteBetTypes;
-import it.unibo.virtualCasino.model.Games.Impl.Utils.RouletteColors;
+import it.unibo.virtualCasino.model.games.Games;
+import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBetTypes;
+import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteColors;
 
 public class Roulette implements Games{
 
