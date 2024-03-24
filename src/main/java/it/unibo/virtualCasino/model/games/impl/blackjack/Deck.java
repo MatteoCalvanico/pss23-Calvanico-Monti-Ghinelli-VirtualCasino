@@ -49,6 +49,18 @@ public class Deck {
     }
 
     /**
+     * Count the total value of the cards in the deck
+     * @return the sum of the values of all cards
+     */
+    public int countCard(){
+        int sum = 0;
+        for (Card card : this.deck) {
+            sum += card.getCardNumber();
+        }
+        return sum;
+    }
+
+    /**
      * Shuffle the card in the deck
     */
     public void shuffleDeck(){
