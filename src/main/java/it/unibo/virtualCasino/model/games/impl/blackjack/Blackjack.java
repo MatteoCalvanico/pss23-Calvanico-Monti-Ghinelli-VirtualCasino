@@ -1,11 +1,17 @@
 package it.unibo.virtualCasino.model.games.impl.blackjack;
 
+import it.unibo.virtualCasino.model.Player;
 import it.unibo.virtualCasino.model.games.Games;
 
 import java.util.List;
 import java.util.ArrayList;
 
 public class Blackjack implements Games{
+
+    /**
+     * The one who plays
+     */
+    private Player currentPlayer;
 
     /**
      * In blackjack we use 2 to 6 normal deck [52 card each]
@@ -56,8 +62,19 @@ public class Blackjack implements Games{
 
     @Override
     public void bet(double amount) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'bet'");
+        if (amount > this.currentPlayer.getAccount()){
+            throw new IllegalArgumentException("The bet exceed account balance");
+        }else{
+            bet[0] = amount;
+        }
+    }
+
+    public void bet(double amount, int deckNumber){ //Overloading the method
+        if (amount > this.currentPlayer.getAccount()){
+            throw new IllegalArgumentException("The bet exceed account balance");
+        }else{
+            bet[deckNumber] = amount;
+        }
     }
 
     @Override
@@ -77,14 +94,21 @@ public class Blackjack implements Games{
      */
     public void call(){
         // TODO
+
+    }
+
+    /**
+     * Change between true and false the insurance variable
+     */
+    public void setInsurance(){
+        this.insurance = (this.insurance == false) ? true : false;
     }
 
     /**
      * Check if the combination of card is a blackjack
      */
     private boolean isBlackjack(){
-        // TODO
-        throw new UnsupportedOperationException("Unimplemented method 'isBlackjack'");
+        return (playerDeck[0].size() == 2 && playerDeck[0].countCard() == 21) ? true : false; //Is possible to do blackjack if you do 21 with the first two cards the dealer give
     }
 
     /**
@@ -102,7 +126,7 @@ public class Blackjack implements Games{
         if (isSplit()) {
             this.playerDeck[1].insert(this.playerDeck[0].draw());
         }else{
-            throw new UnsupportedOperationException("Impossible to split"); // TODO
+            throw new RuntimeException("Impossible to split");
         }
     }
 }
