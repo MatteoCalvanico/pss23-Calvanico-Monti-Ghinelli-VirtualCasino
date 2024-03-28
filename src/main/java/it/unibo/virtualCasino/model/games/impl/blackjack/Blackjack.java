@@ -19,6 +19,11 @@ public class Blackjack implements Games{
     private List<Deck> playDeck;
 
     /**
+     * Indicates which deck we are currently using
+     */
+    private int playDeckIndex = 0; //TODO controllare alla fine di ogni turno se il deck corrente è vuoto e in caso aggiornare la variabile 
+
+    /**
      * The cards the player have. The player have 2 deck, the normal one and one if he want to split
      */
     private Deck[] playerDeck;
@@ -43,7 +48,9 @@ public class Blackjack implements Games{
      * Init all we need for play Blackjack
      * @param numberOfDeck how many deck of card we want to use
      */
-    public Blackjack(int numberOfDeck){
+    public Blackjack(int numberOfDeck, Player player){
+        this.currentPlayer = player;
+
         this.playDeck = new ArrayList<>();
         for(int i = 0; i < numberOfDeck; i++){ //Creation and adding of the number of playing deck
             Deck newDeck = new Deck();
@@ -69,7 +76,7 @@ public class Blackjack implements Games{
         }
     }
 
-    public void bet(double amount, int deckNumber){ //Overloading the method
+    public void bet(double amount, int deckNumber){ //Overloading the method: bet(double amount)
         if (amount > this.currentPlayer.getAccount()){
             throw new IllegalArgumentException("The bet exceed account balance");
         }else{
@@ -77,10 +84,21 @@ public class Blackjack implements Games{
         }
     }
 
+    /**
+     * Cleans the playing field
+     */
     @Override
     public void nextRound() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'nextRound'");
+        checkAndChangeDeck();
+
+        this.dealerDeck.emptyDeck();
+        this.playerDeck[0].emptyDeck();
+        this.playerDeck[1].emptyDeck();
+
+        this.bet[0] = 0;
+        this.bet[1] = 0;
+
+        this.insurance = false;
     }
 
     @Override
@@ -91,10 +109,39 @@ public class Blackjack implements Games{
 
     /**
      * Ask the dealer for another card
+     * @param deckNumber the deck that receives the card
      */
-    public void call(){
-        // TODO
+    public void call(int deckNumber){
+        this.playerDeck[deckNumber].insert(this.playDeck.get(usedPlayDeck()).draw());
+    }
 
+    /**
+     * It says the index of the used playDeck
+     * @return the index
+     */
+    private int usedPlayDeck(){
+        return this.playDeckIndex;
+    }
+
+    /**
+     * Increment by one playDeckIndex
+     */
+    private void setplayDeckIndex(){
+        this.playDeckIndex++;
+    }
+
+    /**
+     * Check and change the playDeck if is over. If all the deck is over throw an exception
+     */
+    private void checkAndChangeDeck(){
+        if (this.playDeck.get(usedPlayDeck() + 1) != null) {
+            Deck currentPlayDeck = this.playDeck.get(usedPlayDeck());
+            if(currentPlayDeck.size() == 0 ){
+                setplayDeckIndex();
+            }
+        }else{
+            throw new IllegalAccessError("All playDecks are over");
+        }
     }
 
     /**
