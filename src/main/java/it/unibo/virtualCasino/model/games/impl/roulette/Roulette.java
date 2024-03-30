@@ -49,6 +49,10 @@ public class Roulette implements Games{
         currentPlayer = player;
     }
 
+    public void bet(double amount, RouletteBet bet) {
+        //
+    }
+    
     /**
      * Returns a copy of the current roulette table layout (2D integer array).
      *
