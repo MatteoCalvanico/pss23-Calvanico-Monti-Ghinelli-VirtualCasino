@@ -7,17 +7,10 @@ import it.unibo.virtualCasino.model.Player;
 import it.unibo.virtualCasino.model.games.Games;
 import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBetTypes;
 import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteColors;
+import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteInfo;
 
 public class Roulette implements Games{
 
-    private static final int TABLE_ROWS = 12;
-    private static final int TABLE_COLS = 3;
-    private static final int NUMS_TOTAL = 36;  
-    private static final int[] rouletteSequence = {
-        0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 
-        36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 
-        31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26
-    };
     private final int[][] tableMatrix = createRouletteTableMatrix();
     private final Map<Integer, RouletteColors> colorNumberMap = createColorNumberMap();
     private final Map<RouletteBetTypes, Integer> betTypePayoutMap = createBetTypePayoutMap();
@@ -83,9 +76,9 @@ public class Roulette implements Games{
     private Map<Integer, RouletteColors> createColorNumberMap() {
         Map<Integer, RouletteColors> tempMap = new HashMap<>(); 
 
-        for (int i = 0; i <= NUMS_TOTAL; i++) {
+        for (int i = 0; i <= RouletteInfo.NUMS_TOTAL; i++) {
             tempMap.put(
-                Roulette.rouletteSequence[i],
+                RouletteInfo.ROULETTE_SEQUENCE[i],
                 mapNumberToColorEnum(i)
             );
         }
@@ -94,7 +87,7 @@ public class Roulette implements Games{
     }
 
     private int[][] createRouletteTableMatrix () {
-        int[][] tempMatrix = new int[TABLE_ROWS][TABLE_COLS];
+        int[][] tempMatrix = new int[RouletteInfo.TABLE_ROWS][RouletteInfo.TABLE_COLS];
         
         for (int i = 0; i < tempMatrix.length; i++) {
             for (int j = 0; j < tempMatrix[i].length; j++) {
@@ -112,7 +105,6 @@ public class Roulette implements Games{
             put(RouletteBetTypes.SPLIT, 17);
             put(RouletteBetTypes.STREET, 11);
             put(RouletteBetTypes.CORNER, 8);
-            put(RouletteBetTypes.TOP_LINE, 8);
             put(RouletteBetTypes.DOUBLE_STREET, 5);
             put(RouletteBetTypes.COLUMN, 2);
             put(RouletteBetTypes.DOZEN, 2);
