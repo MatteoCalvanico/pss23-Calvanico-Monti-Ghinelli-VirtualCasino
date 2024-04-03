@@ -5,7 +5,6 @@ public enum RouletteBetTypes {
   SPLIT,
   STREET,
   CORNER,
-  TOP_LINE,
   DOUBLE_STREET,
   COLUMN,
   DOZEN,
