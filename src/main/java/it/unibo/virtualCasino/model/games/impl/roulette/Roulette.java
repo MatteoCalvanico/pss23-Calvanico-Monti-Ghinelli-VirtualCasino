@@ -1,30 +1,32 @@
 package it.unibo.virtualCasino.model.games.impl.roulette;
 
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import it.unibo.virtualCasino.model.Player;
 import it.unibo.virtualCasino.model.games.Games;
-import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBetTypes;
 import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteColors;
-import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteInfo;
+import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBase;
+import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBetTypes;
 
-public class Roulette implements Games{
+public class Roulette extends RouletteBase implements Games{
 
     private final int[][] tableMatrix = createRouletteTableMatrix();
-    private final Map<Integer, RouletteColors> colorNumberMap = createColorNumberMap();
-    private final Map<RouletteBetTypes, Integer> betTypePayoutMap = createBetTypePayoutMap();
-    
-    private double currentBetAmount;
+
     private Player currentPlayer;
+    private Map<String, RouletteBet> placedBets = new HashMap<>();
 
     @Override
     public void bet(double amount) {
-        if (amount > currentPlayer.getAccount()) {
-            throw new IllegalArgumentException("bet amount exceed account balance");
+        double totalRiskedMoney = amount;
+        for (Map.Entry<String, RouletteBet> entry : placedBets.entrySet()) {
+          totalRiskedMoney += entry.getValue().getBetAmount();
         }
-
-        currentBetAmount = amount;
+        if (totalRiskedMoney > currentPlayer.getAccount()) {
+            throw new IllegalArgumentException("Total bets amount exceed account balance");
+        }
     }
 
     @Override
@@ -39,11 +41,7 @@ public class Roulette implements Games{
 
 
     public Roulette(Player player) {
-        currentPlayer = player;
-    }
-
-    public void bet(double amount, RouletteBet bet) {
-        //
+        this.currentPlayer = player;
     }
     
     /**
@@ -52,7 +50,7 @@ public class Roulette implements Games{
      * @return a copy of the roulette table as an integer array
      */
     public int[][] getRouletteTable() {
-        return tableMatrix;
+        return this.tableMatrix;
     }
 
     /**
@@ -61,33 +59,53 @@ public class Roulette implements Games{
      * @return a copy of the roulette slots map
      */
     public Map<Integer, RouletteColors> getColorNumberMap() {
-        return colorNumberMap;
+        return this.colorNumberMap;
     }
 
-
-    private RouletteColors mapNumberToColorEnum(int number) {
-        return (
-            number == 0 ? 
-            RouletteColors.GREEN : 
-            (number % 2 == 0) ? RouletteColors.BLACK : RouletteColors.RED
-        );
-    }
-
-    private Map<Integer, RouletteColors> createColorNumberMap() {
-        Map<Integer, RouletteColors> tempMap = new HashMap<>(); 
-
-        for (int i = 0; i <= RouletteInfo.NUMS_TOTAL; i++) {
-            tempMap.put(
-                RouletteInfo.ROULETTE_SEQUENCE[i],
-                mapNumberToColorEnum(i)
-            );
+    public Map<String, RouletteBet> createBet(int amount, RouletteBetTypes betType, int betPositionInTable) {
+        try {
+            this.bet((double) amount);
+        } catch (Exception e) {
+            throw new UnsupportedOperationException(e);
         }
 
-        return tempMap;
+        this.placedBets.put(
+            this.generateRandomUuid(), 
+            new RouletteBet(amount, betType, betPositionInTable)
+        );        
+
+        return this.placedBets;
+    }
+
+    public Map<String, RouletteBet> deleteBet(String betId) {
+        this.placedBets.remove(betId);
+
+        return this.placedBets;
+    }
+
+    private int spinRoulette() {
+        SecureRandom random = new SecureRandom();
+        return random.nextInt(this.NUMS_TOTAL + 1);
+    }
+
+    private int getGameProfitOrLoss(int winningNumber) {
+        int profitOrLoss = 0;
+      
+        for (Map.Entry<String, RouletteBet> betEntry : placedBets.entrySet()) {
+          RouletteBet bet = betEntry.getValue();
+      
+          if (bet.getWinningNumbers().contains(winningNumber)) {
+            profitOrLoss += bet.getPossibleWin();
+          } else {
+            profitOrLoss -= bet.getBetAmount();
+          }
+        }
+      
+        return profitOrLoss;
     }
 
     private int[][] createRouletteTableMatrix () {
-        int[][] tempMatrix = new int[RouletteInfo.TABLE_ROWS][RouletteInfo.TABLE_COLS];
+        int[][] tempMatrix = new int[this.TABLE_ROWS][this.TABLE_COLS];
         
         for (int i = 0; i < tempMatrix.length; i++) {
             for (int j = 0; j < tempMatrix[i].length; j++) {
@@ -96,22 +114,10 @@ public class Roulette implements Games{
         }
         
         return tempMatrix;
+    }  
 
+    private String generateRandomUuid() {
+        UUID uuid = UUID.randomUUID();
+        return uuid.toString();
     }
-
-    private Map<RouletteBetTypes, Integer> createBetTypePayoutMap () {
-        return new HashMap<>(){{
-            put(RouletteBetTypes.STRAIGHT_UP, 35);
-            put(RouletteBetTypes.SPLIT, 17);
-            put(RouletteBetTypes.STREET, 11);
-            put(RouletteBetTypes.CORNER, 8);
-            put(RouletteBetTypes.DOUBLE_STREET, 5);
-            put(RouletteBetTypes.COLUMN, 2);
-            put(RouletteBetTypes.DOZEN, 2);
-            put(RouletteBetTypes.ODD_EVEN, 1);
-            put(RouletteBetTypes.RED_BLACK, 1);
-            put(RouletteBetTypes.HALF, 1);
-        }};
-    }
-    
 }

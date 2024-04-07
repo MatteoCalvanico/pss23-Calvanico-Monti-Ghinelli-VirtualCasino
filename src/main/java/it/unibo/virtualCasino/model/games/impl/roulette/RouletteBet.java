@@ -5,31 +5,81 @@ import java.util.Map;
 
 import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBetTypes;
 import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteColors;
-import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteInfo;
+import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBase;
 
-public class RouletteBet {
+/**
+ * Represents a specific bet placed in a Roulette game.
+ *
+ * @author it.unibo.virtualCasino
+ */
+public class RouletteBet extends RouletteBase {
 
+  /**
+   * The amount of the bet.
+   */
   private int amount;
+
+  /**
+   * The type of bet placed (e.g., STRAIGHT_UP, SPLIT, STREET, etc.).
+   */
   private final RouletteBetTypes betType;
-  private final int betPositionInTable;
+
+  /**
+   * The winning numbers associated with this bet.
+   */
   private final ArrayList<Integer> winningNumbers;
-  private final Map<RouletteBetTypes, Integer> betTypePayoutMap;
-  private final Map<Integer, RouletteColors> colorNumberMap;
 
-
+  /**
+   * Creates a new RouletteBet instance.
+   *
+   * @param betType The type of bet being placed.
+   * @param betPositionInTable The position of the bet on the table.
+   */
   public RouletteBet(
-    Map<RouletteBetTypes, Integer> betTypePayoutMap,
-    Map<Integer, RouletteColors> colorNumberMap,
-    RouletteBetTypes betType,
-    int betPositionInTable
+      int amount,
+      RouletteBetTypes betType,
+      int betPositionInTable
   ) {
-    this.betTypePayoutMap = betTypePayoutMap;
-    this.colorNumberMap = colorNumberMap;
+    this.amount = amount;
     this.betType = betType;
-    this.betPositionInTable = betPositionInTable;
     this.winningNumbers = this.getWinningNumbers(betType, betPositionInTable);
   }
 
+  /**
+   * Gets the amount of the bet.
+   *
+   * @return The bet amount.
+   */
+  public int getBetAmount() {
+    return this.amount;
+  }
+
+  /**
+   * Gets the winning numbers associated with this bet.
+   *
+   * @return A list of winning numbers.
+   */
+  public ArrayList<Integer> getWinningNumbers() {
+    return this.winningNumbers;
+  }
+
+  /**
+   * Calculates the potential win for this bet.
+   *
+   * @return The potential win amount.
+   */
+  public int getPossibleWin() {
+    int multiplier = this.betTypePayoutMap.get(this.betType);
+    return this.amount * multiplier;
+  }
+
+  /**
+   * Determines the winning numbers based on the bet type and position.
+   *
+   * @param betType The type of bet.
+   * @param betPositionInTable The position of the bet on the table.
+   * @return A list of winning numbers for the specified bet.
+   */
   private ArrayList<Integer> getWinningNumbers(RouletteBetTypes betType, int betPositionInTable) {
     ArrayList<Integer> numbers = new ArrayList<>();
     switch (betType) {
@@ -38,20 +88,20 @@ public class RouletteBet {
         break;
       case SPLIT:
         {
-          if (betPositionInTable < RouletteInfo.MAX_VERTICAL_SPLITS) {
+          if (betPositionInTable < this.MAX_VERTICAL_SPLITS) {
             int topNum = calcTopNumberBasedOnPosition(betPositionInTable);
             numbers.add(topNum - 1);
             numbers.add(topNum);
           } else {
-            int bottomNum = betPositionInTable - RouletteInfo.MAX_VERTICAL_SPLITS;
+            int bottomNum = betPositionInTable - this.MAX_VERTICAL_SPLITS;
             numbers.add(bottomNum);
-            numbers.add(bottomNum + RouletteInfo.TABLE_COLS);
+            numbers.add(bottomNum + this.TABLE_COLS);
           }
         }
         break;
       case STREET:
         {
-          int topNum = betPositionInTable * RouletteInfo.TABLE_COLS;
+          int topNum = betPositionInTable * this.TABLE_COLS;
           numbers.add(topNum++);
           numbers.add(topNum++);
           numbers.add(topNum);
@@ -68,8 +118,8 @@ public class RouletteBet {
         break;
       case DOUBLE_STREET:
         {
-          int startingNum = (betPositionInTable * RouletteInfo.TABLE_COLS) - 2;
-          for(int i = 0; i < RouletteInfo.DOUBLE_STREET_W_NUMS; i++) {
+          int startingNum = (betPositionInTable * this.TABLE_COLS) - 2;
+          for(int i = 0; i < this.DOUBLE_STREET_W_NUMS; i++) {
             numbers.add(startingNum + i);
           }
         }
@@ -77,16 +127,16 @@ public class RouletteBet {
       case COLUMN:
         {
           int startingNum = betPositionInTable;
-          for(int i = 0; i < RouletteInfo.TABLE_ROWS; i++) {
+          for(int i = 0; i < this.TABLE_ROWS; i++) {
             numbers.add(startingNum);
-            startingNum += RouletteInfo.TABLE_COLS;
+            startingNum += this.TABLE_COLS;
           }
         }
         break;
       case DOZEN:
         {
-          int startingNum = betPositionInTable * RouletteInfo.TABLE_ROWS;
-          for(int i = startingNum; i > startingNum - RouletteInfo.TABLE_ROWS; i--) {
+          int startingNum = betPositionInTable * this.TABLE_ROWS;
+          for(int i = startingNum; i > startingNum - this.TABLE_ROWS; i--) {
             numbers.add(i);
           }
         }
@@ -117,8 +167,8 @@ public class RouletteBet {
         break;
       case HALF:
         {
-          int startingNum = betPositionInTable * (RouletteInfo.NUMS_TOTAL / 2);
-          for(int i = startingNum; i > startingNum - (RouletteInfo.NUMS_TOTAL / 2); i--) {
+          int startingNum = betPositionInTable * (this.NUMS_TOTAL / 2);
+          for(int i = startingNum; i > startingNum - (this.NUMS_TOTAL / 2); i--) {
             numbers.add(i);
           }
         }
@@ -130,8 +180,14 @@ public class RouletteBet {
     return numbers;
   }
 
+  /**
+   * Calculates the top number in a split bet based on its position on the table.
+   *
+   * @param position The position of the split bet.
+   * @return The top number in the split bet.
+   */
   private int calcTopNumberBasedOnPosition(int position) {
-    double number = ((double) position / RouletteInfo.SPLITS_IN_ROW) * RouletteInfo.TABLE_COLS;
+    double number = ((double) position / this.SPLITS_IN_ROW) * this.TABLE_COLS;
 
     //Ceil If First Decimal Greater Than Zero
     if (number % 1 > 0) {
