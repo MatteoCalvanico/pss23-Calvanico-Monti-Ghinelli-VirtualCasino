@@ -1,7 +1,10 @@
-package it.unibo.virtualCasino.model.games.impl.roulette.utils;
+package it.unibo.virtualCasino.model.games.impl.roulette;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBetTypes;
+import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteColors;
 
 /**
  * Provides fundamental constants and utility methods for Roulette game logic.

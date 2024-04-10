@@ -5,7 +5,6 @@ import java.util.Map;
 
 import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBetTypes;
 import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteColors;
-import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBase;
 
 /**
  * Represents a specific bet placed in a Roulette game.

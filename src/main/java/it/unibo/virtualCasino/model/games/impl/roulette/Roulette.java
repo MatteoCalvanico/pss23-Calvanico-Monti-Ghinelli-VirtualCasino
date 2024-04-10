@@ -9,7 +9,6 @@ import java.util.UUID;
 import it.unibo.virtualCasino.model.Player;
 import it.unibo.virtualCasino.model.games.Games;
 import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteColors;
-import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBase;
 import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBetTypes;
 
 /**
