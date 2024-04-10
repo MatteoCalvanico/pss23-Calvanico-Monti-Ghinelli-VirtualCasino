@@ -35,7 +35,7 @@ public class Roulette extends RouletteBase implements Games{
     private Map<String, RouletteBet> placedBets = new HashMap<>();
     
     /**
-     * Places a bet on the Roulette game.
+     * Check if amount exceeds player's account balance.
      *
      * @param amount The amount of money to bet.
      * @throws IllegalArgumentException If the total bet amount exceeds the player's account balance.
@@ -49,6 +49,26 @@ public class Roulette extends RouletteBase implements Games{
         if (totalRiskedMoney > currentPlayer.getAccount()) {
             throw new IllegalArgumentException("Total bets amount exceed account balance");
         }
+    }
+
+    /**
+     * Overloaded bet method, place a new bet and adds it to the list of placed bets.
+     *
+     * @param amount The amount of the bet.
+     * @param betType The type of bet being placed.
+     * @param betPositionInTable The position of the bet on the roulette table.
+     */
+    public void bet(int amount, RouletteBetTypes betType, int betPositionInTable) {
+        try {
+            this.bet((double) amount);
+        } catch (Exception e) {
+            throw new UnsupportedOperationException(e);
+        }
+
+        this.placedBets.put(
+            this.generateRandomUuid(), 
+            new RouletteBet(amount, betType, betPositionInTable)
+        );        
     }
 
     /**
@@ -106,27 +126,14 @@ public class Roulette extends RouletteBase implements Games{
     }
 
     /**
-     * Creates a new bet and adds it to the list of placed bets.
+     * get the list of placed bets.
      *
-     * @param amount The amount of the bet.
-     * @param betType The type of bet being placed.
-     * @param betPositionInTable The position of the bet on the roulette table.
-     * @return The updated map of placed bets.
+     * @return the list of placed bets.
      */
-    public Map<String, RouletteBet> createBet(int amount, RouletteBetTypes betType, int betPositionInTable) {
-        try {
-            this.bet((double) amount);
-        } catch (Exception e) {
-            throw new UnsupportedOperationException(e);
-        }
-
-        this.placedBets.put(
-            this.generateRandomUuid(), 
-            new RouletteBet(amount, betType, betPositionInTable)
-        );        
-
+    public Map<String, RouletteBet> getBetsList() {
         return this.placedBets;
     }
+
 
     /**
      * Deletes a bet from the list of placed bets.
