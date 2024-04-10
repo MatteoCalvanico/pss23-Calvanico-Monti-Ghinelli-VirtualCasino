@@ -3,6 +3,7 @@ package it.unibo.virtualCasino.model.games.impl.roulette;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import it.unibo.virtualCasino.model.Player;
@@ -13,7 +14,11 @@ import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBetTypes;
 
 public class Roulette extends RouletteBase implements Games{
 
+    private final int SEED_ARRAY_MAX_LENGHT = 30;
+
     private final int[][] tableMatrix = createRouletteTableMatrix();
+    private final int seedArrayLenght = new Random().nextInt(SEED_ARRAY_MAX_LENGHT);
+    private final byte[] seed = new byte[seedArrayLenght];
 
     private Player currentPlayer;
     private Map<String, RouletteBet> placedBets = new HashMap<>();
@@ -41,6 +46,7 @@ public class Roulette extends RouletteBase implements Games{
 
 
     public Roulette(Player player) {
+        new Random().nextBytes(seed);
         this.currentPlayer = player;
     }
     
@@ -84,7 +90,7 @@ public class Roulette extends RouletteBase implements Games{
     }
 
     private int spinRoulette() {
-        SecureRandom random = new SecureRandom();
+        SecureRandom random = new SecureRandom(this.seed);
         return random.nextInt(this.NUMS_TOTAL + 1);
     }
 
