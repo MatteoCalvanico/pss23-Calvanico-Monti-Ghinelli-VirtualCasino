@@ -17,10 +17,13 @@ public class Roulette extends RouletteBase implements Games{
     private final int SEED_ARRAY_MAX_LENGHT = 30;
 
     private final int[][] tableMatrix = createRouletteTableMatrix();
+
     private final int seedArrayLenght = new Random().nextInt(SEED_ARRAY_MAX_LENGHT);
+
     private final byte[] seed = new byte[seedArrayLenght];
 
     private Player currentPlayer;
+
     private Map<String, RouletteBet> placedBets = new HashMap<>();
 
     @Override
@@ -41,9 +44,15 @@ public class Roulette extends RouletteBase implements Games{
 
     @Override
     public void showResult() {
-        throw new UnsupportedOperationException("Unimplemented method 'showResult'");
+        int winningNum = this.spinRoulette();
+        int gameRes = this.getGameProfitOrLoss(winningNum);
+        
+        if (gameRes < 0) {
+            this.currentPlayer.removeLost(Math.abs(gameRes));
+        } else if (gameRes > 0) {
+            this.currentPlayer.addWin(gameRes);
+        }
     }
-
 
     public Roulette(Player player) {
         new Random().nextBytes(seed);
