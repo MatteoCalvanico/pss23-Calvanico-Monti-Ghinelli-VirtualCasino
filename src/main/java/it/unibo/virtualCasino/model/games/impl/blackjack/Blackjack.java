@@ -21,7 +21,7 @@ public class Blackjack implements Games{
     /**
      * Indicates which deck we are currently using
      */
-    private int playDeckIndex = 0; //TODO controllare alla fine di ogni turno se il deck corrente è vuoto e in caso aggiornare la variabile 
+    private int playDeckIndex = 0;
 
     /**
      * The cards the player have. The player have 2 deck, the normal one and one if he want to split

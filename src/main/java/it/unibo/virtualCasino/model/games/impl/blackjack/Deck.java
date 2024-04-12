@@ -91,6 +91,15 @@ public class Deck {
     }
 
     /**
+     * Show all the card in the deck
+     */
+    public void flipAll(){
+        for(Card c : this.deck){ 
+            if(c.isFlip() == true){ c.flip(); } 
+        }
+    }
+
+    /**
      * @return the info of the deck
     */
     @Override

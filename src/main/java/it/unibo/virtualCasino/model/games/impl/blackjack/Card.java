@@ -12,11 +12,13 @@ public class Card {
     private final CardNumber number;
     private final CardSeed seed;
     private final CardColor color;
+    private boolean flip;
 
     public Card(CardNumber cardNum, CardSeed cardSeed, CardColor cardColor){
         this.color = cardColor;
         this.seed = cardSeed;
         this.number = cardNum;
+        this.flip = true;
     }
 
     /**
@@ -38,6 +40,21 @@ public class Card {
     */
     public CardColor getCardColor(){
         return this.color;
+    }
+
+    /**
+     * Indicates whether the card is flipped or not. True means the card is hidden
+     * @return a boolean
+     */
+    public boolean isFlip(){
+        return this.flip;
+    }
+
+    /**
+     * Change the state of the flip var
+     */
+    public void flip(){
+        this.flip = (this.flip == true) ? false : true;
     }
 
     /**
