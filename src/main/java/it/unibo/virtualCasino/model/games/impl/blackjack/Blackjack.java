@@ -55,6 +55,7 @@ public class Blackjack implements Games{
         for(int i = 0; i < numberOfDeck; i++){ //Creation and adding of the number of playing deck
             Deck newDeck = new Deck();
             newDeck.initPlayDeck();
+            newDeck.shuffleDeck();
             this.playDeck.add(newDeck);
         }
         this.playerDeck = new Deck[2];
@@ -102,9 +103,36 @@ public class Blackjack implements Games{
     }
 
     @Override
-    public void showResult() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'showResult'");
+    public void showResult() { // TODO: DA FINIRE
+
+        this.dealerDeck.flipAll();
+        this.playerDeck[0].flipAll();
+
+        //Flip the second deck only if is not empty
+        if (this.playerDeck[1].size() != 0) {
+            this.playerDeck[1].flipAll();
+        }
+    }
+
+    /**
+     * Starts the next round of blackjack, in order:
+     * <ul>
+            <li>give the dealer two card, one is hidden;</li>
+            <li>give to the player two card, both flipped</li>   
+            <li>check if the player made a blackjack, if so he adds the win and ends the round</li>
+        </ul>
+     */
+    public void startRound(){
+        receive(2);
+        this.dealerDeck.flipCard(0);
+
+        call(0);
+        call(0);
+
+        if(isBlackjack()){
+            this.currentPlayer.addWin(this.bet[0] * 2);
+            nextRound();
+        }
     }
 
     /**
@@ -113,6 +141,17 @@ public class Blackjack implements Games{
      */
     public void call(int deckNumber){
         this.playerDeck[deckNumber].insert(this.playDeck.get(usedPlayDeck()).draw());
+        this.playerDeck[deckNumber].flipAll();
+    }
+
+    /**
+     * Give the dealer a number of cards
+     * @param numberOfCard the number of cards to add
+     */
+    public void receive(int numberOfCard){
+        for(int i = 0; i < numberOfCard; i++ ){
+            this.dealerDeck.insert(this.playDeck.get(usedPlayDeck()).draw());
+        }
     }
 
     /**
@@ -153,6 +192,7 @@ public class Blackjack implements Games{
 
     /**
      * Check if the combination of card is a blackjack
+     * @return true if the player made a blackjack
      */
     private boolean isBlackjack(){
         return (playerDeck[0].size() == 2 && playerDeck[0].countCard() == 21) ? true : false; //Is possible to do blackjack if you do 21 with the first two cards the dealer give
