@@ -100,6 +100,14 @@ public class Deck {
     }
 
     /**
+     * Flip a specific card in the deck
+     * @param pos the position of the card to be flipped
+     */
+    public void flipCard(int pos){
+        this.deck.get(pos).flip();
+    }
+
+    /**
      * @return the info of the deck
     */
     @Override
