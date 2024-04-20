@@ -40,7 +40,7 @@ public class Player {
     /**
     * Remove the amount of credit to the player's account
     */
-    public void removeLost(double amount){
+    public void removeLoss(double amount){
         this.account -= amount;
     }
 }
