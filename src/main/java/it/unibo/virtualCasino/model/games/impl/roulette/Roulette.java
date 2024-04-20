@@ -91,7 +91,7 @@ public class Roulette extends RouletteBase implements Games{
         int gameRes = this.getGameProfitOrLoss(winningNum);
         
         if (gameRes < 0) {
-            this.currentPlayer.removeLost(Math.abs(gameRes));
+            this.currentPlayer.removeLoss(Math.abs(gameRes));
         } else if (gameRes > 0) {
             this.currentPlayer.addWin(gameRes);
         }
