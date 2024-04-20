@@ -91,6 +91,23 @@ public class Deck {
     }
 
     /**
+     * Show all the card in the deck
+     */
+    public void flipAll(){
+        for(Card c : this.deck){ 
+            if(c.isFlip() == true){ c.flip(); } 
+        }
+    }
+
+    /**
+     * Flip a specific card in the deck
+     * @param pos the position of the card to be flipped
+     */
+    public void flipCard(int pos){
+        this.deck.get(pos).flip();
+    }
+
+    /**
      * @return the info of the deck
     */
     @Override
