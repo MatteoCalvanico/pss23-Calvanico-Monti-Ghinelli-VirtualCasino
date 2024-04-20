@@ -47,6 +47,7 @@ public class Blackjack implements Games{
     /**
      * Init all we need for play Blackjack
      * @param numberOfDeck how many deck of card we want to use
+     * @param player the one whos play
      */
     public Blackjack(int numberOfDeck, Player player){
         this.currentPlayer = player;
