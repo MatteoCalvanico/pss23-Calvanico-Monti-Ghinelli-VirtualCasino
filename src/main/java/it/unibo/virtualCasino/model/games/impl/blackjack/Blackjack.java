@@ -103,47 +103,50 @@ public class Blackjack implements Games{
         this.insurance = false;
     }
 
-    @Override
-    public void showResult() { // TODO: DA FINIRE
-
-        this.dealerDeck.flipAll();
-        this.playerDeck[0].flipAll();
-
-        //Flip the second deck only if is not empty
-        if (this.playerDeck[1].size() != 0) {
-            this.playerDeck[1].flipAll();
-        }
-    }
-
     /**
-     * Starts the next round of blackjack, in order:
-     * <ul>
-            <li>give the dealer two card, one is hidden;</li>
-            <li>give to the player two card, both flipped</li>   
-            <li>check if the player or the dealer made a blackjack, if so he adds the win or removes the loss and ends the round</li>
-        </ul>
+     * End the round, dealer flip and add the cards, checks who won
      */
-    public void startRound(){
-        receive(2);
-        this.dealerDeck.flipCard(0);
+    @Override
+    public void showResult() {
+        this.dealerDeck.flipAll();
 
-        call(0);
-        call(0);
-
-        if(isBlackjack() && this.dealerDeck.countCard() == 21){ //Both made blackjack
-            this.dealerDeck.flipAll();
-            nextRound();
-            return;
-        }
-        if(isBlackjack()){ //Player made blackjack
-            this.currentPlayer.addWin(this.bet[0] * 2);
-            nextRound();
-        }
-        if(this.dealerDeck.countCard() == 21){ //Dealer made blackjack
+        //If the player exceeds 21 he immediately loses
+        if (this.playerDeck[0].countCard() > 21) {
             this.currentPlayer.removeLoss(this.bet[0]);
-            this.dealerDeck.flipAll();
-            nextRound();
+
+            if (this.playerDeck[1].countCard() > 21 || this.playerDeck[1].countCard() == 0) { //Check if the second deck is used and if exceeds 21. If the second deck is not used is usless to go on
+                this.currentPlayer.removeLoss(this.bet[1]);
+                nextRound();
+            }
         }
+ 
+        while (this.dealerDeck.countCard() <= 16) { //Apply "Regola del banco"
+            receive(1);
+        }
+
+        int dealerCount = this.dealerDeck.countCard();
+        int playerCount0 = this.playerDeck[0].countCard();
+        int playerCount1 = this.playerDeck[1].countCard();
+
+        if (dealerCount > 21) { //Dealer exceeds 21 - Player WON
+            this.currentPlayer.addWin(this.bet[0] + this.bet[1]);
+        }else{
+            if (dealerCount > playerCount0) { //Dealer WON
+                this.currentPlayer.removeLoss(this.bet[0]);
+            }
+            if (dealerCount > playerCount1) { //Dealer WON
+                this.currentPlayer.removeLoss(this.bet[1]);
+            }
+
+            if (playerCount0 > dealerCount) { //Player WON
+                this.currentPlayer.addWin(this.bet[0]);
+            }
+            if (playerCount1 > dealerCount) { //Player WON
+                this.currentPlayer.addWin(this.bet[1]);
+            }
+        }
+
+        nextRound();
     }
 
     /**
@@ -202,10 +205,17 @@ public class Blackjack implements Games{
     }
 
     /**
-     * Check if the combination of card is a blackjack
+     * @return the value of insurace
+     */
+    public boolean checkInsurance(){
+        return this.insurance;
+    } 
+
+    /**
+     * Check if the combination of card is a blackjack in the player deck
      * @return true if the player made a blackjack
      */
-    private boolean isBlackjack(){
+    public boolean isBlackjack(){
         return (playerDeck[0].size() == 2 && playerDeck[0].countCard() == 21) ? true : false; //Is possible to do blackjack if you do 21 with the first two cards the dealer give
     }
 
