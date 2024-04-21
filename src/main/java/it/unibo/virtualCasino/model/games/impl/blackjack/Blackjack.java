@@ -120,7 +120,7 @@ public class Blackjack implements Games{
      * <ul>
             <li>give the dealer two card, one is hidden;</li>
             <li>give to the player two card, both flipped</li>   
-            <li>check if the player made a blackjack, if so he adds the win and ends the round</li>
+            <li>check if the player or the dealer made a blackjack, if so he adds the win or removes the loss and ends the round</li>
         </ul>
      */
     public void startRound(){
@@ -130,14 +130,24 @@ public class Blackjack implements Games{
         call(0);
         call(0);
 
-        if(isBlackjack()){
+        if(isBlackjack() && this.dealerDeck.countCard() == 21){ //Both made blackjack
+            this.dealerDeck.flipAll();
+            nextRound();
+            return;
+        }
+        if(isBlackjack()){ //Player made blackjack
             this.currentPlayer.addWin(this.bet[0] * 2);
+            nextRound();
+        }
+        if(this.dealerDeck.countCard() == 21){ //Dealer made blackjack
+            this.currentPlayer.removeLoss(this.bet[0]);
+            this.dealerDeck.flipAll();
             nextRound();
         }
     }
 
     /**
-     * Ask the dealer for another card
+     * Ask the dealer for another card (already flipped)
      * @param deckNumber the deck that receives the card
      */
     public void call(int deckNumber){
