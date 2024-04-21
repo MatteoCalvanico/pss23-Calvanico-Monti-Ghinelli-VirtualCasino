@@ -29,6 +29,13 @@ public class Card {
     }
 
     /**
+     * @return the displayName of the card
+     */
+    public String getCardName(){
+        return this.number.getName();
+    }
+
+    /**
      * @return the seed of the car
      */
     public CardSeed getCardSeed(){
