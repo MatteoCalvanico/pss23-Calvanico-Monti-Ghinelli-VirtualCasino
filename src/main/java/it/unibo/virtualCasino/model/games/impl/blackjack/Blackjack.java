@@ -69,8 +69,13 @@ public class Blackjack implements Games{
         this.insurance = false;
     }
 
+    /**
+     * Bet the amount the money passed
+     * @param amount how much money you want to bet
+     * @throws IllegalArgumentException if the bet exceed the balance
+     */
     @Override
-    public void bet(double amount) {
+    public void bet(double amount) throws IllegalArgumentException {
         if (amount > this.currentPlayer.getAccount()){
             throw new IllegalArgumentException("The bet exceed account balance");
         }else{
@@ -78,7 +83,13 @@ public class Blackjack implements Games{
         }
     }
 
-    public void bet(double amount, int deckNumber){ //Overloading the method: bet(double amount)
+    /**
+     * Bet the amount the money passed
+     * @param amount how much money you want to bet
+     * @param deckNumber indicates which deck the bet refers to
+     * @throws IllegalArgumentException if the bet exceed the balance
+     */
+    public void bet(double amount, int deckNumber) throws IllegalArgumentException { //Overloading the method: bet(double amount)
         if (amount > this.currentPlayer.getAccount()){
             throw new IllegalArgumentException("The bet exceed account balance");
         }else{
@@ -185,8 +196,9 @@ public class Blackjack implements Games{
 
     /**
      * Check and change the playDeck if is over. If all the deck is over throw an exception
+     * @throws IllegalAccessError if all the deck used to play are over
      */
-    private void checkAndChangeDeck(){
+    private void checkAndChangeDeck() throws IllegalAccessError{
         if (this.playDeck.get(usedPlayDeck() + 1) != null) {
             Deck currentPlayDeck = this.playDeck.get(usedPlayDeck());
             if(currentPlayDeck.size() == 0 ){
@@ -229,8 +241,9 @@ public class Blackjack implements Games{
 
     /**
      * Take one card from the main player deck and put in the second deck [ONLY IF THE DECK HAVE TWO CARD WITH THE SAME VALUE]
+     * @throws RuntimeException if you try to split a non-splitting deck
      */
-    public void split(){
+    public void split() throws RuntimeException{
         if (isSplit()) {
             this.playerDeck[1].insert(this.playerDeck[0].draw());
         }else{
