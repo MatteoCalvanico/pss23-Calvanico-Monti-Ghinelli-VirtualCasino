@@ -15,7 +15,7 @@ public class CardTest {
     @BeforeEach
     void setup(){
         System.out.println("!!! START Card Test!!!");
-        c = new Card(CardNumber.FIVE, CardSeed.SPADES, CardColor.BLACK); 
+        c = new Card(CardNumber.FIVE, CardSeed.SPADES, CardColor.BLACK);
     }
 
     @Test void testGetCardNumber(){
@@ -28,5 +28,11 @@ public class CardTest {
 
     @Test void testGetCardColor(){
         assertEquals(CardColor.BLACK, c.getCardColor());
+    }
+
+    @Test void testFlip(){
+        assertEquals(true, c.isFlip());
+        c.flip();
+        assertEquals(false, c.isFlip());
     }
 }
