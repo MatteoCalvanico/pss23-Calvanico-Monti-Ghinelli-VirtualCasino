@@ -6,6 +6,13 @@ import it.unibo.virtualCasino.model.games.Games;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Represents a blackjack game, handling player bets and deck creation and management
+ * @author it.unibo.virtualCasino
+ * @see Deck
+ * @see Card
+ * @see Player
+ */
 public class Blackjack implements Games{
 
     /**

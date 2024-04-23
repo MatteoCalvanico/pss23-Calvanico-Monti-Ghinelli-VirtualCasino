@@ -9,6 +9,11 @@ import it.unibo.virtualCasino.model.games.impl.blackjack.utils.CardSeed;
 
 import java.util.ArrayList;
 
+/**
+ * Represents a set of card
+ * @author it.unibo.virtualCasino
+ * @see Card
+ */
 public class Deck {
     private List<Card> deck;
 
