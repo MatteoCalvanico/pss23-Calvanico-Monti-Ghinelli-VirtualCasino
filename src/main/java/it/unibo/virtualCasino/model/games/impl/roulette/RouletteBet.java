@@ -12,21 +12,26 @@ import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteColors;
  * @author it.unibo.virtualCasino
  */
 public class RouletteBet extends RouletteBase {
-
+  
   /**
-   * The amount of the bet.
+   * The bet identifier uuid
    */
-  private int amount;
+  private final String betId;
 
   /**
    * The type of bet placed (e.g., STRAIGHT_UP, SPLIT, STREET, etc.).
    */
   private final RouletteBetTypes betType;
-
+  
   /**
    * The winning numbers associated with this bet.
    */
   private final ArrayList<Integer> winningNumbers;
+
+  /**
+   * The amount of the bet.
+   */
+  private int amount;
 
   /**
    * Creates a new RouletteBet instance.
@@ -35,14 +40,25 @@ public class RouletteBet extends RouletteBase {
    * @param betPositionInTable The position of the bet on the table.
    */
   public RouletteBet(
+      String betId,
       int amount,
       RouletteBetTypes betType,
       int betPositionInTable
   ) {
+    this.betId = betId;
     this.amount = amount;
     this.betType = betType;
     this.winningNumbers = this.getWinningNumbers(betType, betPositionInTable);
   }
+  /**
+   * Gets the id of the bet.
+   *
+   * @return The bet id.
+   */
+  public String getBetId() {
+    return this.betId;
+  }
+
 
   /**
    * Gets the amount of the bet.
@@ -88,11 +104,11 @@ public class RouletteBet extends RouletteBase {
       case SPLIT:
         {
           if (betPositionInTable < this.MAX_VERTICAL_SPLITS) {
-            int topNum = calcTopNumberBasedOnPosition(betPositionInTable);
-            numbers.add(topNum - 1);
+            int topNum = calcBottomNumberBasedOnPosition(betPositionInTable);
+            numbers.add(topNum + 1);
             numbers.add(topNum);
           } else {
-            int bottomNum = betPositionInTable - this.MAX_VERTICAL_SPLITS;
+            int bottomNum = betPositionInTable - this.MAX_VERTICAL_SPLITS + 1;
             numbers.add(bottomNum);
             numbers.add(bottomNum + this.TABLE_COLS);
           }
@@ -101,8 +117,8 @@ public class RouletteBet extends RouletteBase {
       case STREET:
         {
           int topNum = betPositionInTable * this.TABLE_COLS;
-          numbers.add(topNum++);
-          numbers.add(topNum++);
+          numbers.add(topNum--);
+          numbers.add(topNum--);
           numbers.add(topNum);
         }
         break;
@@ -199,6 +215,23 @@ public class RouletteBet extends RouletteBase {
     }
 
     return (int) number;
+  }
+
+
+  private int calcBottomNumberBasedOnPosition(int position) {
+    double number = ((double) position / this.SPLITS_IN_ROW) * this.TABLE_COLS;
+
+    //Ceil If First Decimal Greater Than Zero
+    if (number % 1 > 0) {
+      int integerPart = (int) number; 
+      double firstDecimal = number - integerPart;
+
+      if (firstDecimal > 0) {
+        number = Math.floor(number); 
+      }
+    }
+
+    return (int) number + 1;
   }
 
 }
