@@ -104,11 +104,11 @@ public class RouletteBet extends RouletteBase {
       case SPLIT:
         {
           if (betPositionInTable < this.MAX_VERTICAL_SPLITS) {
-            int topNum = calcTopNumberBasedOnPosition(betPositionInTable);
-            numbers.add(topNum - 1);
+            int topNum = calcBottomNumberBasedOnPosition(betPositionInTable);
+            numbers.add(topNum + 1);
             numbers.add(topNum);
           } else {
-            int bottomNum = betPositionInTable - this.MAX_VERTICAL_SPLITS;
+            int bottomNum = betPositionInTable - this.MAX_VERTICAL_SPLITS + 1;
             numbers.add(bottomNum);
             numbers.add(bottomNum + this.TABLE_COLS);
           }
@@ -215,6 +215,23 @@ public class RouletteBet extends RouletteBase {
     }
 
     return (int) number;
+  }
+
+
+  private int calcBottomNumberBasedOnPosition(int position) {
+    double number = ((double) position / this.SPLITS_IN_ROW) * this.TABLE_COLS;
+
+    //Ceil If First Decimal Greater Than Zero
+    if (number % 1 > 0) {
+      int integerPart = (int) number; 
+      double firstDecimal = number - integerPart;
+
+      if (firstDecimal > 0) {
+        number = Math.floor(number); 
+      }
+    }
+
+    return (int) number + 1;
   }
 
 }

@@ -110,5 +110,5 @@ public class RouletteBase {
         put(RouletteBetTypes.RED_BLACK, 1);
         put(RouletteBetTypes.HALF, 1);
     }};
-}
+  }
 }
