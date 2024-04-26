@@ -65,9 +65,11 @@ public class Roulette extends RouletteBase implements Games{
             throw new UnsupportedOperationException(e);
         }
 
+        String betId = this.generateRandomUuid(); 
+
         this.placedBets.put(
-            this.generateRandomUuid(), 
-            new RouletteBet(amount, betType, betPositionInTable)
+            betId, 
+            new RouletteBet(betId, amount, betType, betPositionInTable)
         );        
     }
 
