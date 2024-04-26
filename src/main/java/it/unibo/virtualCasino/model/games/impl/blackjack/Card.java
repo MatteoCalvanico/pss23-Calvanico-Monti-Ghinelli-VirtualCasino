@@ -5,7 +5,11 @@ import it.unibo.virtualCasino.model.games.impl.blackjack.utils.CardNumber;
 import it.unibo.virtualCasino.model.games.impl.blackjack.utils.CardSeed;
 
 /**
-*  the class simulates a generic playing card of a French deck
+*  The class simulates a generic playing card of a French deck. The card have a number, a seed, a color and can be flipped
+*  @author it.unibo.virtualCasino
+*  @see CardNumber
+*  @see CardSeed
+*  @see CardColor
 */
 public class Card {
 
@@ -26,6 +30,13 @@ public class Card {
      */
     public int getCardNumber(){
         return this.number.getValue();
+    }
+
+    /**
+     * @return the displayName of the card
+     */
+    public String getCardName(){
+        return this.number.getName();
     }
 
     /**

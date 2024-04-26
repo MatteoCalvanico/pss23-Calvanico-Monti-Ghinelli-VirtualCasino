@@ -6,6 +6,13 @@ import it.unibo.virtualCasino.model.games.Games;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Represents a blackjack game, handling player bets and deck creation and management
+ * @author it.unibo.virtualCasino
+ * @see Deck
+ * @see Card
+ * @see Player
+ */
 public class Blackjack implements Games{
 
     /**
@@ -69,8 +76,13 @@ public class Blackjack implements Games{
         this.insurance = false;
     }
 
+    /**
+     * Bet the amount the money passed
+     * @param amount how much money you want to bet
+     * @throws IllegalArgumentException if the bet exceed the balance
+     */
     @Override
-    public void bet(double amount) {
+    public void bet(double amount) throws IllegalArgumentException {
         if (amount > this.currentPlayer.getAccount()){
             throw new IllegalArgumentException("The bet exceed account balance");
         }else{
@@ -78,7 +90,13 @@ public class Blackjack implements Games{
         }
     }
 
-    public void bet(double amount, int deckNumber){ //Overloading the method: bet(double amount)
+    /**
+     * Bet the amount the money passed
+     * @param amount how much money you want to bet
+     * @param deckNumber indicates which deck the bet refers to
+     * @throws IllegalArgumentException if the bet exceed the balance
+     */
+    public void bet(double amount, int deckNumber) throws IllegalArgumentException { //Overloading the method: bet(double amount)
         if (amount > this.currentPlayer.getAccount()){
             throw new IllegalArgumentException("The bet exceed account balance");
         }else{
@@ -103,41 +121,54 @@ public class Blackjack implements Games{
         this.insurance = false;
     }
 
-    @Override
-    public void showResult() { // TODO: DA FINIRE
-
-        this.dealerDeck.flipAll();
-        this.playerDeck[0].flipAll();
-
-        //Flip the second deck only if is not empty
-        if (this.playerDeck[1].size() != 0) {
-            this.playerDeck[1].flipAll();
-        }
-    }
-
     /**
-     * Starts the next round of blackjack, in order:
-     * <ul>
-            <li>give the dealer two card, one is hidden;</li>
-            <li>give to the player two card, both flipped</li>   
-            <li>check if the player made a blackjack, if so he adds the win and ends the round</li>
-        </ul>
+     * End the round, dealer flip and add the cards, checks who won
      */
-    public void startRound(){
-        receive(2);
-        this.dealerDeck.flipCard(0);
+    @Override
+    public void showResult() {
+        this.dealerDeck.flipAll();
 
-        call(0);
-        call(0);
+        //If the player exceeds 21 he immediately loses
+        if (this.playerDeck[0].countCard() > 21) {
+            this.currentPlayer.removeLoss(this.bet[0]);
 
-        if(isBlackjack()){
-            this.currentPlayer.addWin(this.bet[0] * 2);
-            nextRound();
+            if (this.playerDeck[1].countCard() > 21 || this.playerDeck[1].countCard() == 0) { //Check if the second deck is used and if exceeds 21. If the second deck is not used is usless to go on
+                this.currentPlayer.removeLoss(this.bet[1]);
+                nextRound();
+            }
         }
+ 
+        while (this.dealerDeck.countCard() <= 16) { //Apply "Regola del banco"
+            receive(1);
+        }
+
+        int dealerCount = this.dealerDeck.countCard();
+        int playerCount0 = this.playerDeck[0].countCard();
+        int playerCount1 = this.playerDeck[1].countCard();
+
+        if (dealerCount > 21) { //Dealer exceeds 21 - Player WON
+            this.currentPlayer.addWin(this.bet[0] + this.bet[1]);
+        }else{
+            if (dealerCount > playerCount0) { //Dealer WON
+                this.currentPlayer.removeLoss(this.bet[0]);
+            }
+            if (dealerCount > playerCount1) { //Dealer WON
+                this.currentPlayer.removeLoss(this.bet[1]);
+            }
+
+            if (playerCount0 > dealerCount) { //Player WON
+                this.currentPlayer.addWin(this.bet[0]);
+            }
+            if (playerCount1 > dealerCount) { //Player WON
+                this.currentPlayer.addWin(this.bet[1]);
+            }
+        }
+
+        nextRound();
     }
 
     /**
-     * Ask the dealer for another card
+     * Ask the dealer for another card (already flipped)
      * @param deckNumber the deck that receives the card
      */
     public void call(int deckNumber){
@@ -172,8 +203,9 @@ public class Blackjack implements Games{
 
     /**
      * Check and change the playDeck if is over. If all the deck is over throw an exception
+     * @throws IllegalAccessError if all the deck used to play are over
      */
-    private void checkAndChangeDeck(){
+    private void checkAndChangeDeck() throws IllegalAccessError{
         if (this.playDeck.get(usedPlayDeck() + 1) != null) {
             Deck currentPlayDeck = this.playDeck.get(usedPlayDeck());
             if(currentPlayDeck.size() == 0 ){
@@ -192,10 +224,17 @@ public class Blackjack implements Games{
     }
 
     /**
-     * Check if the combination of card is a blackjack
+     * @return the value of insurace
+     */
+    public boolean checkInsurance(){
+        return this.insurance;
+    } 
+
+    /**
+     * Check if the combination of card is a blackjack in the player deck
      * @return true if the player made a blackjack
      */
-    private boolean isBlackjack(){
+    public boolean isBlackjack(){
         return (playerDeck[0].size() == 2 && playerDeck[0].countCard() == 21) ? true : false; //Is possible to do blackjack if you do 21 with the first two cards the dealer give
     }
 
@@ -209,8 +248,9 @@ public class Blackjack implements Games{
 
     /**
      * Take one card from the main player deck and put in the second deck [ONLY IF THE DECK HAVE TWO CARD WITH THE SAME VALUE]
+     * @throws RuntimeException if you try to split a non-splitting deck
      */
-    public void split(){
+    public void split() throws RuntimeException{
         if (isSplit()) {
             this.playerDeck[1].insert(this.playerDeck[0].draw());
         }else{
