@@ -50,13 +50,13 @@ public class DeckTest {
     //testo se prendendo una carta ritorna poi nella sua posizione
     @Test public void testCheckCardFromDeck(){
         d.initPlayDeck();
-        Card firstCard = d.checkCardFromDeck(51);
+        Card firstCard = d.checkCardFromDeck(40);//prendo questa carta dopo controllo che non venga tolta ma venga rimessa nel mazzo ricontando le 56 carte
         assertNotNull(firstCard, "I check that the first card is nothing");
         // Check if the retrieved card remains in the deck (not removed by checkCardFromDeck)
         assertEquals(56, d.size());
     }
 
-    @Test public void testCountCardes(){
+    @Test public void testCountCardes(){//con questo test ho testato anche il metodo insert()
         //faccio un mazzo vuoto e aggiungo 2 carte
         Deck de = new Deck();
         Card card1 = new Card(CardNumber.TWO, CardSeed.SPADES, CardColor.BLACK);
@@ -74,5 +74,47 @@ public class DeckTest {
         assertEquals(expectedSum, actualSum);//expectedSum=12    
     }
 
+    //test method Draw
 
+    //testo che draw() funzioni su un mazzo pieno
+    @Test public void testDrawFullDeck(){
+        d.initPlayDeck();
+        Card drawnCard = d.draw();//chiamo il metodo draw() sull'oggetto d e memorizzo la carta restituita nella variabile drawnCard
+        assertNotNull(drawnCard);//controllo che la variabile non sia nulla
+    }
+
+    //testo la rimozione della carta dopo la pesca
+    @Test public void testDrawRemoveCard(){
+        d.initPlayDeck();
+        int iSize = d.size();//chiamo il metodo size sull'oggetto d e memorizzo la lunghezza del mazzo nella variabile iSize
+        d.draw();//chiamo il metodo draw() e memorizza la carta restituita nella variabile iSize 
+        assertEquals(iSize - 1 , d.size());//confronto(con iSize) la dimensione del mazzo con una carta in meno e il mazzo completo
+    }
+
+    //testo che draw() funzioni su un mazzo vuoto
+    @Test public void testDrawEmptyDeck(){
+        Deck emptyDeck = new Deck();//creo un nuovo oggetto Deck ma lo inizializzo vuoto
+        Card drawnCard = emptyDeck.draw();//chiamo il metodo draw() sul mazzo vuoto(emptyDeck) e memorizza il valore restituito nella variabile drawnCard
+        assertNull(drawnCard);//si verifica che drawnCard sia null, se non lo è significa che il metodo draw() ha restituito una carta anche se il mazzo era vuoto
+    }
+
+    //In alcuni casi potrebbe essere necessario mantenere l'ordine delle carte in un mazzo,
+    //ad esempio quando si distribuiscono le carte per una sequenza di gioco specifica.
+    //Testo che draw() mantenga l'ordine delle carte se il mazzo non viene mescolato.
+    @Test public void testDrawNotShuffled(){
+        d.initPlayDeck();
+        Card firstCard = d.draw();
+        Card seconCard = d.checkCardFromDeck(0);
+        assertEquals(firstCard, seconCard);
+    } 
+
+    //testo che escano carte diverse dopo la mescolatura
+    @Test public void testDrawShuffled(){
+        d.initPlayDeck();
+        d.shuffleDeck();//chiamo questo metodo per mescolare le carte nel mazzo 
+        Card firstCard = d.draw();//pesco una carta e la salvo nella variabile
+        Card seconCard = d.draw();
+        assertNotEquals(firstCard, seconCard);//utilizzo assertNotEquals per confrontare le due variabili
+        //se le due carte sono uguali fallisce se invece sono diverse è passato
+    }
 }
