@@ -74,8 +74,6 @@ public class DeckTest {
         assertEquals(expectedSum, actualSum);//expectedSum=12    
     }
 
-    //test method Draw
-
     //testo che draw() funzioni su un mazzo pieno
     @Test public void testDrawFullDeck(){
         d.initPlayDeck();
@@ -104,7 +102,7 @@ public class DeckTest {
     @Test public void testDrawNotShuffled(){
         d.initPlayDeck();
         Card firstCard = d.draw();
-        Card seconCard = d.checkCardFromDeck(1);//controllo che la seconda carta quindi quella in pos 1 sia la 2 carta e quindi il mazzo è in ordine
+        Card seconCard = d.checkCardFromDeck(1);//controllo che la seconda carta quindi quella in posizione 1 sia la 2 carta e quindi il mazzo è in ordine
         assertNotEquals(firstCard, seconCard);//se metto assertEquals mi da errore perchè la carta che c'è nel mazzo è effetivamente diversa da quella che ho pescato
     } 
 
@@ -116,5 +114,27 @@ public class DeckTest {
         Card seconCard = d.draw();
         assertNotEquals(firstCard, seconCard);//utilizzo assertNotEquals per confrontare le due variabili
         //se le due carte sono uguali fallisce se invece sono diverse è passato
+    }
+
+    //testo il metodo insert() sull'aggiunta di una carta in un mazzo vuoto
+    @Test public void testInsertCard(){
+        Deck deck = new Deck();
+        Card card = new Card(CardNumber.ACE_ELEVEN, CardSeed.HEARTS, CardColor.BLACK);
+        deck.insert(card);
+        assertEquals(1, deck.size());//controllo che la dimensione del mazzo sia pari a 1 usando size()
+        assertEquals(card, deck.checkCardFromDeck(0));//controllo che la carta inserita sia nella posizione 0 confrontandola anche con la carta originale
+    }
+
+    //testo il metodo insert() sull'aggiunta di più carte a un mazzo esistente
+    @Test public void testInsertMoreCard(){
+        d.initPlayDeck();
+        Deck deck = new Deck();
+        Card card1 = new Card(CardNumber.TWO, CardSeed.HEARTS, CardColor.RED);
+        Card card2 = new Card(CardNumber.KING, CardSeed.CLUBS, CardColor.BLACK);
+        deck.insert(card1);
+        deck.insert(card2);
+        assertEquals(2, deck.size());
+        assertEquals(card1, deck.checkCardFromDeck(0));
+        assertEquals(card2, deck.checkCardFromDeck(1));
     }
 }
