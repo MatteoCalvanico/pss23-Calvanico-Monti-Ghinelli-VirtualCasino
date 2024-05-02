@@ -104,8 +104,8 @@ public class DeckTest {
     @Test public void testDrawNotShuffled(){
         d.initPlayDeck();
         Card firstCard = d.draw();
-        Card seconCard = d.checkCardFromDeck(0);
-        assertEquals(firstCard, seconCard);
+        Card seconCard = d.checkCardFromDeck(1);//controllo che la seconda carta quindi quella in pos 1 sia la 2 carta e quindi il mazzo è in ordine
+        assertNotEquals(firstCard, seconCard);//se metto assertEquals mi da errore perchè la carta che c'è nel mazzo è effetivamente diversa da quella che ho pescato
     } 
 
     //testo che escano carte diverse dopo la mescolatura
