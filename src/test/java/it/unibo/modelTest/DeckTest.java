@@ -99,11 +99,10 @@ public class DeckTest {
     //testo che draw() funzioni su un mazzo vuoto 2 metodo
     //testo initPlayDeck funzioni correttamente(svuoto il mazzo)
     @Test public void testDrawEmptyDeck(){
-        Deck deck = new Deck();
-        deck.initPlayDeck();//svuoto il mazzo
-        deck.emptyDeck();//svuoto il mazzo con il metodo emptyDeck()
+        d.initPlayDeck();//svuoto il mazzo
+        d.emptyDeck();//svuoto il mazzo con il metodo emptyDeck()
 
-        Card drawnCard = deck.draw();//con draw estraggo una carta e la salvo nella variabile drawnCard
+        Card drawnCard = d.draw();//con draw estraggo una carta e la salvo nella variabile drawnCard
         assertNull(drawnCard);
     }
 
@@ -129,11 +128,10 @@ public class DeckTest {
 
     //testo il metodo insert() sull'aggiunta di una carta in un mazzo vuoto
     @Test public void testInsertCard(){
-        Deck deck = new Deck();
         Card card = new Card(CardNumber.ACE_ELEVEN, CardSeed.HEARTS, CardColor.BLACK);
-        deck.insert(card);
-        assertEquals(1, deck.size());//controllo che la dimensione del mazzo sia pari a 1 usando size()
-        assertEquals(card, deck.checkCardFromDeck(0));//controllo che la carta inserita sia nella posizione 0 confrontandola anche con la carta originale
+        d.insert(card);
+        assertEquals(1, d.size());//controllo che la dimensione del mazzo sia pari a 1 usando size()
+        assertEquals(card, d.checkCardFromDeck(0));//controllo che la carta inserita sia nella posizione 0 confrontandola anche con la carta originale
     }
 
     //testo il metodo insert() sull'aggiunta di più carte a un mazzo esistente
@@ -147,5 +145,27 @@ public class DeckTest {
         assertEquals(2, deck.size());
         assertEquals(card1, deck.checkCardFromDeck(0));
         assertEquals(card2, deck.checkCardFromDeck(1));
+    }
+
+    //testo il metodo flipAll() su un mazzo vuoto
+    @Test public void testFlipAll(){
+        d.flipAll();
+        //non verifico nulla perchè questo metodo non modifica un mazzo vuoto
+    }
+
+    //testo il metodo flipAll() e controllo se quest'ultimo ribalta nuovamente le carte già coperte
+    //testo il metodo flipCard()
+    @Test public void testFlipAllCardsFlipped(){
+        d.initPlayDeck();//inizializzo un mazzo con 56 carte coperte
+
+        for(int i=0; i < d.size(); i++){
+            d.flipCard(i);//richiamo questo metodo per girare tutte le carte
+        }
+        d.flipAll();
+        
+        //verifico lo stato delle carte dopo la chiamata al metodo flipAll
+        for(int i = 0; i < d.size(); i++){
+            assertFalse(d.checkCardFromDeck(i).isFlip());//controllo che ogni carta sia coperta
+        }
     }
 }
