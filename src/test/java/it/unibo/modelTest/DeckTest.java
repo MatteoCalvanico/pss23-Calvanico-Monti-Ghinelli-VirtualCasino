@@ -89,11 +89,22 @@ public class DeckTest {
         assertEquals(iSize - 1 , d.size());//confronto(con iSize) la dimensione del mazzo con una carta in meno e il mazzo completo
     }
 
-    //testo che draw() funzioni su un mazzo vuoto
-    @Test public void testDrawEmptyDeck(){
+    //testo che draw() funzioni su un mazzo vuoto 1 metodo
+    @Test public void testDrawEmptyDeck_(){
         Deck emptyDeck = new Deck();//creo un nuovo oggetto Deck ma lo inizializzo vuoto
         Card drawnCard = emptyDeck.draw();//chiamo il metodo draw() sul mazzo vuoto(emptyDeck) e memorizza il valore restituito nella variabile drawnCard
         assertNull(drawnCard);//si verifica che drawnCard sia null, se non lo è significa che il metodo draw() ha restituito una carta anche se il mazzo era vuoto
+    }
+
+    //testo che draw() funzioni su un mazzo vuoto 2 metodo
+    //testo initPlayDeck funzioni correttamente(svuoto il mazzo)
+    @Test public void testDrawEmptyDeck(){
+        Deck deck = new Deck();
+        deck.initPlayDeck();//svuoto il mazzo
+        deck.emptyDeck();//svuoto il mazzo con il metodo emptyDeck()
+
+        Card drawnCard = deck.draw();//con draw estraggo una carta e la salvo nella variabile drawnCard
+        assertNull(drawnCard);
     }
 
     //In alcuni casi potrebbe essere necessario mantenere l'ordine delle carte in un mazzo,
