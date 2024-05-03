@@ -165,7 +165,26 @@ public class DeckTest {
         
         //verifico lo stato delle carte dopo la chiamata al metodo flipAll
         for(int i = 0; i < d.size(); i++){
-            assertFalse(d.checkCardFromDeck(i).isFlip());//controllo che ogni carta sia coperta
+            assertFalse(d.checkCardFromDeck(i).isFlip());//controllo che ogni carta sia nuovamente coperta
         }
     }
+
+    //testo il metodo flipAll() su un mazzo di carte coperte e scoperte
+    @Test public void testFlipAllCard(){
+        d.initPlayDeck();
+
+        for(int i=0; i < d.size() / 2; i++){
+            d.flipCard(i);//rovescio solo metà mazzo
+        }
+
+        d.flipAll();
+
+        for(int i=0; i < d.size() / 2; i++){//itero la metà di mazzo che è erano scoperte
+            assertFalse(d.checkCardFromDeck(i).isFlip());//Le carte che erano scoperte prima di flipAll() rimangano scoperte dopo flipAll().
+        }
+
+        for(int i=d.size() / 2; i < d.size(); i++){//itero la metà di mazzo che è erano coperte
+            assertTrue(d.checkCardFromDeck(i).isFlip());//Le carte che erano coperte prima di flipAll() vengano scoperte dopo flipAll().
+        }
+    } 
 }
