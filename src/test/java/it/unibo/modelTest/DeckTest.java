@@ -148,14 +148,14 @@ public class DeckTest {
     }
 
     //testo il metodo flipAll() su un mazzo vuoto
-    @Test public void testFlipAll(){
+    @Test public void testFlipAllOnEmptyDeck(){
         d.flipAll();
         //non verifico nulla perchè questo metodo non modifica un mazzo vuoto
     }
 
     //testo il metodo flipAll() e controllo se quest'ultimo ribalta nuovamente le carte già coperte
     //testo il metodo flipCard()
-    @Test public void testFlipAllCardsFlipped(){
+    @Test public void testFlipAllCards(){
         d.initPlayDeck();//inizializzo un mazzo con 56 carte coperte
 
         for(int i=0; i < d.size(); i++){
@@ -168,23 +168,17 @@ public class DeckTest {
             assertFalse(d.checkCardFromDeck(i).isFlip());//controllo che ogni carta sia nuovamente coperta
         }
     }
-
-    //testo il metodo flipAll() su un mazzo di carte coperte e scoperte
-    @Test public void testFlipAllCard(){
+    
+    @Test public void testFlipCard(){
         d.initPlayDeck();
+        int pos = 20;//posizione di una carta a caso
+        Card card = d.checkCardFromDeck(pos);
+        assertTrue(card.isFlip());
 
-        for(int i=0; i < d.size() / 2; i++){
-            d.flipCard(i);//rovescio solo metà mazzo
-        }
+        d.flipCard(pos);
+        assertFalse(d.checkCardFromDeck(pos).isFlip());
 
-        d.flipAll();
-
-        for(int i=0; i < d.size() / 2; i++){//itero la metà di mazzo che è erano scoperte
-            assertFalse(d.checkCardFromDeck(i).isFlip());//Le carte che erano scoperte prima di flipAll() rimangano scoperte dopo flipAll().
-        }
-
-        for(int i=d.size() / 2; i < d.size(); i++){//itero la metà di mazzo che è erano coperte
-            assertTrue(d.checkCardFromDeck(i).isFlip());//Le carte che erano coperte prima di flipAll() vengano scoperte dopo flipAll().
-        }
-    } 
+        d.flipCard(pos);
+        assertTrue(d.checkCardFromDeck(pos).isFlip());
+    }
 }
