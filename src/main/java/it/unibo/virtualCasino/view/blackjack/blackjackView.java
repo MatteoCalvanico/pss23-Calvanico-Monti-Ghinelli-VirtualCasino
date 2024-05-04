@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public final class blackjackView extends Application {
+public final class BlackjackView extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
