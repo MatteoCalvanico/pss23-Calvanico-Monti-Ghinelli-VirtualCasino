@@ -3,6 +3,9 @@ package it.unibo.virtualCasino.controller.blackjack;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import it.unibo.virtualCasino.controller.singleton.PlayerHolder;
+import it.unibo.virtualCasino.model.Player;
+import it.unibo.virtualCasino.model.games.impl.blackjack.Blackjack;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -67,6 +70,8 @@ public class BlackjackController implements Initializable {
     @FXML
     private Text txtPlayer1;
 
+    private Player currentPlayer;
+
 
     /**Per creare un metodo e linkarlo fare:
      * 1) Creare nel tag all'interno del fxml il giusto evento, es: <Button text='Ciao' onAction='#method'/>
@@ -79,6 +84,28 @@ public class BlackjackController implements Initializable {
     @FXML
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        receiveData();
+
+        Blackjack BJGame = new Blackjack(6, currentPlayer);
+
         
+        txtPlayer.setText(currentPlayer.getName());
+        txtBalance.setText(Double.toString(currentPlayer.getAccount()));
+    }
+
+    //Method to be invoked when you need to change scene, save the player in the singleton class
+    @FXML
+    private void sendData(){
+        //TODO followe the example (https://dev.to/devtony101/javafx-3-ways-of-passing-information-between-scenes-1)
+    }
+
+    //Method to take the instance of the player thanks to the singleton class
+    @FXML
+    private void receiveData() {
+        PlayerHolder holderInstance = PlayerHolder.getInstance();
+
+        this.currentPlayer = holderInstance.getPlayerHolded();
+        
+        this.currentPlayer = (this.currentPlayer == null) ? new Player("PROVA") : this.currentPlayer;
     }
 }
