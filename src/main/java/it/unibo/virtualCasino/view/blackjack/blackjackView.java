@@ -12,7 +12,7 @@ public final class BlackjackView extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(ClassLoader.getSystemResource("layouts/blackjack.fxml"));
         Scene scene = new Scene(root);
-        stage.setTitle("Remember...the house always win.");
+        stage.setTitle("Remember....the house always win.");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
