@@ -8,6 +8,8 @@ import it.unibo.virtualCasino.model.games.impl.blackjack.Card;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import javax.sound.midi.InvalidMidiDataException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -168,17 +170,26 @@ public class DeckTest {
             assertFalse(d.checkCardFromDeck(i).isFlip());//controllo che ogni carta sia nuovamente coperta
         }
     }
-    
-    @Test public void testFlipCard(){
+    //testo il ribaltimento di una carta scoperta
+    @Test public void testFlipCardDiscovered(){
         d.initPlayDeck();
-        int pos = 20;//posizione di una carta a caso
-        Card card = d.checkCardFromDeck(pos);
-        assertTrue(card.isFlip());
+        int pos = 24;//posizione di una carta a caso
+        Card card = d.checkCardFromDeck(pos);//seleziona una scoperta dal mazzo
+        assertTrue(card.isFlip());//controllo sia effettivamente scoperta
 
         d.flipCard(pos);
-        assertFalse(d.checkCardFromDeck(pos).isFlip());
+        assertFalse(d.checkCardFromDeck(pos).isFlip());//controllo che la carta si stata ribaltata quindi coperta
 
         d.flipCard(pos);
-        assertTrue(d.checkCardFromDeck(pos).isFlip());
+        assertTrue(d.checkCardFromDeck(pos).isFlip());//controllo, in fine, che la carta si sia ribaltata di nuovo quindi scoperta
+    }
+
+    //testo il ribaltimento di una carta fuori dai limiti del mazzo(questo è un test generico per vedere se filpCard blocca un indice fuori dai limiti,
+    //se gli passi )un indice valido funziona lo stesso perché controlla solo se c'è un indice fuori dal limite)
+    @Test public void testFlipCardMargin(){
+        assertThrows(IndexOutOfBoundsException.class, () -> d.flipCard(56));
+        //tenta di chiamare flipCard con una posizione che supera la dimensione del mazzo, il mazzo ha 56 carte e quindi ho messo 56 ed è più alto perchè il primo indice valido è 0 e l'ultimo 55
+        //ho utilizzato assertThrows per specificare che aspettavo che venisse lanciata un'eccezzione di tipo IndexOutOfBoundsException
+        //Si utilizza questa eccezione quando si tenta di accedere a un elemento di un array o di una vista con un indice che non è valido 
     }
 }
