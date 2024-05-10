@@ -170,13 +170,15 @@ public class DeckTest {
         d.initPlayDeck();//inizializzo un mazzo con 56 carte coperte
 
         for(int i=0; i < d.size(); i++){
-            d.flipCard(i);//richiamo questo metodo per girare tutte le carte
+            d.flipCard(i);//richiamo questo metodo per girare ogni carta (scoprire)
         }
-        d.flipAll();
+        d.flipAll();//ricopro ogni carta
         
         //verifico lo stato delle carte dopo la chiamata al metodo flipAll
         for(int i = 0; i < d.size(); i++){
-            assertFalse(d.checkCardFromDeck(i).isFlip());//controllo che ogni carta sia nuovamente coperta
+            assertEquals(false, d.checkCardFromDeck(i).isFlip());
+            //con il metodo checkCardFromDeck(i) prendo la carta all'indice i e poi richiamo il metodo isFlip() sulla carta "presa" per verificare se è scoperta
+            //uso assertEquals con "expected:false" che verifica che il valore restituito da isFlip() sia false, se ritornasse true la carta è ancora coperta 
         }
     }
     /**Testo il ribaltimento di una carta scoperta*/
@@ -220,8 +222,9 @@ public class DeckTest {
     /**testo la rapp stringa di un mazzo con carte scoperte*/
     @Test public void testToStringFlippCards(){
         d.initPlayDeck();
-        d.flipAll();
+        d.flipAll();//giro tutte le carte del mazzo quindi le scopro tutte
         String expectedString = "Deck: [ACE,HEARTS,RED][ACE,HEARTS,RED][TWO,HEARTS,RED][THREE,HEARTS,RED][FOUR,HEARTS,RED][FIVE,HEARTS,RED][SIX,HEARTS,RED][SEVEN,HEARTS,RED][EIGHT,HEARTS,RED][NINE,HEARTS,RED][TEN,HEARTS,RED][JACK,HEARTS,RED][QUEEN,HEARTS,RED][KING,HEARTS,RED][ACE,DIAMONDS,RED][ACE,DIAMONDS,RED][TWO,DIAMONDS,RED][THREE,DIAMONDS,RED][FOUR,DIAMONDS,RED][FIVE,DIAMONDS,RED][SIX,DIAMONDS,RED][SEVEN,DIAMONDS,RED][EIGHT,DIAMONDS,RED][NINE,DIAMONDS,RED][TEN,DIAMONDS,RED][JACK,DIAMONDS,RED][QUEEN,DIAMONDS,RED][KING,DIAMONDS,RED][ACE,CLUBS,BLACK][ACE,CLUBS,BLACK][TWO,CLUBS,BLACK][THREE,CLUBS,BLACK][FOUR,CLUBS,BLACK][FIVE,CLUBS,BLACK][SIX,CLUBS,BLACK][SEVEN,CLUBS,BLACK][EIGHT,CLUBS,BLACK][NINE,CLUBS,BLACK][TEN,CLUBS,BLACK][JACK,CLUBS,BLACK][QUEEN,CLUBS,BLACK][KING,CLUBS,BLACK][ACE,SPADES,BLACK][ACE,SPADES,BLACK][TWO,SPADES,BLACK][THREE,SPADES,BLACK][FOUR,SPADES,BLACK][FIVE,SPADES,BLACK][SIX,SPADES,BLACK][SEVEN,SPADES,BLACK][EIGHT,SPADES,BLACK][NINE,SPADES,BLACK][TEN,SPADES,BLACK][JACK,SPADES,BLACK][QUEEN,SPADES,BLACK][KING,SPADES,BLACK]";
-        assertEquals(expectedString, d.toString());
+        //creazione di una stringa che rappresenti la rappresentazione testuale attesa del mazzo con tutte le carte scoperte 
+        assertEquals(expectedString, d.toString());//confronta la stringa ottenuta dal metodo toString() con la stringa di riferimento expectedString. Se le stringhe sono uguali il test funziona se no fallisce.
     }
 }
