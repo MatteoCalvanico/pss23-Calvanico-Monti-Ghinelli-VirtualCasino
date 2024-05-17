@@ -29,13 +29,13 @@
             <Font name="Bodoni MT Poster Compressed" size="28.0" />
          </font>
       </Button>
-      <Line endX="786.0" endY="18.585784912109375" layoutX="65.0" layoutY="59.0" startX="24.0" startY="18.585784912109375" strokeWidth="2.0" />
       <Circle fill="DODGERBLUE" layoutX="151.0" layoutY="453.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+      <!--  
+      <Line endX="786.0" endY="18.585784912109375" layoutX="65.0" layoutY="59.0" startX="24.0" startY="18.585784912109375" strokeWidth="2.0" />
       <Line endX="958.5858154296875" endY="19.4141845703125" layoutX="-111.0" layoutY="314.0" startX="199.0" startY="19.4141845703125" strokeWidth="2.0" />
       <Line endX="873.5858154296875" endY="20.0" layoutX="-26.0" layoutY="144.0" startX="116.4141845703125" startY="20.0" strokeWidth="2.0" />
       <Line endX="912.5858154296875" endY="20.0" layoutX="-65.0" layoutY="229.0" startX="155.4141845703125" startY="20.0" strokeWidth="2.0" />
       
-      <!--  -->
       <Line endX="98.0" endY="179.0" layoutX="-11.0" layoutY="153.0" startX="100.0" startY="-74.0" strokeWidth="2.0" />
       <Line endX="98.0" endY="179.0" layoutX="52.0" layoutY="153.0" startX="99.0" startY="-74.0" strokeWidth="2.0" />
       <Line endX="98.0" endY="179.0" layoutX="118.0" layoutY="154.0" startX="99.0" startY="-74.0" strokeWidth="2.0" />
@@ -48,6 +48,6 @@
       <Line endX="98.0" endY="179.0" layoutX="561.0" layoutY="153.0" startX="99.0" startY="-74.0" strokeWidth="2.0" />
       <Line endX="98.0" endY="179.0" layoutX="627.0" layoutY="154.0" startX="99.0" startY="-74.0" strokeWidth="2.0" />
       <Line endX="98.0" endY="179.0" layoutX="690.0" layoutY="153.0" startX="99.0" startY="-74.0" strokeWidth="2.0" />
-      <Line endX="98.0" endY="179.0" layoutX="751.0" layoutY="153.0" startX="100.0" startY="-74.0" strokeWidth="2.0" />
+      <Line endX="98.0" endY="179.0" layoutX="751.0" layoutY="153.0" startX="100.0" startY="-74.0" strokeWidth="2.0" />-->
    </children>
 </AnchorPane>
