@@ -35,39 +35,58 @@ public final class RouletteView extends Application {
   
     private void setUpBetPositionIndicatorsOnTable(Parent root) {
       Pane roulettePane = (Pane) root.lookup("#roulettePane");
-      Line verticalMainLine = (Line) root.lookup("#verticalMainLine");
-      Line horizontalMainLine = (Line) root.lookup("horizontalMainLine");
-      
-      System.out.println("verticalline: " + verticalMainLine.getStartX());
-      System.out.println("horizontalline: " + horizontalMainLine.getStartX());
+      Pane lineContainer = (Pane) roulettePane.lookup("#lineContainer");
+      Line verticalMainLine = (Line) lineContainer.lookup("#verticalMainLine");
+      Line horizontalMainLine = (Line) lineContainer.lookup("#horizontalMainLine");
+
+      double hLinesVerticalOffset = calculateLineLength(
+        horizontalMainLine.getStartX(),
+        horizontalMainLine.getStartY(),
+        horizontalMainLine.getEndX(),
+        horizontalMainLine.getEndY() 
+      ) / RouletteViewInfo.H_LINES_COUNT;
+
+      double vLinesHorizontalOffset = calculateLineLength(
+        verticalMainLine.getStartX(),
+        verticalMainLine.getStartY(),
+        verticalMainLine.getEndX(),
+        verticalMainLine.getEndY() 
+      ) / RouletteViewInfo.V_LINES_COUNT;
 
       //TODO set to roulette view
-      for (int i = 0; i < TOTAL_BET_POSITIONS; i++) { 
-        Circle circle = createCircle(
-          RouletteViewInfo.CIRCLE_CENTER_X,
-          RouletteViewInfo.CIRCLE_CENTER_X,
-          RouletteViewInfo.CIRCLE_RADIUS,
-          RouletteViewInfo.CIRCLE_STROKE_TYPE,
-          RouletteViewInfo.CIRCLE_FILL
-        );
-        roulettePane.getChildren().add(circle);
+
+      // create horizontal split bets possible position indicators
+      for (int i = 1; i < RouletteViewInfo.H_LINES_COUNT - 1; i++) {
+        double centerY = horizontalMainLine.getStartY() + (hLinesVerticalOffset * i);
+        
+        int startIndex = i == 1 ? 1 : 0;
+
+        for (int j = startIndex; j < RouletteViewInfo.V_SPLIT_BETS; j+=2) {
+          double centerX = horizontalMainLine.getStartX() + (vLinesHorizontalOffset * (j + 1) / 2);
+          
+          Circle circle = createBetPositionCircle(
+            centerX,
+            centerY
+          );
+
+          roulettePane.getChildren().add(circle);
+        }
       }
     }
 
 
-    private Circle createCircle(
+    private Circle createBetPositionCircle(
       double centerX,
-      double centerY,
-      double radius,
-      StrokeType strokeType,
-      Color color
+      double centerY
     ) {
-      Circle circle = new Circle(radius);
+      Circle circle = new Circle();
+      circle.setLayoutX(0);
+      circle.setLayoutY(0);
       circle.setCenterX(centerX);
       circle.setCenterY(centerY);
-      circle.setRadius(radius);
-      circle.setStrokeType(strokeType);
-      circle.setFill(color);
+      circle.setRadius(RouletteViewInfo.CIRCLE_RADIUS);
+      circle.setStrokeType(RouletteViewInfo.CIRCLE_STROKE_TYPE);
+      circle.setFill(RouletteViewInfo.CIRCLE_FILL);
       return circle;
     }
 

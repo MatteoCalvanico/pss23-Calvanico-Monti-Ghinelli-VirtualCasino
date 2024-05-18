@@ -43,10 +43,10 @@
          </image>
       </ImageView>
       <Pane layoutX="14.0" layoutY="58.0" prefHeight="294.0" prefWidth="268.0" style="-fx-background-color: #006600;" />
-      <Pane layoutX="12.0" layoutY="58.0" prefHeight="294.0" prefWidth="969.0" style="-fx-border-color: Black; -fx-border-width: 4;">
+      <Pane id="lineContainer" layoutX="12.0" layoutY="58.0" prefHeight="294.0" prefWidth="969.0" style="-fx-border-color: Black; -fx-border-width: 4;">
          <children>
-            <Line fx:id="horizontalMainLine" endX="955.0" endY="10.0" startX="322.0" startY="10.0" stroke="WHITE" />
-            <Line fx:id="verticalMainLine" endX="322.0" endY="285.0" startX="322.0" startY="10.0" stroke="WHITE" styleClass="mainVerticalLine" />
+            <Line id="horizontalMainLine" fx:id="horizontalMainLine" endX="955.0" endY="10.0" startX="322.0" startY="10.0" stroke="WHITE" />
+            <Line id="verticalMainLine" fx:id="verticalMainLine" endX="322.0" endY="206.0" startX="322.0" startY="10.0" stroke="WHITE" styleClass="mainVerticalLine" />
             <ImageView fitHeight="239.0" fitWidth="238.0" layoutX="14.0" layoutY="28.0">
                <image>
                   <Image url="@../sprite/roulette/wheel.png" />
