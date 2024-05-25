@@ -100,6 +100,22 @@ public final class RouletteView extends Application {
 
         tableContainer.getChildren().add(circle);
       }
+
+      // creates corner bets positions indicators
+      for (int i = 1; i < RouletteViewInfo.H_LINES_COUNT; i++) {
+        double layoutY = layoutStartY + (hLinesVerticalOffset * i);
+        
+        for (int j = 0; j < (RouletteViewInfo.V_SPLIT_BETS / 2) - 1; j++) {
+          double layoutX = layoutStartX + (vLinesHorizontalOffset * (j + 1));
+          
+          Circle circle = createBetPositionCircle(
+            layoutX,
+            layoutY
+          );
+
+          tableContainer.getChildren().add(circle);
+        }
+      }
       
 
     }
