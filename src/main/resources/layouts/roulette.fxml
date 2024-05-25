@@ -50,6 +50,7 @@
                </image>
             </ImageView>
             <Circle fill="#737373" layoutX="133.0" layoutY="147.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="bottomLeftBetsTable" fx:id="bottomLeftBetsTable" fill="DODGERBLUE" layoutX="323.0" layoutY="284.0" radius="1.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle id="topLeftNumsTable" fx:id="topLeftNumsTable" fill="DODGERBLUE" layoutX="323.0" layoutY="11.0" radius="1.0" stroke="BLACK" strokeType="INSIDE" />
             <Circle id="bottomRightNumsTable" fx:id="bottomRightNumsTable" fill="DODGERBLUE" layoutX="953.0" layoutY="205.0" radius="1.0" stroke="BLACK" strokeType="INSIDE" />
          </children>

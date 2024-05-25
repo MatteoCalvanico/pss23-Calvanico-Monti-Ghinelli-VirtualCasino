@@ -10,13 +10,44 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 public final class RouletteView extends Application {
+    private double layoutStartX;
+    private double layoutStartY;
+    private double layoutEndX;
+    private double layoutEndY;
+    private double hLinesVerticalOffset;
+    private double vLinesHorizontalOffset;
+    private double bottomLeftLayoutX;
+    private double bottomLeftLayoutY;
+    private Pane tableContainer;
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(ClassLoader.getSystemResource("layouts/roulette.fxml"));
         
         Scene scene = new Scene(root);
+
+        Pane roulettePane = (Pane) root.lookup("#roulettePane");
         
-        setUpBetPositionIndicatorsOnTable(root);
+        tableContainer = (Pane) roulettePane.lookup("#tableContainer");
+        
+        Circle topLeftNumsTable = (Circle) tableContainer.lookup("#topLeftNumsTable");
+        Circle bottomLeftBetsTable = (Circle) tableContainer.lookup("#bottomLeftBetsTable");
+        Circle bottomRightNumsTable = (Circle) tableContainer.lookup("#bottomRightNumsTable");
+
+        layoutStartX = topLeftNumsTable.getLayoutX();
+        layoutStartY = topLeftNumsTable.getLayoutY();
+
+        layoutEndX = bottomRightNumsTable.getLayoutX();
+        layoutEndY = bottomRightNumsTable.getLayoutY();
+
+        bottomLeftLayoutX = bottomLeftBetsTable.getLayoutX();
+        bottomLeftLayoutY = bottomLeftBetsTable.getLayoutY();
+
+        hLinesVerticalOffset = Math.abs(layoutStartY - layoutEndY) / RouletteViewInfo.H_LINES_COUNT;
+
+        vLinesHorizontalOffset = Math.abs(layoutStartX - layoutEndX) / RouletteViewInfo.V_LINES_COUNT;
+        
+        setUpBetPositionIndicatorsOnTable(tableContainer);
 
         stage.setTitle("Remember...the house always win.");
         stage.setScene(scene);
@@ -28,23 +59,8 @@ public final class RouletteView extends Application {
         launch(args);
     }
   
-    private void setUpBetPositionIndicatorsOnTable(Parent root) {
-      Pane roulettePane = (Pane) root.lookup("#roulettePane");
-      Pane tableContainer = (Pane) roulettePane.lookup("#tableContainer");
-      Circle topLeftNumsTable = (Circle) tableContainer.lookup("#topLeftNumsTable");
-      Circle bottomRightNumsTable = (Circle) tableContainer.lookup("#bottomRightNumsTable");
+    private void setUpBetPositionIndicatorsOnTable(Pane tableContainer) {
 
-      double layoutStartX = topLeftNumsTable.getLayoutX();
-      double layoutStartY = topLeftNumsTable.getLayoutY();
-
-      double layoutEndX = bottomRightNumsTable.getLayoutX();
-      double layoutEndY = bottomRightNumsTable.getLayoutY();
-
-      double hLinesVerticalOffset = Math.abs(layoutStartY - layoutEndY) / RouletteViewInfo.H_LINES_COUNT;
-
-      double vLinesHorizontalOffset = Math.abs(layoutStartX - layoutEndX) / RouletteViewInfo.V_LINES_COUNT;
-
-      // creates horizontal split bets positions indicators
       for (int i = 1; i < RouletteViewInfo.H_LINES_COUNT; i++) {
         double layoutY = layoutStartY + (hLinesVerticalOffset * i);
         
@@ -128,8 +144,53 @@ public final class RouletteView extends Application {
 
         tableContainer.getChildren().add(circle);
       }
+
+      // creates dozen bets positions indicators
+      createDozenBetsPositionsInidicatos();
+
+      
+      // creates dozen bets positions indicators
+      createHalfBetsPositionsInidicatos();
     }
 
+    private void createDozenBetsPositionsInidicatos() {
+      double layoutY = layoutEndY + (Math.abs(layoutEndY - bottomLeftLayoutY) / 4);
+
+      System.out.println("layoutY: " + layoutY);
+      
+      double offset = (layoutEndX - vLinesHorizontalOffset - layoutStartX) / 3;
+
+      for(int i = 0; i < 3; i++) {  
+        double layoutX = layoutStartX + ((offset * i) + (offset / 2));
+          
+        Circle circle = createBetPositionCircle(
+          layoutX,
+          layoutY
+        );
+
+        tableContainer.getChildren().add(circle);
+      }
+    }
+
+    private void createHalfBetsPositionsInidicatos() {
+      double layoutY = bottomLeftLayoutY - (Math.abs(layoutEndY - bottomLeftLayoutY) / 4);
+      double offset = (layoutEndX - vLinesHorizontalOffset - layoutStartX) / 6;
+          
+      Circle firstHalf = createBetPositionCircle(
+        layoutStartX + (offset / 2),
+        layoutY
+      );
+
+      
+      Circle secondHalf = createBetPositionCircle(
+        layoutEndX - vLinesHorizontalOffset - (offset / 2),
+        layoutY
+      );
+        
+      tableContainer.getChildren().add(firstHalf);
+      tableContainer.getChildren().add(secondHalf);
+
+    }
 
     private Circle createBetPositionCircle(
       double layoutX,
