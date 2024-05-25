@@ -8,6 +8,7 @@ import javafx.scene.shape.StrokeType;
  */
 public class RouletteViewInfo {
   public static final int V_SPLIT_BETS = 24;
+  public static final int H_SPLIT_BETS = 33;
 
   public static final int V_LINES_COUNT = 13;
   public static final int H_LINES_COUNT = 3;

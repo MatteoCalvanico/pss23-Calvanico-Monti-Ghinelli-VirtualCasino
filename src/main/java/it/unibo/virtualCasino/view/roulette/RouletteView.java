@@ -44,7 +44,7 @@ public final class RouletteView extends Application {
 
       double vLinesHorizontalOffset = Math.abs(layoutStartX - layoutEndX) / RouletteViewInfo.V_LINES_COUNT;
 
-      // create horizontal split bets possible position indicators
+      // creates horizontal split bets positions indicators
       for (int i = 1; i < RouletteViewInfo.H_LINES_COUNT; i++) {
         double layoutY = layoutStartY + (hLinesVerticalOffset * i);
         
@@ -61,6 +61,25 @@ public final class RouletteView extends Application {
           tableContainer.getChildren().add(circle);
         }
       }
+
+      // creates horizontal split bets positions indicators
+      for (int i = 0; i < RouletteViewInfo.H_LINES_COUNT; i++) {
+        double layoutY = layoutStartY + (hLinesVerticalOffset * i) + hLinesVerticalOffset / 2;
+        
+        //int startIndex = i == 1 ? 1 : 0;
+
+        for (int j = 1; j <= RouletteViewInfo.H_SPLIT_BETS / 3; j++) {
+          double layoutX = layoutStartX + (vLinesHorizontalOffset * j);
+          
+          Circle circle = createBetPositionCircle(
+            layoutX,
+            layoutY
+          );
+
+          tableContainer.getChildren().add(circle);
+        }
+      }
+
     }
 
 
