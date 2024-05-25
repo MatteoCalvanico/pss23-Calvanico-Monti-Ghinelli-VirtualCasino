@@ -151,6 +151,12 @@ public final class RouletteView extends Application {
       
       // creates dozen bets positions indicators
       createHalfBetsPositionsInidicatos();
+
+      // creates even or odd bets positions indicators
+      createEvenOddBetsPositionsInidicatos();
+
+      // creates red or black bets positions indicators
+      createRedBlackBetsPositionsInidicatos();
     }
 
     private void createDozenBetsPositionsInidicatos() {
@@ -184,6 +190,46 @@ public final class RouletteView extends Application {
       
       Circle secondHalf = createBetPositionCircle(
         layoutEndX - vLinesHorizontalOffset - (offset / 2),
+        layoutY
+      );
+        
+      tableContainer.getChildren().add(firstHalf);
+      tableContainer.getChildren().add(secondHalf);
+
+    }
+
+    private void createEvenOddBetsPositionsInidicatos() {
+      double layoutY = bottomLeftLayoutY - (Math.abs(layoutEndY - bottomLeftLayoutY) / 4);
+      double offset = (layoutEndX - vLinesHorizontalOffset - layoutStartX) / 6;
+          
+      Circle firstHalf = createBetPositionCircle(
+        layoutStartX + (offset / 2) + offset,
+        layoutY
+      );
+
+      
+      Circle secondHalf = createBetPositionCircle(
+        layoutEndX - vLinesHorizontalOffset - (offset / 2) - offset,
+        layoutY
+      );
+        
+      tableContainer.getChildren().add(firstHalf);
+      tableContainer.getChildren().add(secondHalf);
+
+    }
+
+    private void createRedBlackBetsPositionsInidicatos() {
+      double layoutY = bottomLeftLayoutY - (Math.abs(layoutEndY - bottomLeftLayoutY) / 4);
+      double offset = (layoutEndX - vLinesHorizontalOffset - layoutStartX) / 6;
+          
+      Circle firstHalf = createBetPositionCircle(
+        layoutStartX + (offset / 2) + offset*2,
+        layoutY
+      );
+
+      
+      Circle secondHalf = createBetPositionCircle(
+        layoutEndX - vLinesHorizontalOffset - (offset / 2) - offset*2,
         layoutY
       );
         
