@@ -117,7 +117,17 @@ public final class RouletteView extends Application {
         }
       }
       
+      // creates column bets positions indicators
+      for (int i = 0; i < RouletteViewInfo.H_LINES_COUNT; i++) {
+        double layoutY = layoutStartY + (hLinesVerticalOffset * i) + hLinesVerticalOffset / 2;
+          
+        Circle circle = createBetPositionCircle(
+          layoutEndX - vLinesHorizontalOffset / 2,
+          layoutY
+        );
 
+        tableContainer.getChildren().add(circle);
+      }
     }
 
 
