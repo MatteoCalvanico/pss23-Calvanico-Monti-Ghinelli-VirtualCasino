@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -43,16 +42,16 @@
          </image>
       </ImageView>
       <Pane layoutX="14.0" layoutY="58.0" prefHeight="294.0" prefWidth="268.0" style="-fx-background-color: #006600;" />
-      <Pane id="lineContainer" layoutX="12.0" layoutY="58.0" prefHeight="294.0" prefWidth="969.0" style="-fx-border-color: Black; -fx-border-width: 4;">
+      <Pane id="tableContainer" layoutX="12.0" layoutY="58.0" prefHeight="294.0" prefWidth="969.0" style="-fx-border-color: Black; -fx-border-width: 4;">
          <children>
-            <Line id="horizontalMainLine" fx:id="horizontalMainLine" endX="955.0" endY="10.0" startX="322.0" startY="10.0" stroke="WHITE" />
-            <Line id="verticalMainLine" fx:id="verticalMainLine" endX="322.0" endY="206.0" startX="322.0" startY="10.0" stroke="WHITE" styleClass="mainVerticalLine" />
             <ImageView fitHeight="239.0" fitWidth="238.0" layoutX="14.0" layoutY="28.0">
                <image>
                   <Image url="@../sprite/roulette/wheel.png" />
                </image>
             </ImageView>
             <Circle fill="#737373" layoutX="133.0" layoutY="147.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="topLeftNumsTable" fx:id="topLeftNumsTable" fill="DODGERBLUE" layoutX="323.0" layoutY="11.0" radius="1.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle id="bottomRightNumsTable" fx:id="bottomRightNumsTable" fill="DODGERBLUE" layoutX="953.0" layoutY="205.0" radius="1.0" stroke="BLACK" strokeType="INSIDE" />
          </children>
       </Pane>
    </children>
