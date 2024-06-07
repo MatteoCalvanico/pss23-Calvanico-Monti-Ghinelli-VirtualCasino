@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -9,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="roulettePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #014508; -fx-border-style: solid; -fx-border-color: #2b1a01; -fx-border-width: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="roulettePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #014508; -fx-border-style: solid; -fx-border-color: #2b1a01; -fx-border-width: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.virtualCasino.controller.roulette.RouletteController">
    <children>
       <Text fill="#a91111" layoutX="288.0" layoutY="474.0" stroke="#eade07" strokeType="INSIDE" text="VIRTUAL CASINO - ROULETTE" textAlignment="CENTER" wrappingWidth="459.4701232910156">
          <font>
@@ -27,6 +28,11 @@
          </font>
       </Text>
       <Button cancelButton="true" layoutX="886.0" layoutY="528.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="94.0" style="-fx-background-color: #FFD700;" text="Exit" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT Poster Compressed" size="28.0" />
+         </font>
+      </Button>
+      <Button cancelButton="true" layoutX="410.0" layoutY="363.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="274.0" style="-fx-background-color: #70d5fa;" text="New Bet" textAlignment="CENTER">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="28.0" />
          </font>
@@ -55,5 +61,11 @@
             <Circle id="bottomRightNumsTable" fx:id="bottomRightNumsTable" fill="DODGERBLUE" layoutX="953.0" layoutY="205.0" radius="1.0" stroke="WHITE" strokeType="INSIDE" />
          </children>
       </Pane>
+      <ListView layoutX="30.0" layoutY="363.0" prefHeight="218.0" prefWidth="255.0" style="-fx-border-color: BLACK; -fx-border-width: 4px; -fx-background-color: #006600;" />
+      <Button cancelButton="true" layoutX="474.0" layoutY="502.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="146.0" style="-fx-background-color: #FFD700;" text="Spin!" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT Poster Compressed" size="28.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
