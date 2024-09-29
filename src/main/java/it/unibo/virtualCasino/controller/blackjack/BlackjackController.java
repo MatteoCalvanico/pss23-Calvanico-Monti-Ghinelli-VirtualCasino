@@ -5,6 +5,8 @@ import it.unibo.virtualCasino.model.Player;
 import it.unibo.virtualCasino.model.games.impl.blackjack.Blackjack;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
@@ -76,8 +78,13 @@ public class BlackjackController extends BaseController {
     protected void setGame() {
         Blackjack BJGame = new Blackjack(6, currentPlayer);
 
-        
+        // Set the player name and balance
         txtPlayer.setText(currentPlayer.getName());
         txtBalance.setText(Double.toString(currentPlayer.getAccount()));
+
+        // Put the card back image in the playDeckBox HBox
+        Image cardBack = new Image(getClass().getResourceAsStream("/sprite/cards/cardBack_red2.png"));
+        ImageView cardBackView = new ImageView(cardBack); // We gonna put this in the HBox
+        playDeckBox.getChildren().add(cardBackView);
     }
 }
