@@ -57,6 +57,9 @@ public class Roulette extends RouletteBase implements Games{
      * @param amount The amount of the bet.
      * @param betType The type of bet being placed.
      * @param betPositionInTable The position of the bet on the roulette table.
+     * 
+     * @throws UnsupportedOperationException if total bets amount is greater then 
+     * player's balance
      */
     public void bet(int amount, RouletteBetTypes betType, int betPositionInTable) {
         try {

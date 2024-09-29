@@ -3,8 +3,8 @@ package it.unibo.virtualCasino.controller.roulette;
 import it.unibo.virtualCasino.controller.BaseController;
 import it.unibo.virtualCasino.model.games.impl.roulette.Roulette;
 import it.unibo.virtualCasino.model.games.impl.roulette.RouletteBet;
+import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBetTypes;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -13,6 +13,8 @@ import javafx.scene.text.Text;
 public class RouletteController extends BaseController{
   
   private ObservableMap<String, RouletteBet> placedBets;
+
+  private Roulette rouletteGame;
   
   @FXML
   private Button btnCreateBet;
@@ -30,15 +32,29 @@ public class RouletteController extends BaseController{
   private Text txtBalance;
 
   @Override
-  protected void setGame() {
-    Roulette RouletteGame = new Roulette(currentPlayer);
-
-
-    placedBets = FXCollections.observableHashMap();
+  protected void setGame() {    
+    rouletteGame = new Roulette(this.currentPlayer);
         
-    txtPlayer.setText(currentPlayer.getName());
-    txtBalance.setText(Double.toString(currentPlayer.getAccount()));
+    txtPlayer.setText(this.currentPlayer.getName());
+
+    txtBalance.setText(Double.toString(this.currentPlayer.getAccount()));
+  }
+
+  public void createBet() {
+
+    try {
+
+      rouletteGame.bet(100, RouletteBetTypes.SPLIT, 1);
+
+    } catch (Exception e) {
+
+      System.out.println(e.getMessage());
+
+    }
+
+    placedBets = FXCollections.observableMap(rouletteGame.getBetsList());
 
 
+    System.out.println("placed bets: " + placedBets.toString());
   }
 }

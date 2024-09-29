@@ -16,7 +16,6 @@ public final class RouletteView extends Application {
     private double layoutEndY;
     private double hLinesVerticalOffset;
     private double vLinesHorizontalOffset;
-    private double bottomLeftLayoutX;
     private double bottomLeftLayoutY;
     private Pane tableContainer;
 
@@ -40,7 +39,6 @@ public final class RouletteView extends Application {
         layoutEndX = bottomRightNumsTable.getLayoutX();
         layoutEndY = bottomRightNumsTable.getLayoutY();
 
-        bottomLeftLayoutX = bottomLeftBetsTable.getLayoutX();
         bottomLeftLayoutY = bottomLeftBetsTable.getLayoutY();
 
         hLinesVerticalOffset = Math.abs(layoutStartY - layoutEndY) / RouletteViewInfo.H_LINES_COUNT;
@@ -62,37 +60,37 @@ public final class RouletteView extends Application {
     private void setUpBetPositionIndicatorsOnTable(Pane tableContainer) {
 
       // creates horizontal split bets positions indicators
-      createHorizontalSplitBetsPositionsInidicatos();
+      createHorizontalSplitBetsPositionsInidicators();
 
       // creates vertical split bets positions indicators
-      createVerticalSplitBetsPositionsInidicatos();
+      createVerticalSplitBetsPositionsInidicators();
 
       // creates street bets positions indicators
-      createStreetBetsPositionsInidicatos();
+      createStreetBetsPositionsInidicators();
       
       // creates double street bets positions indicators
-      createDoubleStreetBetsPositionsInidicatos();
+      createDoubleStreetBetsPositionsInidicators();
 
       // creates corner bets positions indicators
-      createCornerBetsPositionsInidicatos();
+      createCornerBetsPositionsInidicators();
 
       // creates column bets positions indicators
-      createColumnBetsPositionsInidicatos();
+      createColumnBetsPositionsInidicators();
 
       // creates dozen bets positions indicators
-      createDozenBetsPositionsInidicatos();
+      createDozenBetsPositionsInidicators();
 
       // creates dozen bets positions indicators
-      createHalfBetsPositionsInidicatos();
+      createHalfBetsPositionsInidicators();
 
       // creates even or odd bets positions indicators
-      createEvenOddBetsPositionsInidicatos();
+      createEvenOddBetsPositionsInidicators();
 
       // creates red or black bets positions indicators
-      createRedBlackBetsPositionsInidicatos();
+      createRedBlackBetsPositionsInidicators();
     }
 
-    private void createHorizontalSplitBetsPositionsInidicatos() {
+    private void createHorizontalSplitBetsPositionsInidicators() {
       for (int i = 1; i < RouletteViewInfo.H_LINES_COUNT; i++) {
         double layoutY = layoutStartY + (hLinesVerticalOffset * i);
         
@@ -109,7 +107,7 @@ public final class RouletteView extends Application {
       }
     }
 
-    private void createVerticalSplitBetsPositionsInidicatos() {
+    private void createVerticalSplitBetsPositionsInidicators() {
       for (int i = 0; i < RouletteViewInfo.H_LINES_COUNT; i++) {
         double layoutY = layoutStartY + (hLinesVerticalOffset * i) + hLinesVerticalOffset / 2;
         
@@ -126,7 +124,7 @@ public final class RouletteView extends Application {
       }
     }
 
-    private void createStreetBetsPositionsInidicatos() {
+    private void createStreetBetsPositionsInidicators() {
       for (int j = 0; j < RouletteViewInfo.V_SPLIT_BETS; j+=2) {
         double layoutX = layoutStartX + (vLinesHorizontalOffset * (j + 1) / 2);
         
@@ -139,7 +137,7 @@ public final class RouletteView extends Application {
       }
     }
 
-    private void createDoubleStreetBetsPositionsInidicatos() {
+    private void createDoubleStreetBetsPositionsInidicators() {
       for (int j = 1; j < RouletteViewInfo.V_SPLIT_BETS / 2; j++) {
         double layoutX = layoutStartX + (vLinesHorizontalOffset * (j));
         
@@ -152,7 +150,7 @@ public final class RouletteView extends Application {
       }
     }
 
-    private void createCornerBetsPositionsInidicatos() {
+    private void createCornerBetsPositionsInidicators() {
       for (int i = 1; i < RouletteViewInfo.H_LINES_COUNT; i++) {
         double layoutY = layoutStartY + (hLinesVerticalOffset * i);
         
@@ -169,7 +167,7 @@ public final class RouletteView extends Application {
       }
     }
 
-    private void createColumnBetsPositionsInidicatos() {
+    private void createColumnBetsPositionsInidicators() {
       for (int i = 0; i < RouletteViewInfo.H_LINES_COUNT; i++) {
         double layoutY = layoutStartY + (hLinesVerticalOffset * i) + hLinesVerticalOffset / 2;
           
@@ -182,7 +180,7 @@ public final class RouletteView extends Application {
       }
     }
 
-    private void createDozenBetsPositionsInidicatos() {
+    private void createDozenBetsPositionsInidicators() {
       double layoutY = layoutEndY + (Math.abs(layoutEndY - bottomLeftLayoutY) / 4);
 
       System.out.println("layoutY: " + layoutY);
@@ -201,7 +199,7 @@ public final class RouletteView extends Application {
       }
     }
 
-    private void createHalfBetsPositionsInidicatos() {
+    private void createHalfBetsPositionsInidicators() {
       double layoutY = bottomLeftLayoutY - (Math.abs(layoutEndY - bottomLeftLayoutY) / 4);
       double offset = (layoutEndX - vLinesHorizontalOffset - layoutStartX) / 6;
           
@@ -221,7 +219,7 @@ public final class RouletteView extends Application {
 
     }
 
-    private void createEvenOddBetsPositionsInidicatos() {
+    private void createEvenOddBetsPositionsInidicators() {
       double layoutY = bottomLeftLayoutY - (Math.abs(layoutEndY - bottomLeftLayoutY) / 4);
       double offset = (layoutEndX - vLinesHorizontalOffset - layoutStartX) / 6;
           
@@ -241,7 +239,7 @@ public final class RouletteView extends Application {
 
     }
 
-    private void createRedBlackBetsPositionsInidicatos() {
+    private void createRedBlackBetsPositionsInidicators() {
       double layoutY = bottomLeftLayoutY - (Math.abs(layoutEndY - bottomLeftLayoutY) / 4);
       double offset = (layoutEndX - vLinesHorizontalOffset - layoutStartX) / 6;
           
