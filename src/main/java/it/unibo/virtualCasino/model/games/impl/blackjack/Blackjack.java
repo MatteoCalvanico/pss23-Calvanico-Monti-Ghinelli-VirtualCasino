@@ -77,6 +77,23 @@ public class Blackjack implements Games{
     }
 
     /**
+     * Return the dealer deck
+     * @return the dealer deck
+     */
+    public Deck getDealerDeck(){
+        return this.dealerDeck;
+    }
+
+    /**
+     * Return the player deck
+     * @param deckNumber indicates which deck we want to return
+     * @return the dealer deck
+     */
+    public Deck getPlayerDeck(int deckNumber){
+        return this.playerDeck[deckNumber];
+    }
+
+    /**
      * Bet the amount the money passed
      * @param amount how much money you want to bet
      * @throws IllegalArgumentException if the bet exceed the balance
