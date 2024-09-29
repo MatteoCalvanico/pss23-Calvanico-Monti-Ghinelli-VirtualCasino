@@ -68,6 +68,15 @@ public class BlackjackController extends BaseController {
     @FXML
     private Text txtPlayer1;
 
+    @FXML
+    private HBox chipBox;
+
+    @FXML
+    private Button btnBet100;
+
+    @FXML 
+    private Button btnBetMinus100;
+
 
     /**Per creare un metodo e linkarlo fare:
      * 1) Creare nel tag all'interno del fxml il giusto evento, es: <Button text='Ciao' onAction='#method'/>
@@ -82,9 +91,14 @@ public class BlackjackController extends BaseController {
         txtPlayer.setText(currentPlayer.getName());
         txtBalance.setText(Double.toString(currentPlayer.getAccount()));
 
-        // Put the card back image in the playDeckBox HBox
+        // Set images - player deck
         Image cardBack = new Image(getClass().getResourceAsStream("/sprite/cards/cardBack_red2.png"));
         ImageView cardBackView = new ImageView(cardBack); // We gonna put this in the HBox
         playDeckBox.getChildren().add(cardBackView);
+
+        // Set images - chip
+        Image chip = new Image(getClass().getResourceAsStream("/sprite/chips/chipBlackWhite.png"));
+        ImageView chipView = new ImageView(chip); // We gonna put this in the HBox
+        chipBox.getChildren().add(chipView);
     }
 }
