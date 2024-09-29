@@ -1,0 +1,17 @@
+.list-view {
+  -fx-border-color: BLACK;
+  -fx-border-width: 4px;
+  -fx-background-color: #006600;
+}
+
+.list-cell:odd {
+  -fx-background-color: #007700;
+}
+
+.list-cell:even {
+  -fx-background-color: #006600;
+}
+
+.list-cell:hover {
+  -fx-background-color: #008800;
+}

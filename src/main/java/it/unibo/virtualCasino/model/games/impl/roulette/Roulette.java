@@ -9,10 +9,10 @@ import java.util.UUID;
 import it.unibo.virtualCasino.model.Player;
 import it.unibo.virtualCasino.model.games.Games;
 import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteColors;
-import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBetTypes;
 
 /**
- * Represents a Roulette game, handling player bets, executing spins, and calculating outcomes.
+ * Represents a Roulette game, handling player bets, executing spins, and
+ * calculating outcomes.
  *
  * @author it.unibo.virtualCasino
  * @see Games
@@ -20,7 +20,7 @@ import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBetTypes;
  * @see Player
  * @see RouletteBet
  */
-public class Roulette extends RouletteBase implements Games{
+public class Roulette extends RouletteBase implements Games {
 
     private final int SEED_ARRAY_MAX_LENGHT = 30;
 
@@ -32,19 +32,20 @@ public class Roulette extends RouletteBase implements Games{
 
     private Player currentPlayer;
 
-    private Map<String, RouletteBet> placedBets = new HashMap<>();
-    
+    private Map<UUID, RouletteBet> placedBets = new HashMap<>();
+
     /**
      * Check if amount exceeds player's account balance.
      *
      * @param amount The amount of money to bet.
-     * @throws IllegalArgumentException If the total bet amount exceeds the player's account balance.
+     * @throws IllegalArgumentException If the total bet amount exceeds the player's
+     *                                  account balance.
      */
     @Override
     public void bet(double amount) {
         double totalRiskedMoney = amount;
-        for (Map.Entry<String, RouletteBet> entry : placedBets.entrySet()) {
-          totalRiskedMoney += entry.getValue().getBetAmount();
+        for (Map.Entry<UUID, RouletteBet> entry : placedBets.entrySet()) {
+            totalRiskedMoney += entry.getValue().getBetAmount();
         }
         if (totalRiskedMoney > currentPlayer.getAccount()) {
             throw new IllegalArgumentException("Total bets amount exceed account balance");
@@ -52,34 +53,24 @@ public class Roulette extends RouletteBase implements Games{
     }
 
     /**
-     * Overloaded bet method, place a new bet and adds it to the list of placed bets.
+     * Overloaded bet method, place a new bet and adds it to the list of placed
+     * bets.
      *
-     * @param amount The amount of the bet.
-     * @param betType The type of bet being placed.
-     * @param betPositionInTable The position of the bet on the roulette table.
-     * 
-     * @throws UnsupportedOperationException if total bets amount is greater then 
-     * player's balance
+     * @param RouletteBet The roulette bet.
+     * @throws IllegalArgumentException If the total bet amount exceeds the player's
+     *                                  account balance.
      */
-    public void bet(int amount, RouletteBetTypes betType, int betPositionInTable) {
-        try {
-            this.bet((double) amount);
-        } catch (Exception e) {
-            throw new UnsupportedOperationException(e);
-        }
+    public void bet(RouletteBet bet) {
+        this.bet((double) bet.getBetAmount());
 
-        String betId = this.generateRandomUuid(); 
-
-        this.placedBets.put(
-            betId, 
-            new RouletteBet(betId, amount, betType, betPositionInTable)
-        );        
+        this.placedBets.put(bet.getBetId(), bet);
     }
 
     /**
      * Prepares the game for a new round.
      *
-     * This method resets the placed bets list to an empty HashMap, ensuring a fresh start for the next round.
+     * This method resets the placed bets list to an empty HashMap, ensuring a fresh
+     * start for the next round.
      * Players need to place new bets before calling `showResult()`.
      */
     @Override
@@ -88,13 +79,14 @@ public class Roulette extends RouletteBase implements Games{
     }
 
     /**
-     * Simulates a Roulette spin, determines the winning number, and updates the player's account based on the results.
+     * Simulates a Roulette spin, determines the winning number, and updates the
+     * player's account based on the results.
      */
     @Override
     public void showResult() {
         int winningNum = this.spinRoulette();
         int gameRes = this.getGameProfitOrLoss(winningNum);
-        
+
         if (gameRes < 0) {
             this.currentPlayer.removeLoss(Math.abs(gameRes));
         } else if (gameRes > 0) {
@@ -111,7 +103,7 @@ public class Roulette extends RouletteBase implements Games{
         new Random().nextBytes(seed);
         this.currentPlayer = player;
     }
-    
+
     /**
      * Returns a copy of the current roulette table layout (2D integer array).
      *
@@ -122,7 +114,8 @@ public class Roulette extends RouletteBase implements Games{
     }
 
     /**
-     * Returns a copy of the map that associates roulette numbers with their corresponding color enums.
+     * Returns a copy of the map that associates roulette numbers with their
+     * corresponding color enums.
      *
      * @return a copy of the roulette slots map
      */
@@ -135,10 +128,9 @@ public class Roulette extends RouletteBase implements Games{
      *
      * @return the list of placed bets.
      */
-    public Map<String, RouletteBet> getBetsList() {
+    public Map<UUID, RouletteBet> getBetsList() {
         return this.placedBets;
     }
-
 
     /**
      * Deletes a bet from the list of placed bets.
@@ -146,12 +138,12 @@ public class Roulette extends RouletteBase implements Games{
      * @param betId The unique identifier of the bet to be removed.
      * @return The updated map of placed bets.
      */
-    public Map<String, RouletteBet> deleteBet(String betId) {
+    public Map<UUID, RouletteBet> deleteBet(UUID betId) {
         this.placedBets.remove(betId);
 
         return this.placedBets;
     }
-    
+
     /**
      * Generates a random roulette spin result using a SecureRandom object.
      *
@@ -163,7 +155,8 @@ public class Roulette extends RouletteBase implements Games{
     }
 
     /**
-     * Calculates the overall profit or loss for the game based on the winning number and placed bets.
+     * Calculates the overall profit or loss for the game based on the winning
+     * number and placed bets.
      *
      * @param winningNumber The winning number of the spin.
      * @return The total profit or loss for the game.
@@ -171,7 +164,7 @@ public class Roulette extends RouletteBase implements Games{
     private int getGameProfitOrLoss(int winningNumber) {
         int profitOrLoss = 0;
 
-        for (Map.Entry<String, RouletteBet> betEntry : placedBets.entrySet()) {
+        for (Map.Entry<UUID, RouletteBet> betEntry : placedBets.entrySet()) {
             RouletteBet bet = betEntry.getValue();
 
             if (bet.getWinningNumbers().contains(winningNumber)) {
@@ -199,15 +192,5 @@ public class Roulette extends RouletteBase implements Games{
         }
 
         return tempMatrix;
-    }
-
-    /**
-     * Generates a unique identifier for a bet.
-     *
-     * @return A randomly generated UUID string.
-     */
-    private String generateRandomUuid() {
-        UUID uuid = UUID.randomUUID();
-        return uuid.toString();
     }
 }
