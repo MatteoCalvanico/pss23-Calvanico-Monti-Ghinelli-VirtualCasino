@@ -3,7 +3,6 @@ package it.unibo.virtualCasino.controller.blackjack;
 import it.unibo.virtualCasino.controller.BaseController;
 import it.unibo.virtualCasino.model.games.impl.blackjack.Blackjack;
 import it.unibo.virtualCasino.model.games.impl.blackjack.Card;
-import it.unibo.virtualCasino.model.games.impl.blackjack.utils.CardSeed;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -135,6 +134,11 @@ public class BlackjackController extends BaseController {
             ImageView cardView = new ImageView(cardImage);
             dealerDeckBox.getChildren().add(cardView);
         }
+
+        // Check if the player has a blackjack
+        if (BJGame.isBlackjack()) {
+            BJGame.showResult();
+        }
     }
 
     /**
@@ -163,11 +167,7 @@ public class BlackjackController extends BaseController {
                     cardNumber = "K";
                     break;
                 
-                case "ACE_ONE":
-                    cardNumber = "A";
-                    break;
-                
-                case "ACE_ELEVEN":
+                case "ACE":
                     cardNumber = "A";
                     break;
             
