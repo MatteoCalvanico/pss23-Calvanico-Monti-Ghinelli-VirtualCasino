@@ -2,6 +2,8 @@ package it.unibo.virtualCasino.controller.blackjack;
 
 import it.unibo.virtualCasino.controller.BaseController;
 import it.unibo.virtualCasino.model.games.impl.blackjack.Blackjack;
+import it.unibo.virtualCasino.model.games.impl.blackjack.Card;
+import it.unibo.virtualCasino.model.games.impl.blackjack.utils.CardSeed;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -86,12 +88,6 @@ public class BlackjackController extends BaseController {
 
     private int currentBet = 0;
 
-
-    /**Per creare un metodo e linkarlo fare:
-     * 1) Creare nel tag all'interno del fxml il giusto evento, es: <Button text='Ciao' onAction='#method'/>
-     * 2) Nel controller creare quel metodo con il giusto evento come parametro passato, es: public void method(Action e){ ... }
-    */
-
     @Override
     protected void setGame() {
         BJGame = new Blackjack(6, currentPlayer);
@@ -109,6 +105,83 @@ public class BlackjackController extends BaseController {
         Image chip = new Image(getClass().getResourceAsStream("/sprite/chips/chipBlackWhite.png"));
         ImageView chipView = new ImageView(chip); // We gonna put this in the HBox
         chipBox.getChildren().add(chipView);
+    }
+
+    /*
+    * Method to start the game
+    */
+    protected void startGame(){
+        BJGame.receive(2);         // Give 2 cards to the dealer
+        BJGame.getDealerDeck().flipCard(0); // Set the first card of the dealer face up
+        txtDeckCards2.setText(Integer.toString(BJGame.getDealerDeck().checkCardFromDeck(0).getCardNumber())); 
+
+        // Give 2 cards to the player
+        BJGame.call(0);           
+        BJGame.call(0);   
+        txtDeckCards0.setText(Integer.toString(BJGame.getPlayerDeck(0).countCard()));
+
+        // Set the images of the cards - player deck
+        for(int i = 0; i < BJGame.getPlayerDeck(0).size(); i++){
+            Card card = BJGame.getPlayerDeck(0).checkCardFromDeck(i);
+            Image cardImage = getCardImage(card);
+            ImageView cardView = new ImageView(cardImage);
+            deckBox0.getChildren().add(cardView);
+        }
+
+        // Set the images of the cards - dealer deck
+        for(int i = 0; i < BJGame.getDealerDeck().size(); i++){
+            Card card = BJGame.getDealerDeck().checkCardFromDeck(i);
+            Image cardImage = getCardImage(card);
+            ImageView cardView = new ImageView(cardImage);
+            dealerDeckBox.getChildren().add(cardView);
+        }
+    }
+
+    /**
+    * Method to get the image of the card
+    * @param card the card to get the image
+    * @return the image of the card
+    */
+    protected Image getCardImage(Card card){
+        Image cardImage;
+        
+        if(card.isFlip()){
+            cardImage = new Image(getClass().getResourceAsStream("/sprite/cards/cardBack_red2.png"));
+        }
+        else{
+            String cardNumber;
+            switch (card.getCardName()) {
+                case "JACK":
+                    cardNumber = "J";
+                    break;
+
+                case "QUEEN":
+                    cardNumber = "Q";
+                    break;
+
+                case "KING":
+                    cardNumber = "K";
+                    break;
+                
+                case "ACE_ONE":
+                    cardNumber = "A";
+                    break;
+                
+                case "ACE_ELEVEN":
+                    cardNumber = "A";
+                    break;
+            
+                default:
+                    cardNumber = String.valueOf(card.getCardNumber());
+                    break;
+            }
+
+            String cardSeed = card.getCardSeed().toString().toLowerCase();
+
+            cardImage = new Image(getClass().getResourceAsStream("/sprite/cards/card" + Character.toUpperCase(cardSeed.charAt(0)) + cardSeed.substring(1) + cardNumber + ".png"));
+        }
+
+        return cardImage;
     }
 
     @FXML
@@ -138,6 +211,17 @@ public class BlackjackController extends BaseController {
     * !!! The balance don't change until the game is over !!!
     */
     protected void setBet(){
+        
+        if (currentBet == 0) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Bet Warning");
+            alert.setHeaderText(null);
+            alert.setContentText("You must bet something!");
+            alert.showAndWait();
+            return;
+            
+        }
+
         try {
             BJGame.bet(currentBet);
 
@@ -145,9 +229,20 @@ public class BlackjackController extends BaseController {
             btnBet100.disableProperty().set(true); 
             btnBetMinus100.disableProperty().set(true);
             btnSetBet.disableProperty().set(true);
-        } catch (Exception e) {
+
+            // The bet is set, we can start the game
+            startGame();
+
+        } catch (IllegalArgumentException e) {
             Alert alert = new Alert(AlertType.WARNING);
             alert.setTitle("Bet Warning");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            
+        } catch (Exception e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
             alert.setHeaderText(null);
             alert.setContentText(e.getMessage());
             alert.showAndWait();
