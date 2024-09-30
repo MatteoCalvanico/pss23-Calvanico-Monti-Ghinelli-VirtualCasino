@@ -322,4 +322,37 @@ public class BlackjackController extends BaseController {
     protected void stay(){
         showResult();
     }
+
+    @FXML
+    /**
+     * Handle the call for the first deck
+     */
+    protected void handleCall0(){
+        call(0);
+    }
+
+    @FXML
+    /**
+     * Handle the call for the second deck
+     */
+    protected void handleCall1(){
+        call(1);
+    }
+
+    @FXML
+    /**
+    * Method called when the player want to take other cards
+    */
+    protected void call(int deckNumber){
+        BJGame.call(deckNumber);
+
+        if (BJGame.isBlackjack()) { // Check if the player has a blackjack
+            showResult();
+
+        } else if (BJGame.getPlayerDeck(deckNumber).countCard() > 21) { // Check if the player has bust
+            showResult();
+        }else {
+            updateScreen(false);
+        }
+    }
 }

@@ -38,7 +38,7 @@
             <Font name="Bodoni MT Poster Compressed" size="40.0" />
          </font>
       </Text>
-      <Button id="btnCard0" fx:id="btnCard0" layoutX="589.0" layoutY="545.0" maxHeight="29.0" minHeight="0.0" minWidth="49.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="56.0" style="-fx-background-radius: 25; -fx-background-color: #b40202;" text="+" textAlignment="CENTER">
+      <Button id="btnCard0" fx:id="btnCard0" layoutX="589.0" layoutY="545.0" maxHeight="29.0" minHeight="0.0" minWidth="49.0" mnemonicParsing="false" onAction="#handleCall0" prefHeight="65.0" prefWidth="56.0" style="-fx-background-radius: 25; -fx-background-color: #b40202;" text="+" textAlignment="CENTER">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="28.0" />
          </font>
@@ -56,7 +56,7 @@
             <Font name="Bodoni MT Poster Compressed" size="28.0" />
          </font>
       </Button>
-      <Button id="btnCard1" fx:id="btnCard1" disable="true" layoutX="330.0" layoutY="544.0" maxHeight="29.0" minHeight="0.0" minWidth="49.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="56.0" style="-fx-background-radius: 25; -fx-background-color: #b40202;" text="+" textAlignment="CENTER">
+      <Button id="btnCard1" fx:id="btnCard1" disable="true" layoutX="330.0" layoutY="544.0" maxHeight="29.0" minHeight="0.0" minWidth="49.0" mnemonicParsing="false" onAction="#handleCall1" prefHeight="65.0" prefWidth="56.0" style="-fx-background-radius: 25; -fx-background-color: #b40202;" text="+" textAlignment="CENTER">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="28.0" />
          </font>
