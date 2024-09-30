@@ -91,9 +91,8 @@ public class BlackjackController extends BaseController {
     protected void setGame() {
         BJGame = new Blackjack(6, currentPlayer);
 
-        // Set the player name and balance
-        txtPlayer.setText(currentPlayer.getName());
-        txtBalance.setText(Double.toString(currentPlayer.getAccount()));
+        // Set the dinamic text and images
+        updateScreen(false);
 
         // Set images - player deck
         Image cardBack = new Image(getClass().getResourceAsStream("/sprite/cards/cardBack_red2.png"));
@@ -112,32 +111,16 @@ public class BlackjackController extends BaseController {
     protected void startGame(){
         BJGame.receive(2);         // Give 2 cards to the dealer
         BJGame.getDealerDeck().flipCard(0); // Set the first card of the dealer face up
-        txtDeckCards2.setText(Integer.toString(BJGame.getDealerDeck().checkCardFromDeck(0).getCardNumber())); 
 
         // Give 2 cards to the player
         BJGame.call(0);           
-        BJGame.call(0);   
-        txtDeckCards0.setText(Integer.toString(BJGame.getPlayerDeck(0).countCard()));
+        BJGame.call(0); 
 
-        // Set the images of the cards - player deck
-        for(int i = 0; i < BJGame.getPlayerDeck(0).size(); i++){
-            Card card = BJGame.getPlayerDeck(0).checkCardFromDeck(i);
-            Image cardImage = getCardImage(card);
-            ImageView cardView = new ImageView(cardImage);
-            deckBox0.getChildren().add(cardView);
-        }
-
-        // Set the images of the cards - dealer deck
-        for(int i = 0; i < BJGame.getDealerDeck().size(); i++){
-            Card card = BJGame.getDealerDeck().checkCardFromDeck(i);
-            Image cardImage = getCardImage(card);
-            ImageView cardView = new ImageView(cardImage);
-            dealerDeckBox.getChildren().add(cardView);
-        }
+        updateScreen(false);
 
         // Check if the player has a blackjack
         if (BJGame.isBlackjack()) {
-            BJGame.showResult();
+            showResult();
         }
     }
 
@@ -184,6 +167,89 @@ public class BlackjackController extends BaseController {
         return cardImage;
     }
 
+    /**
+    * Method to display the result of the Blackjack game and updates the screen accordingly.
+    */
+    protected void showResult(){
+        BJGame.showResult();
+        updateScreen(false);
+
+        // Block other buttons
+        btnCard0.disableProperty().set(true);
+        btnCard1.disableProperty().set(true);
+        btnStay0.disableProperty().set(true);
+        btnStay1.disableProperty().set(true);
+        btnSplit.disableProperty().set(true);
+
+        // Re-able the buttons to change the bet
+        btnBet100.disableProperty().set(false); 
+        btnBetMinus100.disableProperty().set(false);
+        btnSetBet.disableProperty().set(false);
+    }
+
+    /**
+    * Method to update the screen items
+    * @param isSplit if the player has split
+    */
+    protected void updateScreen(boolean isSplit){
+        // Update texts
+        txtPlayer.setText(currentPlayer.getName());
+        txtBalance.setText(Double.toString(currentPlayer.getAccount()));
+        txtBet0.setText(Integer.toString(currentBet));
+        if (isSplit) {
+            txtBet1.setText(Integer.toString(currentBet)); // Set the bet for the second deck
+        }
+        txtInsurance.setText(BJGame.checkInsurance() ? "True" : "False");
+        txtDeckCards0.setText(Integer.toString(BJGame.getPlayerDeck(0).countCard()));
+        txtDeckCards1.setText(Integer.toString(BJGame.getPlayerDeck(1).countCard()));
+        txtDeckCards2.setText(Integer.toString(BJGame.getDealerDeck().countCard())); //TODO: da cambiare, ora vengno mostrate anche le carte coperte
+
+
+        // Update images
+        // Clear previous images
+        deckBox0.getChildren().clear();
+        deckBox1.getChildren().clear();
+        dealerDeckBox.getChildren().clear();
+
+        // Set the images of the cards - player deck 0
+        for(int i = 0; i < BJGame.getPlayerDeck(0).size(); i++){
+            Card card = BJGame.getPlayerDeck(0).checkCardFromDeck(i);
+            Image cardImage = getCardImage(card);
+            ImageView cardView = new ImageView(cardImage);
+            deckBox0.getChildren().add(cardView);
+        }
+
+        // Set the images of the cards - player deck 1
+        if (isSplit) {
+            for(int i = 0; i < BJGame.getPlayerDeck(1).size(); i++){
+                Card card = BJGame.getPlayerDeck(1).checkCardFromDeck(i);
+                Image cardImage = getCardImage(card);
+                ImageView cardView = new ImageView(cardImage);
+                deckBox1.getChildren().add(cardView);
+            }
+        }
+
+        // Set the images of the cards - dealer deck
+        for(int i = 0; i < BJGame.getDealerDeck().size(); i++){
+            Card card = BJGame.getDealerDeck().checkCardFromDeck(i);
+            Image cardImage = getCardImage(card);
+            ImageView cardView = new ImageView(cardImage);
+            dealerDeckBox.getChildren().add(cardView);
+        }
+
+
+        // Enable the buttons
+        btnCard0.disableProperty().set(false);
+        btnStay0.disableProperty().set(false);
+        btnSplit.disableProperty().set(false);
+
+        if (isSplit) { 
+            btnCard1.disableProperty().set(false);
+            btnStay1.disableProperty().set(false);
+        }
+    }
+
+
     @FXML
     /*
     * Method to add 100 to the current bet
@@ -223,6 +289,7 @@ public class BlackjackController extends BaseController {
         }
 
         try {
+            BJGame.nextRound(); // Clean the playing field
             BJGame.bet(currentBet);
 
             // Disable the buttons to change the bet
@@ -247,5 +314,13 @@ public class BlackjackController extends BaseController {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
+    }
+
+    @FXML
+    /**
+    * Method called when the player don't want to take other cards - check result and game ends
+    */
+    protected void stay(){
+        showResult();
     }
 }
