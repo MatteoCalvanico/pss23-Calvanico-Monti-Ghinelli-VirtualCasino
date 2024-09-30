@@ -188,6 +188,8 @@ public class Blackjack implements Games{
      * @param deckNumber the deck that receives the card
      */
     public void call(int deckNumber){
+        checkAndChangeDeck(); //Check if the deck is over and change it if necessary
+         
         this.playerDeck[deckNumber].insert(this.playDeck.get(usedPlayDeck()).draw());
         this.playerDeck[deckNumber].flipAll();
     }
@@ -198,6 +200,8 @@ public class Blackjack implements Games{
      */
     public void receive(int numberOfCard){
         for(int i = 0; i < numberOfCard; i++ ){
+            checkAndChangeDeck(); //Check if the deck is over and change it if necessary
+
             this.dealerDeck.insert(this.playDeck.get(usedPlayDeck()).draw());
         }
     }
