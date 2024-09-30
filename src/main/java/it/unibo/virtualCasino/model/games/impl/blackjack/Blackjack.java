@@ -151,13 +151,14 @@ public class Blackjack implements Games{
 
             if (this.playerDeck[1].countCard() > 21 || this.playerDeck[1].countCard() == 0) { //Check if the second deck is used and if exceeds 21. If the second deck is not used is usless to go on
                 this.currentPlayer.removeLoss(this.bet[1]);
-                nextRound();
+                return;
             }
         }
  
         while (this.dealerDeck.countCard() <= 16) { //Apply "Regola del banco"
             receive(1);
         }
+        this.dealerDeck.flipAll();
 
         int dealerCount = this.dealerDeck.countCard();
         int playerCount0 = this.playerDeck[0].countCard();
@@ -180,8 +181,6 @@ public class Blackjack implements Games{
                 this.currentPlayer.addWin(this.bet[1]);
             }
         }
-
-        nextRound();
     }
 
     /**
