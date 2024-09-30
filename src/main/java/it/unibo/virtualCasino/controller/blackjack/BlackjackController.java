@@ -285,7 +285,6 @@ public class BlackjackController extends BaseController {
             alert.setContentText("You must bet something!");
             alert.showAndWait();
             return;
-            
         }
 
         try {
@@ -302,11 +301,11 @@ public class BlackjackController extends BaseController {
 
         } catch (IllegalArgumentException e) {
             Alert alert = new Alert(AlertType.WARNING);
-            alert.setTitle("Bet Warning");
+            alert.setTitle("Warning");
             alert.setHeaderText(null);
             alert.setContentText(e.getMessage());
             alert.showAndWait();
-            
+        
         } catch (Exception e) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");
