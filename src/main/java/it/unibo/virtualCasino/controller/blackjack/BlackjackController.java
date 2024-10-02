@@ -91,8 +91,11 @@ public class BlackjackController extends BaseController {
     protected void setGame() {
         BJGame = new Blackjack(6, currentPlayer);
 
-        // Set the dinamic text and images
+        // Set the dinamic text and images + disable the buttons
         updateScreen(false);
+        btnCard0.disableProperty().set(true);
+        btnStay0.disableProperty().set(true);
+        btnSplit.disableProperty().set(true);
 
         // Set images - player deck
         Image cardBack = new Image(getClass().getResourceAsStream("/sprite/cards/cardBack_red2.png"));
