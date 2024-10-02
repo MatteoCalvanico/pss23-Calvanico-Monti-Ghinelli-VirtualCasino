@@ -92,7 +92,7 @@ public class BlackjackController extends BaseController {
         BJGame = new Blackjack(6, currentPlayer);
 
         // Set the dinamic text and images + disable the buttons
-        updateScreen(false);
+        updateScreen();
         btnCard0.disableProperty().set(true);
         btnStay0.disableProperty().set(true);
         btnSplit.disableProperty().set(true);
@@ -119,7 +119,7 @@ public class BlackjackController extends BaseController {
         BJGame.call(0);           
         BJGame.call(0); 
 
-        updateScreen(false);
+        updateScreen();
 
         // Check if the player has a blackjack
         if (BJGame.isBlackjack()) {
@@ -175,7 +175,7 @@ public class BlackjackController extends BaseController {
     */
     protected void showResult(){
         BJGame.showResult();
-        updateScreen(false);
+        updateScreen();
 
         // Block other buttons
         btnCard0.disableProperty().set(true);
@@ -192,9 +192,10 @@ public class BlackjackController extends BaseController {
 
     /**
     * Method to update the screen items
-    * @param isSplit if the player has split
     */
-    protected void updateScreen(boolean isSplit){
+    protected void updateScreen(){
+        boolean isSplit = BJGame.getPlayerDeck(1).countCard() > 0;
+
         // Update texts
         txtPlayer.setText(currentPlayer.getName());
         txtBalance.setText(Double.toString(currentPlayer.getAccount()));
@@ -245,11 +246,6 @@ public class BlackjackController extends BaseController {
         btnCard0.disableProperty().set(false);
         btnStay0.disableProperty().set(false);
         btnSplit.disableProperty().set(false);
-
-        if (isSplit) { 
-            btnCard1.disableProperty().set(false);
-            btnStay1.disableProperty().set(false);
-        }
     }
 
 
@@ -355,13 +351,10 @@ public class BlackjackController extends BaseController {
     protected void call(int deckNumber){
         BJGame.call(deckNumber);
 
-        if (BJGame.isBlackjack()) { // Check if the player has a blackjack
-            showResult();
-
-        } else if (BJGame.getPlayerDeck(deckNumber).countCard() > 21) { // Check if the player has bust
+        if (BJGame.getPlayerDeck(deckNumber).countCard() > 21) { // Check if the player has bust
             showResult();
         }else {
-            updateScreen(false);
+            updateScreen();
         }
     }
 
@@ -390,7 +383,10 @@ public class BlackjackController extends BaseController {
             return;
         }
 
-        updateScreen(true);
+        BJGame.bet(currentBet, 1); // Set the bet for the second deck
+        updateScreen();
+        btnCard1.disableProperty().set(false);
+        btnStay1.disableProperty().set(false);
     }
 
     @FXML
