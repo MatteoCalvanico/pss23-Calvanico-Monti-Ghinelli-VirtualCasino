@@ -323,7 +323,13 @@ public class BlackjackController extends BaseController {
     * Method called when the player don't want to take other cards - check result and game ends
     */
     protected void stay(){
-        showResult();
+        if (btnStay1.disableProperty().get() == true) { // If the player stayed in the second deck we can show the result
+            showResult();
+        }else {                                         // Else we have to wait for the player to stay in the second deck
+            btnCard0.disableProperty().set(true);
+            btnStay0.disableProperty().set(true);
+            btnSplit.disableProperty().set(true);
+        }
     }
 
     @FXML
@@ -356,6 +362,47 @@ public class BlackjackController extends BaseController {
             showResult();
         }else {
             updateScreen(false);
+        }
+    }
+
+    @FXML
+    /**
+    * Method called when the player want to split
+    */
+    protected void split(){
+        try {
+            BJGame.split();
+
+        } catch (RuntimeException e) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Split Warning");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            return;
+            
+        } catch (Exception e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            return;
+        }
+
+        updateScreen(true);
+    }
+
+    @FXML
+    /**
+     * Method called when the player want to stay in the second deck
+     */
+    protected void splitStay(){
+        if (btnStay0.disableProperty().get() == true) { // If the player stayed in the first deck we can show the result
+            showResult();
+        }else {                                         // Else we have to wait for the player to stay in the first deck
+            btnCard1.disableProperty().set(true);
+            btnStay1.disableProperty().set(true);
         }
     }
 }
