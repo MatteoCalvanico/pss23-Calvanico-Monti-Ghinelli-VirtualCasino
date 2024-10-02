@@ -263,7 +263,11 @@ public class Blackjack implements Games{
      * @return true if possible, false otherwise
      */
     private boolean isSplit(){
-        return (this.playerDeck[0].checkCardFromDeck(0).getCardNumber() == this.playerDeck[0].checkCardFromDeck(1).getCardNumber()) ? true : false;
+        if (this.playerDeck[0].size() == 2 && this.playerDeck[1].size() == 0) {
+            return (this.playerDeck[0].checkCardFromDeck(0).getCardNumber() == this.playerDeck[0].checkCardFromDeck(1).getCardNumber()) ? true : false;            
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -274,7 +278,7 @@ public class Blackjack implements Games{
         if (isSplit()) {
             this.playerDeck[1].insert(this.playerDeck[0].draw());
         }else{
-            throw new RuntimeException("Impossible to split");
+            throw new RuntimeException("Split is not possible, you need two card with the same value");
         }
     }
 }
