@@ -120,6 +120,9 @@ public class BlackjackController extends BaseController {
         BJGame.call(0); 
 
         updateScreen();
+        btnCard0.disableProperty().set(false);
+        btnStay0.disableProperty().set(false);
+        btnSplit.disableProperty().set(false);
 
         // Check if the player has a blackjack
         if (BJGame.isBlackjack()) {
@@ -240,12 +243,6 @@ public class BlackjackController extends BaseController {
             ImageView cardView = new ImageView(cardImage);
             dealerDeckBox.getChildren().add(cardView);
         }
-
-
-        // Enable the buttons
-        btnCard0.disableProperty().set(false);
-        btnStay0.disableProperty().set(false);
-        btnSplit.disableProperty().set(false);
     }
 
 
@@ -352,7 +349,12 @@ public class BlackjackController extends BaseController {
         BJGame.call(deckNumber);
 
         if (BJGame.getPlayerDeck(deckNumber).countCard() > 21) { // Check if the player has bust
-            showResult();
+            updateScreen();
+            if (deckNumber == 0) {
+                stay();
+            } else {
+                splitStay();
+            }
         }else {
             updateScreen();
         }

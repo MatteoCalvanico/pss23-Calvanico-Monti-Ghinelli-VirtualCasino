@@ -15,7 +15,7 @@
          </font>
       </Text>
       <HBox id="deckBox0" fx:id="deckBox0" layoutX="544.0" layoutY="340.0" maxWidth="434.0" prefHeight="190.0" prefWidth="140.0" style="-fx-border-style: solid;" />
-      <HBox id="deckBox1" fx:id="deckBox1" layoutX="327.0" layoutY="340.0" prefHeight="190.0" prefWidth="140.0" style="-fx-border-style: solid;" />
+      <HBox id="deckBox1" fx:id="deckBox1" layoutX="327.0" layoutY="340.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="190.0" prefWidth="140.0" style="-fx-border-style: solid;" />
       <Text fill="#b40202" layoutX="544.0" layoutY="331.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Main deck:" textAlignment="CENTER" wrappingWidth="91.1334228515625">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="35.0" />
