@@ -64,12 +64,12 @@
             <Insets bottom="-10.0" top="-10.0" />
          </padding>
       </Button>
-      <Button id="btnSplit" fx:id="btnSplit" layoutX="526.0" layoutY="542.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="56.0" style="-fx-background-radius: 10; -fx-background-color: #FFD700;" text="Split">
+      <Button id="btnSplit" fx:id="btnSplit" layoutX="526.0" layoutY="542.0" mnemonicParsing="false" onAction="#split" prefHeight="30.0" prefWidth="56.0" style="-fx-background-radius: 10; -fx-background-color: #FFD700;" text="Split">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="19.0" />
          </font>
       </Button>
-      <Button id="btnStay1" fx:id="btnStay1" disable="true" layoutX="405.0" layoutY="542.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="56.0" style="-fx-background-radius: 10; -fx-background-color: #70d5fa;" text="Stay">
+      <Button id="btnStay1" fx:id="btnStay1" disable="true" layoutX="405.0" layoutY="542.0" mnemonicParsing="false" onAction="#splitStay" prefHeight="30.0" prefWidth="56.0" style="-fx-background-radius: 10; -fx-background-color: #70d5fa;" text="Stay">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="19.0" />
          </font>
