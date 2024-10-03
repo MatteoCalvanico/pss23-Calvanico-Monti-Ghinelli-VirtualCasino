@@ -4,6 +4,7 @@ import it.unibo.virtualCasino.controller.BaseController;
 import it.unibo.virtualCasino.model.games.impl.blackjack.Blackjack;
 import it.unibo.virtualCasino.model.games.impl.blackjack.Card;
 import javafx.fxml.FXML;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,6 +12,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+
+// Import for sound
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
+import java.net.URL;
 
 public class BlackjackController extends BaseController {
     @FXML
@@ -91,6 +98,8 @@ public class BlackjackController extends BaseController {
     protected void setGame() {
         BJGame = new Blackjack(6, currentPlayer);
 
+        deckBox1.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT); //TODO: non funziona
+
         // Set the dinamic text and images + disable the buttons
         updateScreen();
         btnCard0.disableProperty().set(true);
@@ -114,10 +123,12 @@ public class BlackjackController extends BaseController {
     protected void startGame(){
         BJGame.receive(2);         // Give 2 cards to the dealer
         BJGame.getDealerDeck().flipCard(0); // Set the first card of the dealer face up
+        playSound("/sound/cardSlide2.mp3");  // Play the sound of the cards
 
         // Give 2 cards to the player
         BJGame.call(0);           
         BJGame.call(0); 
+        playSound("/sound/cardSlide1.mp3");  // Play the sound of the cards
 
         updateScreen();
         btnCard0.disableProperty().set(false);
@@ -174,6 +185,22 @@ public class BlackjackController extends BaseController {
     }
 
     /**
+    * Method to play a sound
+    * @param soundFilePath the path of the sound file
+    */
+    protected void playSound(String soundFilePath){
+        URL resource = getClass().getResource(soundFilePath);
+
+        if (resource == null) {
+            throw new IllegalArgumentException("File not found: " + soundFilePath);
+        }
+
+        Media soundFile = new Media(resource.toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(soundFile);
+        mediaPlayer.play();
+    }
+
+    /**
     * Method to display the result of the Blackjack game and updates the screen accordingly.
     */
     protected void showResult(){
@@ -224,6 +251,8 @@ public class BlackjackController extends BaseController {
             Image cardImage = getCardImage(card);
             ImageView cardView = new ImageView(cardImage);
             deckBox0.getChildren().add(cardView);
+
+            playSound("/sound/cardPlace1.mp3");
         }
 
         // Set the images of the cards - player deck 1
@@ -233,6 +262,8 @@ public class BlackjackController extends BaseController {
                 Image cardImage = getCardImage(card);
                 ImageView cardView = new ImageView(cardImage);
                 deckBox1.getChildren().add(cardView);
+
+                playSound("/sound/cardPlace2.mp3");
             }
         }
 
@@ -242,6 +273,8 @@ public class BlackjackController extends BaseController {
             Image cardImage = getCardImage(card);
             ImageView cardView = new ImageView(cardImage);
             dealerDeckBox.getChildren().add(cardView);
+
+            playSound("/sound/cardPlace3.mp3");
         }
     }
 
@@ -253,6 +286,7 @@ public class BlackjackController extends BaseController {
     protected void addBet(){
         currentBet += 100;
         txtBet0.setText(Integer.toString(currentBet));
+        playSound("/sound/chipsCollide.mp3");
     }
 
     @FXML
@@ -263,6 +297,7 @@ public class BlackjackController extends BaseController {
         if(currentBet >= 100){
             currentBet -= 100;
             txtBet0.setText(Integer.toString(currentBet));
+            playSound("/sound/chipsCollide.mp3");
         }
     }
 

@@ -22,6 +22,7 @@ val javaFXModules = listOf(
     "base",
     "controls",
     "fxml",
+    "media", // Required for sound
     "swing",
     "graphics"
 )
@@ -32,8 +33,9 @@ dependencies {
     // Suppressions for SpotBugs
     compileOnly("com.github.spotbugs:spotbugs-annotations:4.8.3")
 
-    // Example library: Guava. Add what you need (and remove Guava if you don't use it)
-    // implementation("com.google.guava:guava:28.1-jre")
+    // Library
+    implementation("org.openjfx:javafx-controls:17.0.1") // JavaFX Controls
+    implementation("org.openjfx:javafx-media:17.0.1")    // JavaFX Media (sound)
 
     // JavaFX: comment out if you do not need them
     val javaFxVersion = 15
