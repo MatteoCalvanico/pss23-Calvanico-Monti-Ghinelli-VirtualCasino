@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author it.unibo.virtualCasino
  * @see Card
  */
-public class Deck implements Iterable<Card>{
+public class Deck{
     private List<Card> deck;
 
     /**
@@ -123,10 +123,5 @@ public class Deck implements Iterable<Card>{
             info += card.toString();
         }
         return info;
-    }
-
-    @Override
-    public Iterator<Card> iterator() {
-        return this.deck.iterator();
     }
 }
