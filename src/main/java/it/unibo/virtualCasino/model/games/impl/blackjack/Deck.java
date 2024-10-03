@@ -1,6 +1,7 @@
 package it.unibo.virtualCasino.model.games.impl.blackjack;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import it.unibo.virtualCasino.model.games.impl.blackjack.utils.CardColor;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  * @author it.unibo.virtualCasino
  * @see Card
  */
-public class Deck {
+public class Deck implements Iterable<Card>{
     private List<Card> deck;
 
     /**
@@ -122,5 +123,10 @@ public class Deck {
             info += card.toString();
         }
         return info;
+    }
+
+    @Override
+    public Iterator<Card> iterator() {
+        return this.deck.iterator();
     }
 }

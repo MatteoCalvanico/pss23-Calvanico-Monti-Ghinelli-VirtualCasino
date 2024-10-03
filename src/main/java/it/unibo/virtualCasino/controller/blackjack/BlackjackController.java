@@ -122,12 +122,10 @@ public class BlackjackController extends BaseController {
     protected void startGame(){
         BJGame.receive(2);         // Give 2 cards to the dealer
         BJGame.getDealerDeck().flipCard(0); // Set the first card of the dealer face up
-        playSound("/sound/cardSlide2.mp3");  // Play the sound of the cards
 
         // Give 2 cards to the player
         BJGame.call(0);           
         BJGame.call(0); 
-        playSound("/sound/cardSlide1.mp3");  // Play the sound of the cards
 
         updateScreen();
         btnCard0.disableProperty().set(false);
@@ -251,7 +249,8 @@ public class BlackjackController extends BaseController {
             ImageView cardView = new ImageView(cardImage);
             deckBox0.getChildren().add(cardView);
 
-            playSound("/sound/cardPlace1.mp3");
+            // Play the sound only for the last card
+            if (i == BJGame.getPlayerDeck(0).size() - 1) { playSound("/sound/cardPlace1.mp3"); }
         }
 
         // Set the images of the cards - player deck 1
@@ -261,9 +260,9 @@ public class BlackjackController extends BaseController {
                 Image cardImage = getCardImage(card);
                 ImageView cardView = new ImageView(cardImage);
                 deckBox1.getChildren().add(cardView);
-
-                playSound("/sound/cardPlace2.mp3");
             }
+
+            playSound("/sound/cardPlace2.mp3");
         }
 
         // Set the images of the cards - dealer deck
@@ -273,7 +272,8 @@ public class BlackjackController extends BaseController {
             ImageView cardView = new ImageView(cardImage);
             dealerDeckBox.getChildren().add(cardView);
 
-            playSound("/sound/cardPlace3.mp3");
+            // Play the sound only for the last card
+            if (i == BJGame.getDealerDeck().size() - 1) { playSound("/sound/cardPlace3.mp3"); }
         }
     }
 
