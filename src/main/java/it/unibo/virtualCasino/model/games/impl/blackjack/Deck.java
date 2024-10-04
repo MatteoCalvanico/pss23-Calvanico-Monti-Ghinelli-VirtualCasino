@@ -1,7 +1,6 @@
 package it.unibo.virtualCasino.model.games.impl.blackjack;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import it.unibo.virtualCasino.model.games.impl.blackjack.utils.CardColor;

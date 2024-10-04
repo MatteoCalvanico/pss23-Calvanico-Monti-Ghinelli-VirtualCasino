@@ -233,8 +233,11 @@ public class BlackjackController extends BaseController {
         txtInsurance.setText(BJGame.checkInsurance() ? "True" : "False");
         txtDeckCards0.setText(Integer.toString(BJGame.getPlayerDeck(0).countCard()));
         txtDeckCards1.setText(Integer.toString(BJGame.getPlayerDeck(1).countCard()));
-        txtDeckCards2.setText(Integer.toString(BJGame.getDealerDeck().countCard())); //TODO: da cambiare, ora vengno mostrate anche le carte coperte
-
+        if (BJGame.getDealerDeck().size() != 0 && BJGame.getDealerDeck().checkCardFromDeck(1).isFlip()) {
+            txtDeckCards2.setText(Integer.toString(BJGame.getDealerDeck().checkCardFromDeck(0).getCardNumber()));
+        } else {
+            txtDeckCards2.setText(Integer.toString(BJGame.getDealerDeck().countCard()));
+        }
 
         // Update images
         // Clear previous images
