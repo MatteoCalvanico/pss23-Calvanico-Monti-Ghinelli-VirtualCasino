@@ -84,16 +84,6 @@
             <Font name="Bodoni MT Poster Compressed" size="35.0" />
          </font>
       </Text>
-      <Text id="txtPlayer" fx:id="txtPlayer1" fill="#b40202" layoutX="20.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insurace:" wrappingWidth="94.20248794555658">
-         <font>
-            <Font name="Bodoni MT Poster Compressed" size="40.0" />
-         </font>
-      </Text>
-      <Text id="txtInsurance" fx:id="txtInsurance" fill="#b40202" layoutX="119.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="False">
-         <font>
-            <Font name="Bodoni MT Poster Compressed" size="40.0" />
-         </font>
-      </Text>
       <Text fill="#b40202" layoutX="313.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dealer:" textAlignment="CENTER" wrappingWidth="70.80000000000018">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="35.0" />

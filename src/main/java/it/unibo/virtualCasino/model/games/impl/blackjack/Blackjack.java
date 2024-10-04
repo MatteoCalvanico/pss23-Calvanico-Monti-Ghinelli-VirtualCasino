@@ -46,12 +46,6 @@ public class Blackjack implements Games{
     private double[] bet;
 
     /**
-     * The player can decide to make an insurance if the dealer have an ACE. 
-     * If the dealer do a blackjack and the insurance is true the player don't lose any money
-     */
-    private boolean insurance; 
-
-    /**
      * Init all we need for play Blackjack
      * @param numberOfDeck how many deck of card we want to use
      * @param player the one whos play
@@ -73,7 +67,6 @@ public class Blackjack implements Games{
         this.dealerDeck = new Deck();
 
         this.bet = new double[2];
-        this.insurance = false;
     }
 
     /**
@@ -134,8 +127,6 @@ public class Blackjack implements Games{
 
         this.bet[0] = 0;
         this.bet[1] = 0;
-
-        this.insurance = false;
     }
 
     /**
@@ -235,20 +226,6 @@ public class Blackjack implements Games{
             throw new IllegalAccessError("All playDecks are over");
         }
     }
-
-    /**
-     * Change between true and false the insurance variable
-     */
-    public void setInsurance(){
-        this.insurance = (this.insurance == false) ? true : false;
-    }
-
-    /**
-     * @return the value of insurace
-     */
-    public boolean checkInsurance(){
-        return this.insurance;
-    } 
 
     /**
      * Check if the combination of card is a blackjack in the player deck

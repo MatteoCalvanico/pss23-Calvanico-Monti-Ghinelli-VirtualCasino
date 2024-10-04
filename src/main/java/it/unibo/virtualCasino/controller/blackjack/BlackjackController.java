@@ -68,9 +68,6 @@ public class BlackjackController extends BaseController {
     private Text txtDeckCards2;
 
     @FXML
-    private Text txtInsurance;
-
-    @FXML
     private Text txtPlayer;
 
     @FXML
@@ -232,7 +229,6 @@ public class BlackjackController extends BaseController {
         } else {
             txtBet1.setText("0");
         }
-        txtInsurance.setText(BJGame.checkInsurance() ? "True" : "False");
         txtDeckCards0.setText(Integer.toString(BJGame.getPlayerDeck(0).countCard()));
         txtDeckCards1.setText(Integer.toString(BJGame.getPlayerDeck(1).countCard()));
         if (BJGame.getDealerDeck().size() != 0 && BJGame.getDealerDeck().checkCardFromDeck(1).isFlip()) {
