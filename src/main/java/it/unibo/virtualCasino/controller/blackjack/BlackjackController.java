@@ -229,6 +229,8 @@ public class BlackjackController extends BaseController {
         txtBet0.setText(Integer.toString(currentBet));
         if (isSplit) {
             txtBet1.setText(Integer.toString(currentBet)); // Set the bet for the second deck
+        } else {
+            txtBet1.setText("0");
         }
         txtInsurance.setText(BJGame.checkInsurance() ? "True" : "False");
         txtDeckCards0.setText(Integer.toString(BJGame.getPlayerDeck(0).countCard()));
