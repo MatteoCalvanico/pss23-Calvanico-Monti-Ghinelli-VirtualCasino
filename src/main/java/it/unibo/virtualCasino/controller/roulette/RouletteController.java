@@ -3,7 +3,7 @@ package it.unibo.virtualCasino.controller.roulette;
 import it.unibo.virtualCasino.controller.BaseController;
 import it.unibo.virtualCasino.model.games.impl.roulette.Roulette;
 import it.unibo.virtualCasino.model.games.impl.roulette.RouletteBet;
-import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBetTypes;
+import it.unibo.virtualCasino.model.games.impl.roulette.enums.RouletteBetType;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -42,7 +42,7 @@ public class RouletteController extends BaseController {
     private TextField txtBetAmount;
 
     @FXML
-    private ComboBox<RouletteBetTypes> cmbBetType;
+    private ComboBox<RouletteBetType> cmbBetType;
 
     @FXML
     private ToggleGroup executionGroup;
@@ -62,7 +62,7 @@ public class RouletteController extends BaseController {
     public void createBet() {
 
         // Retrieve the selected bet type from the ComboBox
-        RouletteBetTypes betType = cmbBetType.getValue();
+        RouletteBetType betType = cmbBetType.getValue();
 
         if (betType == null) {
             // TODO alert message
@@ -95,7 +95,6 @@ public class RouletteController extends BaseController {
         // Empty form fields
         txtBetAmount.setText("0");
         cmbBetType.setValue(null);
-
     }
 
     private void initializeListViewCustomCells() {

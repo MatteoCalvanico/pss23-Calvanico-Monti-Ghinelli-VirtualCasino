@@ -2,7 +2,7 @@ package it.unibo.virtualCasino.view.roulette;
 
 import java.util.function.UnaryOperator;
 
-import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBetTypes;
+import it.unibo.virtualCasino.model.games.impl.roulette.enums.RouletteBetType;
 import it.unibo.virtualCasino.view.roulette.utils.RouletteViewInfo;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -267,8 +267,8 @@ public final class RouletteView extends Application {
     private void initializeBetForm() {
         // Combo select
         @SuppressWarnings("unchecked")
-        ComboBox<RouletteBetTypes> cmbBetType = (ComboBox<RouletteBetTypes>) betFormContainer.lookup("#cmbBetType");
-        cmbBetType.setItems(FXCollections.observableArrayList(RouletteBetTypes.values()));
+        ComboBox<RouletteBetType> cmbBetType = (ComboBox<RouletteBetType>) betFormContainer.lookup("#cmbBetType");
+        cmbBetType.setItems(FXCollections.observableArrayList(RouletteBetType.values()));
 
         // Text field
         UnaryOperator<TextFormatter.Change> filter = change -> {

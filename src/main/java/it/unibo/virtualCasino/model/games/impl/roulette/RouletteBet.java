@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 
-import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteBetTypes;
-import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteColors;
+import it.unibo.virtualCasino.model.games.impl.roulette.enums.RouletteBetType;
+import it.unibo.virtualCasino.model.games.impl.roulette.enums.RouletteColors;
 
 /**
  * Represents a specific bet placed in a Roulette game.
@@ -22,7 +22,7 @@ public class RouletteBet extends RouletteBase {
     /**
      * The type of bet placed (e.g., STRAIGHT_UP, SPLIT, STREET, etc.).
      */
-    private final RouletteBetTypes betType;
+    private final RouletteBetType betType;
 
     /**
      * The winning numbers associated with this bet.
@@ -42,7 +42,7 @@ public class RouletteBet extends RouletteBase {
      */
     public RouletteBet(
             int amount,
-            RouletteBetTypes betType,
+            RouletteBetType betType,
             int betPositionInTable) {
 
         this.betId = UUID.randomUUID();
@@ -69,17 +69,8 @@ public class RouletteBet extends RouletteBase {
         return this.amount;
     }
 
-    public RouletteBetTypes getBetType() {
+    public RouletteBetType getBetType() {
         return this.betType;
-    }
-
-    /**
-     * Gets the winning numbers associated with this bet.
-     *
-     * @return A list of winning numbers.
-     */
-    public ArrayList<Integer> getWinningNumbers() {
-        return this.winningNumbers;
     }
 
     /**
@@ -93,13 +84,22 @@ public class RouletteBet extends RouletteBase {
     }
 
     /**
+     * Gets the winning numbers associated with this bet.
+     *
+     * @return A list of winning numbers.
+     */
+    public ArrayList<Integer> getWinningNumbers() {
+        return this.winningNumbers;
+    }
+
+    /**
      * Determines the winning numbers based on the bet type and position.
      *
      * @param betType            The type of bet.
      * @param betPositionInTable The position of the bet on the table.
      * @return A list of winning numbers for the specified bet.
      */
-    private ArrayList<Integer> getWinningNumbers(RouletteBetTypes betType, int betPositionInTable) {
+    private ArrayList<Integer> getWinningNumbers(RouletteBetType betType, int betPositionInTable) {
         ArrayList<Integer> numbers = new ArrayList<>();
         switch (betType) {
             case STRAIGHT_UP:

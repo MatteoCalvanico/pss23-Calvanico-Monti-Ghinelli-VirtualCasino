@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import it.unibo.virtualCasino.model.Player;
 import it.unibo.virtualCasino.model.games.Games;
-import it.unibo.virtualCasino.model.games.impl.roulette.utils.RouletteColors;
+import it.unibo.virtualCasino.model.games.impl.roulette.enums.RouletteColors;
 
 /**
  * Represents a Roulette game, handling player bets, executing spins, and
