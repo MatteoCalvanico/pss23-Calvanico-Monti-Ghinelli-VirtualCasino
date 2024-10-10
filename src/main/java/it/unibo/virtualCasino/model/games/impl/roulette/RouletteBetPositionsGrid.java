@@ -12,18 +12,33 @@ import it.unibo.virtualCasino.view.roulette.utils.RouletteViewInfo;
  * The {@code RouletteBetPositionsGrid} class manages the layout of bets in a
  * roulette game. It prepares and stores indicators for various bet types based
  * on the provided table layout data.
+ * <p>
+ * This class uses a grid to represent different betting positions on the
+ * roulette table. The grid layout is determined by offsets for both horizontal
+ * and vertical lines, which are used to define the positions of different bet
+ * types.
  */
 public class RouletteBetPositionsGrid extends RouletteBase {
 
     /**
+     * The vertical offset between horizontal lines in the grid.
+     */
+    private final double horizontalLinesVerticalOffset;
+
+    /**
+     * The horizontal offset between vertical lines in the grid.
+     */
+    private final double verticalLinesHorizontalOffset;
+
+    /**
      * The layout of the roulette table.
      */
-    private RouletteTableLayoutDto tableLayout;
+    private final RouletteTableLayoutDto tableLayout;
 
     /**
      * The list of bet position indicators.
      */
-    private ArrayList<RouletteBetIndicatorDto> betPositionIdicatorsList;
+    private final ArrayList<RouletteBetIndicatorDto> betPositionIdicatorsList = new ArrayList<RouletteBetIndicatorDto>();
 
     /**
      * Constructs a {@code RouletteBetPositionsGrid} with the specified table
@@ -33,6 +48,15 @@ public class RouletteBetPositionsGrid extends RouletteBase {
      */
     public RouletteBetPositionsGrid(RouletteTableLayoutDto tableLayout) {
         this.tableLayout = new RouletteTableLayoutDto(tableLayout);
+
+        this.horizontalLinesVerticalOffset = Math
+                .abs(tableLayout.topLeftCoordinate.yAxisValue - tableLayout.bottomRightCoordinate.yAxisValue)
+                / this.TABLE_COLS;
+
+        this.verticalLinesHorizontalOffset = Math
+                .abs(tableLayout.topLeftCoordinate.xAxisValue - tableLayout.bottomRightCoordinate.xAxisValue)
+                / (this.TABLE_ROWS + 1);
+
         prepareBetPositionIdicatorsLayoutData();
     }
 
@@ -87,11 +111,11 @@ public class RouletteBetPositionsGrid extends RouletteBase {
         int splitBetsCounter = 1;
         for (int i = 1; i < this.TABLE_COLS; i++) {
             double yAxisValue = tableLayout.topLeftCoordinate.yAxisValue
-                    + (tableLayout.horizontalLinesVerticalOffset * i);
+                    + (horizontalLinesVerticalOffset * i);
 
             for (int j = 0; j < this.MAX_VERTICAL_SPLITS; j += 2) {
                 double xAxisValue = tableLayout.topLeftCoordinate.xAxisValue
-                        + (tableLayout.verticalLinesVerticalOffset * (j + 1) / 2);
+                        + (verticalLinesHorizontalOffset * (j + 1) / 2);
 
                 betPositionIdicatorsList.add(
                         new RouletteBetIndicatorDto(
@@ -104,12 +128,12 @@ public class RouletteBetPositionsGrid extends RouletteBase {
         // Creates vertical split bets positions indicators
         for (int i = 0; i < this.TABLE_COLS; i++) {
             double yAxisValue = tableLayout.topLeftCoordinate.yAxisValue
-                    + (tableLayout.horizontalLinesVerticalOffset * i)
-                    + tableLayout.horizontalLinesVerticalOffset / 2;
+                    + (horizontalLinesVerticalOffset * i)
+                    + horizontalLinesVerticalOffset / 2;
 
             for (int j = 1; j <= this.MAX_HORIZONTAL_SPLITS / 3; j++) {
                 double xAxisValue = tableLayout.topLeftCoordinate.xAxisValue
-                        + (tableLayout.verticalLinesVerticalOffset * j);
+                        + (verticalLinesHorizontalOffset * j);
 
                 betPositionIdicatorsList.add(
                         new RouletteBetIndicatorDto(
@@ -126,7 +150,7 @@ public class RouletteBetPositionsGrid extends RouletteBase {
     private void createStreetBetsPositionsInidicators() {
         for (int i = 0; i < RouletteViewInfo.V_SPLIT_BETS; i += 2) {
             double xAxisValue = tableLayout.topLeftCoordinate.xAxisValue
-                    + (tableLayout.verticalLinesVerticalOffset * (i + 1) / 2);
+                    + (verticalLinesHorizontalOffset * (i + 1) / 2);
 
             betPositionIdicatorsList.add(
                     new RouletteBetIndicatorDto(
@@ -142,7 +166,7 @@ public class RouletteBetPositionsGrid extends RouletteBase {
     private void createDoubleStreetBetsPositionsInidicators() {
         for (int i = 1; i < RouletteViewInfo.V_SPLIT_BETS / 2; i++) {
             double xAxisValue = tableLayout.topLeftCoordinate.xAxisValue
-                    + (tableLayout.verticalLinesVerticalOffset * (i));
+                    + (verticalLinesHorizontalOffset * (i));
 
             betPositionIdicatorsList.add(
                     new RouletteBetIndicatorDto(
@@ -158,11 +182,11 @@ public class RouletteBetPositionsGrid extends RouletteBase {
     private void createCornerBetsPositionsInidicators() {
         for (int i = 1; i < RouletteViewInfo.H_LINES_COUNT; i++) {
             double yAxisValue = tableLayout.topLeftCoordinate.yAxisValue
-                    + (tableLayout.horizontalLinesVerticalOffset * i);
+                    + (horizontalLinesVerticalOffset * i);
 
             for (int j = 0; j < (RouletteViewInfo.V_SPLIT_BETS / 2) - 1; j++) {
                 double xAxisValue = tableLayout.topLeftCoordinate.xAxisValue
-                        + (tableLayout.verticalLinesVerticalOffset * (j + 1));
+                        + (verticalLinesHorizontalOffset * (j + 1));
 
                 betPositionIdicatorsList.add(
                         new RouletteBetIndicatorDto(
@@ -177,13 +201,13 @@ public class RouletteBetPositionsGrid extends RouletteBase {
      * Creates position indicators for column bets and adds them to the list.
      */
     private void createColumnBetsPositionsInidicators() {
-        double halfHorizontalLinesVerticalOffset = tableLayout.horizontalLinesVerticalOffset / 2;
+        double halfHorizontalLinesVerticalOffset = horizontalLinesVerticalOffset / 2;
         double xAxisValue = tableLayout.bottomRightCoordinate.xAxisValue
-                - tableLayout.verticalLinesVerticalOffset / 2;
+                - verticalLinesHorizontalOffset / 2;
 
         for (int i = 0; i < RouletteViewInfo.H_LINES_COUNT; i++) {
             double yAxisValue = tableLayout.topLeftCoordinate.yAxisValue
-                    + (tableLayout.horizontalLinesVerticalOffset * i)
+                    + (horizontalLinesVerticalOffset * i)
                     + halfHorizontalLinesVerticalOffset;
 
             betPositionIdicatorsList.add(
@@ -202,7 +226,7 @@ public class RouletteBetPositionsGrid extends RouletteBase {
         double yAxisValue = tableLayout.bottomRightCoordinate.yAxisValue
                 + (Math.abs(tableLayout.bottomRightCoordinate.yAxisValue - tableLayout.bottomLeftCoordinate.yAxisValue)
                         / 4);
-        double offset = (tableLayout.bottomRightCoordinate.xAxisValue - tableLayout.verticalLinesVerticalOffset
+        double offset = (tableLayout.bottomRightCoordinate.xAxisValue - verticalLinesHorizontalOffset
                 - tableLayout.topLeftCoordinate.xAxisValue) / 3;
         double halfOffset = offset / 2;
 
@@ -225,7 +249,7 @@ public class RouletteBetPositionsGrid extends RouletteBase {
         double yAxisValue = tableLayout.bottomLeftCoordinate.yAxisValue
                 - (Math.abs(tableLayout.bottomRightCoordinate.yAxisValue - tableLayout.bottomLeftCoordinate.yAxisValue)
                         / 4);
-        double offset = ((tableLayout.bottomRightCoordinate.xAxisValue - tableLayout.verticalLinesVerticalOffset
+        double offset = ((tableLayout.bottomRightCoordinate.xAxisValue - verticalLinesHorizontalOffset
                 - tableLayout.topLeftCoordinate.xAxisValue) / 6)
                 / 2;
 
@@ -237,7 +261,7 @@ public class RouletteBetPositionsGrid extends RouletteBase {
                         new Coordinate(xAxisValue, yAxisValue)));
 
         xAxisValue = tableLayout.bottomRightCoordinate.xAxisValue
-                - tableLayout.verticalLinesVerticalOffset
+                - verticalLinesHorizontalOffset
                 - (offset / 2);
         betPositionIdicatorsList.add(
                 new RouletteBetIndicatorDto(
@@ -255,7 +279,7 @@ public class RouletteBetPositionsGrid extends RouletteBase {
         double yAxisValue = tableLayout.bottomLeftCoordinate.yAxisValue
                 - (Math.abs(tableLayout.bottomRightCoordinate.yAxisValue - tableLayout.bottomLeftCoordinate.yAxisValue)
                         / 4);
-        double offset = (tableLayout.bottomRightCoordinate.xAxisValue - tableLayout.verticalLinesVerticalOffset
+        double offset = (tableLayout.bottomRightCoordinate.xAxisValue - verticalLinesHorizontalOffset
                 - tableLayout.topLeftCoordinate.xAxisValue) / 6;
 
         double xAxisValue = tableLayout.topLeftCoordinate.xAxisValue + (offset / 2) + offset;
@@ -265,7 +289,7 @@ public class RouletteBetPositionsGrid extends RouletteBase {
                         1,
                         new Coordinate(xAxisValue, yAxisValue)));
 
-        xAxisValue = tableLayout.bottomRightCoordinate.xAxisValue - tableLayout.verticalLinesVerticalOffset
+        xAxisValue = tableLayout.bottomRightCoordinate.xAxisValue - verticalLinesHorizontalOffset
                 - (offset / 2) - offset;
         betPositionIdicatorsList.add(
                 new RouletteBetIndicatorDto(
@@ -282,7 +306,7 @@ public class RouletteBetPositionsGrid extends RouletteBase {
         double yAxisValue = tableLayout.bottomLeftCoordinate.yAxisValue
                 - (Math.abs(tableLayout.bottomRightCoordinate.yAxisValue - tableLayout.bottomLeftCoordinate.yAxisValue)
                         / 4);
-        double offset = (tableLayout.bottomRightCoordinate.xAxisValue - tableLayout.verticalLinesVerticalOffset
+        double offset = (tableLayout.bottomRightCoordinate.xAxisValue - verticalLinesHorizontalOffset
                 - tableLayout.topLeftCoordinate.xAxisValue) / 6;
 
         double xAxisValue = tableLayout.topLeftCoordinate.xAxisValue + (offset / 2) + offset * 2;
@@ -292,7 +316,7 @@ public class RouletteBetPositionsGrid extends RouletteBase {
                         1,
                         new Coordinate(xAxisValue, yAxisValue)));
 
-        xAxisValue = tableLayout.bottomRightCoordinate.xAxisValue - tableLayout.verticalLinesVerticalOffset
+        xAxisValue = tableLayout.bottomRightCoordinate.xAxisValue - verticalLinesHorizontalOffset
                 - (offset / 2) - offset * 2;
         betPositionIdicatorsList.add(
                 new RouletteBetIndicatorDto(
