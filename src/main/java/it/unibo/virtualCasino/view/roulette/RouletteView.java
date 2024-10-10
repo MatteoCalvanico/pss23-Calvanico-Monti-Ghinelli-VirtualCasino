@@ -3,7 +3,7 @@ package it.unibo.virtualCasino.view.roulette;
 import java.util.function.UnaryOperator;
 
 import it.unibo.virtualCasino.model.games.impl.roulette.RouletteBetPositionsGrid;
-import it.unibo.virtualCasino.model.games.impl.roulette.dtos.Coordinate;
+import it.unibo.virtualCasino.model.games.impl.roulette.dtos.CoordinateDto;
 import it.unibo.virtualCasino.model.games.impl.roulette.dtos.RouletteTableLayoutDto;
 import it.unibo.virtualCasino.model.games.impl.roulette.enums.RouletteBetType;
 import it.unibo.virtualCasino.view.roulette.utils.RouletteViewInfo;
@@ -54,10 +54,10 @@ public final class RouletteView extends Application {
         // Initialize bet positions grid object
         RouletteBetPositionsGrid rouletteBetPositionsGrid = new RouletteBetPositionsGrid(
                 new RouletteTableLayoutDto(
-                        new Coordinate(topLeftNumsTable.getLayoutX(), topLeftNumsTable.getLayoutY()),
-                        new Coordinate(topLeftNumsTable.getLayoutY(), bottomRightNumsTable.getLayoutX()),
-                        new Coordinate(bottomRightNumsTable.getLayoutX(), bottomRightNumsTable.getLayoutY()),
-                        new Coordinate(bottomLeftBetsTable.getLayoutX(), bottomLeftBetsTable.getLayoutY())));
+                        new CoordinateDto(topLeftNumsTable.getLayoutX(), topLeftNumsTable.getLayoutY()),
+                        new CoordinateDto(topLeftNumsTable.getLayoutY(), bottomRightNumsTable.getLayoutX()),
+                        new CoordinateDto(bottomRightNumsTable.getLayoutX(), bottomRightNumsTable.getLayoutY()),
+                        new CoordinateDto(bottomLeftBetsTable.getLayoutX(), bottomLeftBetsTable.getLayoutY())));
 
         // Create indicator for each bet position indicator
         rouletteBetPositionsGrid

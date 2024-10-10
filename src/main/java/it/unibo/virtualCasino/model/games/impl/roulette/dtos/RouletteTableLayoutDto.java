@@ -10,22 +10,22 @@ public class RouletteTableLayoutDto {
     /**
      * The top-left coordinate of the layout.
      */
-    public final Coordinate topLeftCoordinate;
+    public final CoordinateDto topLeftCoordinate;
 
     /**
      * The top-right coordinate of the layout.
      */
-    public final Coordinate topRightCoordinate;
+    public final CoordinateDto topRightCoordinate;
 
     /**
      * The bottom-right coordinate of the layout.
      */
-    public final Coordinate bottomRightCoordinate;
+    public final CoordinateDto bottomRightCoordinate;
 
     /**
      * The bottom-left coordinate of the layout.
      */
-    public final Coordinate bottomLeftCoordinate;
+    public final CoordinateDto bottomLeftCoordinate;
 
     /**
      * Copy constructor for creating a new {@code LayoutDto} object based on an
@@ -51,11 +51,11 @@ public class RouletteTableLayoutDto {
      * @param topLeftCoordinate     the top-left coordinate of the layout.
      * @param bottomRightCoordinate the bottom-right coordinate of the layout.
      */
-    public RouletteTableLayoutDto(Coordinate topLeftCoordinate, Coordinate bottomRightCoordinate) {
+    public RouletteTableLayoutDto(CoordinateDto topLeftCoordinate, CoordinateDto bottomRightCoordinate) {
         this.topLeftCoordinate = topLeftCoordinate;
         this.bottomRightCoordinate = bottomRightCoordinate;
-        this.topRightCoordinate = new Coordinate(bottomRightCoordinate.xAxisValue, topLeftCoordinate.yAxisValue);
-        this.bottomLeftCoordinate = new Coordinate(topLeftCoordinate.xAxisValue, bottomRightCoordinate.yAxisValue);
+        this.topRightCoordinate = new CoordinateDto(bottomRightCoordinate.xAxisValue, topLeftCoordinate.yAxisValue);
+        this.bottomLeftCoordinate = new CoordinateDto(topLeftCoordinate.xAxisValue, bottomRightCoordinate.yAxisValue);
     }
 
     /**
@@ -67,10 +67,10 @@ public class RouletteTableLayoutDto {
      * @param bottomLeftCoordinate  the bottom-left coordinate of the layout.
      */
     public RouletteTableLayoutDto(
-            Coordinate topLeftCoordinate,
-            Coordinate topRightCoordinate,
-            Coordinate bottomRightCoordinate,
-            Coordinate bottomLeftCoordinate) {
+            CoordinateDto topLeftCoordinate,
+            CoordinateDto topRightCoordinate,
+            CoordinateDto bottomRightCoordinate,
+            CoordinateDto bottomLeftCoordinate) {
         this.topLeftCoordinate = topLeftCoordinate;
         this.topRightCoordinate = topRightCoordinate;
         this.bottomRightCoordinate = bottomRightCoordinate;

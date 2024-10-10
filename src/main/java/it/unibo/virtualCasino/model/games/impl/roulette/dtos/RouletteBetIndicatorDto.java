@@ -24,7 +24,7 @@ public class RouletteBetIndicatorDto {
     /**
      * The coordinates of the bet on the layout.
      */
-    public final Coordinate coordinate;
+    public final CoordinateDto coordinate;
 
     /**
      * Constructs a {@code RouletteBetIndicatorDto} object with the specified bet
@@ -35,7 +35,7 @@ public class RouletteBetIndicatorDto {
      * @param betPositionNumber the position number associated with the bet.
      * @param coordinate        the coordinates of the bet on the layout.
      */
-    public RouletteBetIndicatorDto(RouletteBetType betType, int betPositionNumber, Coordinate coordinate) {
+    public RouletteBetIndicatorDto(RouletteBetType betType, int betPositionNumber, CoordinateDto coordinate) {
         this.betType = betType;
         this.betPositionNumber = betPositionNumber;
         this.coordinate = coordinate;
