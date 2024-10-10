@@ -253,7 +253,7 @@ public class RouletteBetPositionsGrid extends RouletteBase {
                 - tableLayout.topLeftCoordinate.xAxisValue) / 6)
                 / 2;
 
-        double xAxisValue = tableLayout.topLeftCoordinate.xAxisValue + (offset / 2);
+        double xAxisValue = tableLayout.topLeftCoordinate.xAxisValue + offset;
         betPositionIdicatorsList.add(
                 new RouletteBetIndicatorDto(
                         RouletteBetType.HALF,
@@ -262,7 +262,7 @@ public class RouletteBetPositionsGrid extends RouletteBase {
 
         xAxisValue = tableLayout.bottomRightCoordinate.xAxisValue
                 - verticalLinesHorizontalOffset
-                - (offset / 2);
+                - offset;
         betPositionIdicatorsList.add(
                 new RouletteBetIndicatorDto(
                         RouletteBetType.HALF,
