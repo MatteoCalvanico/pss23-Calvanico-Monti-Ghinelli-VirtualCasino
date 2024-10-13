@@ -60,6 +60,15 @@ public class RouletteBetPositionsGrid extends RouletteBase {
         prepareBetPositionIdicatorsLayoutData();
     }
 
+    /**
+     * Retrieves a filtered list of {@code RouletteBetIndicatorDto} objects that
+     * match the specified bet type.
+     * <p>
+     *
+     * @param betType the type of bet to filter by
+     * @return a list of {@code RouletteBetIndicatorDto} objects matching the
+     *         specified bet type
+     */
     public ArrayList<RouletteBetIndicatorDto> getBetPositionIdicatorsListByBetType(RouletteBetType betType) {
         ArrayList<RouletteBetIndicatorDto> listCopy = new ArrayList<>(betPositionIdicatorsList);
 
