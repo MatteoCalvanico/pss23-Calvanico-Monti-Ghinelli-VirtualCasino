@@ -258,13 +258,12 @@ public class RouletteBetPositionsGrid extends RouletteBase {
     /**
      * Creates position indicators for dozen bets and adds them to the list.
      */
-    // TODO cos'è quel 4 e quel 3
     private void createDozenBetsPositionsInidicators() {
         double yAxisValue = tableLayout.bottomRightCoordinate.yAxisValue
                 + (Math.abs(tableLayout.bottomRightCoordinate.yAxisValue - tableLayout.bottomLeftCoordinate.yAxisValue)
-                        / 4);
+                        / (this.TABLE_ROWS / this.TABLE_COLS));
         double offset = (tableLayout.bottomRightCoordinate.xAxisValue - verticalLinesHorizontalOffset
-                - tableLayout.topLeftCoordinate.xAxisValue) / 3;
+                - tableLayout.topLeftCoordinate.xAxisValue) / this.TABLE_COLS;
         double halfOffset = offset / 2;
 
         for (int i = 0; i < RouletteViewInfo.H_LINES_COUNT; i++) {
@@ -281,13 +280,12 @@ public class RouletteBetPositionsGrid extends RouletteBase {
     /**
      * Creates position indicators for half bets and adds them to the list.
      */
-    // TODO cos'è quel 4 e quel 6
     private void createHalfBetsPositionsInidicators() {
         double yAxisValue = tableLayout.bottomLeftCoordinate.yAxisValue
                 - (Math.abs(tableLayout.bottomRightCoordinate.yAxisValue - tableLayout.bottomLeftCoordinate.yAxisValue)
-                        / 4);
+                        / (this.TABLE_ROWS / this.TABLE_COLS));
         double offset = ((tableLayout.bottomRightCoordinate.xAxisValue - verticalLinesHorizontalOffset
-                - tableLayout.topLeftCoordinate.xAxisValue) / 6)
+                - tableLayout.topLeftCoordinate.xAxisValue) / (this.TABLE_ROWS / 2))
                 / 2;
 
         double xAxisValue = tableLayout.topLeftCoordinate.xAxisValue + offset;
@@ -311,13 +309,12 @@ public class RouletteBetPositionsGrid extends RouletteBase {
     /**
      * Creates position indicators for even or odd bets and adds them to the list.
      */
-    // TODO cos'è quel 4 e quel 6
     private void createEvenOddBetsPositionsInidicators() {
         double yAxisValue = tableLayout.bottomLeftCoordinate.yAxisValue
                 - (Math.abs(tableLayout.bottomRightCoordinate.yAxisValue - tableLayout.bottomLeftCoordinate.yAxisValue)
-                        / 4);
+                        / (this.TABLE_ROWS / this.TABLE_COLS));
         double offset = (tableLayout.bottomRightCoordinate.xAxisValue - verticalLinesHorizontalOffset
-                - tableLayout.topLeftCoordinate.xAxisValue) / 6;
+                - tableLayout.topLeftCoordinate.xAxisValue) / (this.TABLE_ROWS / 2);
 
         double xAxisValue = tableLayout.topLeftCoordinate.xAxisValue + (offset / 2) + offset;
         betPositionIdicatorsList.add(
@@ -338,13 +335,12 @@ public class RouletteBetPositionsGrid extends RouletteBase {
     /**
      * Creates position indicators for red or black bets and adds them to the list.
      */
-    // TODO cos'è quel 4 e quel 6
     private void createRedBlackBetsPositionsInidicators() {
         double yAxisValue = tableLayout.bottomLeftCoordinate.yAxisValue
                 - (Math.abs(tableLayout.bottomRightCoordinate.yAxisValue - tableLayout.bottomLeftCoordinate.yAxisValue)
-                        / 4);
+                        / (this.TABLE_ROWS / this.TABLE_COLS));
         double offset = (tableLayout.bottomRightCoordinate.xAxisValue - verticalLinesHorizontalOffset
-                - tableLayout.topLeftCoordinate.xAxisValue) / 6;
+                - tableLayout.topLeftCoordinate.xAxisValue) / (this.TABLE_ROWS / 2);
 
         double xAxisValue = tableLayout.topLeftCoordinate.xAxisValue + (offset / 2) + offset * 2;
         betPositionIdicatorsList.add(
