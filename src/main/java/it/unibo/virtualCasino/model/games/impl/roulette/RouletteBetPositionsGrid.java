@@ -60,13 +60,12 @@ public class RouletteBetPositionsGrid extends RouletteBase {
         prepareBetPositionIdicatorsLayoutData();
     }
 
-    /**
-     * Returns a copy of the list of bet position indicators.
-     *
-     * @return a copy of the bet position indicators list
-     */
-    public ArrayList<RouletteBetIndicatorDto> getBetPositionIdicatorsList() {
-        return new ArrayList<>(betPositionIdicatorsList);
+    public ArrayList<RouletteBetIndicatorDto> getBetPositionIdicatorsListByBetType(RouletteBetType betType) {
+        ArrayList<RouletteBetIndicatorDto> listCopy = new ArrayList<>(betPositionIdicatorsList);
+
+        listCopy.removeIf(betPositionIndicator -> betPositionIndicator.betType != betType);
+
+        return listCopy;
     }
 
     /**

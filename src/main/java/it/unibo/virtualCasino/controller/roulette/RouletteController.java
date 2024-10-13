@@ -142,23 +142,20 @@ public class RouletteController extends BaseController {
     }
 
     public void onBetTypeSelected() {
-        // Retrieve the selected bet type from the ComboBox
-        RouletteBetType betType = cmbBetType.getValue();
-
         // Clear previous indicators
         betPositionsIndicatorsPane.getChildren().clear();
 
+        // Retrieve the selected bet type from the ComboBox
+        RouletteBetType betType = cmbBetType.getValue();
+
         // Create indicator for each bet position indicator
         rouletteBetPositionsGrid
-                .getBetPositionIdicatorsList()
-                .forEach(positionIndicator -> {
-                    if (positionIndicator.betType == betType) {
-                        Circle circle = createBetPositionCircle(
+                .getBetPositionIdicatorsListByBetType(betType)
+                .forEach(positionIndicator -> betPositionsIndicatorsPane
+                        .getChildren()
+                        .add(createBetPositionCircle(
                                 positionIndicator.coordinate.xAxisValue,
-                                positionIndicator.coordinate.yAxisValue);
-                        betPositionsIndicatorsPane.getChildren().add(circle);
-                    }
-                });
+                                positionIndicator.coordinate.yAxisValue)));
     }
 
     // Initialize ListView to display custom cells
