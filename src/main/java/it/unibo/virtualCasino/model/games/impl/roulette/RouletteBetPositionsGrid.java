@@ -75,6 +75,9 @@ public class RouletteBetPositionsGrid extends RouletteBase {
      */
     private void prepareBetPositionIdicatorsLayoutData() {
 
+        // Bet type: Straight up
+        createStraightUpBetsPositionsIndicators();
+
         // Bet type: Split
         createSplitBetsPositionsInidicators();
 
@@ -101,6 +104,32 @@ public class RouletteBetPositionsGrid extends RouletteBase {
 
         // Bet type: Red or Black
         createRedBlackBetsPositionsInidicators();
+    }
+
+    /**
+     * Creates position indicators for strainght up bets and adds them to the list.
+     */
+    private void createStraightUpBetsPositionsIndicators() {
+        // Creates horizontal split bets indicators layout data items
+        double halfHorizontalLinesVerticalOffset = horizontalLinesVerticalOffset / 2;
+        double halfVerticalLinesHorizontalOffset = verticalLinesHorizontalOffset / 2;
+        for (int i = 1; i <= this.TABLE_COLS; i++) {
+            double yAxisValue = tableLayout.bottomRightCoordinate.yAxisValue
+                    - (horizontalLinesVerticalOffset * i)
+                    + (halfHorizontalLinesVerticalOffset);
+
+            for (int j = 1; j <= this.TABLE_ROWS; j++) {
+                double xAxisValue = tableLayout.topLeftCoordinate.xAxisValue
+                        + (verticalLinesHorizontalOffset * j)
+                        - (halfVerticalLinesHorizontalOffset);
+
+                betPositionIdicatorsList.add(
+                        new RouletteBetIndicatorDto(
+                                RouletteBetType.STRAIGHT_UP,
+                                i + j,
+                                new CoordinateDto(xAxisValue, yAxisValue)));
+            }
+        }
     }
 
     /**
