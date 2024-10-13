@@ -11,6 +11,8 @@ import it.unibo.virtualCasino.model.games.impl.roulette.enums.RouletteBetType;
  */
 public class RouletteBetIndicatorDto {
 
+    public final String Id;
+
     /**
      * The type of bet placed in roulette.
      */
@@ -39,5 +41,6 @@ public class RouletteBetIndicatorDto {
         this.betType = betType;
         this.betPositionNumber = betPositionNumber;
         this.coordinate = coordinate;
+        this.Id = String.format("%s-%d", betType.toString(), betPositionNumber);
     }
 }
