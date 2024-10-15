@@ -9,18 +9,19 @@ import it.unibo.virtualCasino.model.games.impl.roulette.RouletteBetPositionsGrid
 import it.unibo.virtualCasino.model.games.impl.roulette.dtos.CoordinateDto;
 import it.unibo.virtualCasino.model.games.impl.roulette.dtos.RouletteTableLayoutDto;
 import it.unibo.virtualCasino.model.games.impl.roulette.enums.RouletteBetType;
-import it.unibo.virtualCasino.view.roulette.utils.RouletteViewInfo;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
@@ -31,7 +32,8 @@ public class RouletteController extends BaseController {
 
     private RouletteBetPositionsGrid rouletteBetPositionsGrid;
 
-    // Text
+    private Circle selectedBetPositionIndicatorCircle;
+
     @FXML
     private Text txtPlayer;
 
@@ -41,23 +43,17 @@ public class RouletteController extends BaseController {
     @FXML
     private TextField txtBetAmount;
 
-    // Buttons
     @FXML
     private Button btnCreateBet;
 
     @FXML
     private Button btnSpeenWheel; // TODO implement
 
-    // Lists
     @FXML
     private ListView<RouletteBet> betList;
 
-    // Combo box
     @FXML
     private ComboBox<RouletteBetType> cmbBetType;
-
-    @FXML
-    private ToggleGroup executionGroup; // TODO implement
 
     // Panes
     // @FXML
@@ -107,7 +103,6 @@ public class RouletteController extends BaseController {
 
         // Retrieve the selected bet type from the ComboBox
         RouletteBetType betType = cmbBetType.getValue();
-
         if (betType == null) {
             // TODO alert message
             System.out.println("Bet type can't be null");
@@ -116,14 +111,32 @@ public class RouletteController extends BaseController {
 
         // Retrieve the bet amount from the form and parse it as an integer
         int betAmount = Integer.parseInt(txtBetAmount.getText());
+        if (betAmount == 0) {
+            // TODO alert message
+            System.out.println("Please, bets need to have a value greater then 0");
+            return;
+        }
 
-        // TODO replace radio buttons with table position indicators
-        // Retrieve the selected execution from the ToggleGroup
-        // RadioButton selectedRadio = (RadioButton) executionGroup.getSelectedToggle();
-        // String executionChoice = selectedRadio.getText();
+        // Retrieve bet position indicator number from selected bet position indicator
+        // circle
+        if (selectedBetPositionIndicatorCircle == null) {
+            // TODO alert message
+            System.out.println("Please, select a position on the table for your bet");
+            return;
+        }
+
+        int betPositionNumber;
+        try {
+            betPositionNumber = rouletteBetPositionsGrid
+                    .getBetPositionIndicatorById(selectedBetPositionIndicatorCircle.getId()).betPositionNumber;
+        } catch (Exception e) {
+            // TODO alert message
+            System.out.println(e.getMessage());
+            return;
+        }
 
         // Create a new RouletteBet object using form data
-        RouletteBet bet = new RouletteBet(betAmount, betType, 1); // Use form data
+        RouletteBet bet = new RouletteBet(betAmount, betType, betPositionNumber); // Use form data
 
         // Try to place the bet
         try {
@@ -145,6 +158,12 @@ public class RouletteController extends BaseController {
         // Clear previous indicators
         betPositionsIndicatorsPane.getChildren().clear();
 
+        // Remove style from the previously selected circle (if any)
+        if (selectedBetPositionIndicatorCircle != null) {
+            selectedBetPositionIndicatorCircle.setStyle("");
+            selectedBetPositionIndicatorCircle = null;
+        }
+
         // Retrieve the selected bet type from the ComboBox
         RouletteBetType betType = cmbBetType.getValue();
 
@@ -155,7 +174,8 @@ public class RouletteController extends BaseController {
                         .getChildren()
                         .add(createBetPositionCircle(
                                 positionIndicator.coordinate.xAxisValue,
-                                positionIndicator.coordinate.yAxisValue)));
+                                positionIndicator.coordinate.yAxisValue,
+                                positionIndicator.Id)));
     }
 
     // Initialize ListView to display custom cells
@@ -209,15 +229,43 @@ public class RouletteController extends BaseController {
         txtBetAmount.setTextFormatter(textFormatter);
     }
 
-    private static Circle createBetPositionCircle(
-            double layoutX,
-            double layoutY) {
+    private Circle createBetPositionCircle(double layoutX, double layoutY, String positionId) {
+        // Create the circle for positioning
         Circle circle = new Circle();
+
+        // Set the positionId as the Id of the circle
+        circle.setId(positionId);
+
+        // Set layout position
         circle.setLayoutX(layoutX);
         circle.setLayoutY(layoutY);
-        circle.setRadius(RouletteViewInfo.CIRCLE_RADIUS);
-        circle.setStrokeType(RouletteViewInfo.CIRCLE_STROKE_TYPE);
-        circle.setFill(RouletteViewInfo.CIRCLE_FILL);
+
+        // Set styles
+        circle.setRadius(6);
+        circle.setStrokeType(StrokeType.INSIDE);
+        circle.setFill(Color.GRAY);
+
+        // Set the cursor to hand when hovering over the circle
+        circle.setOnMouseEntered(event -> {
+            circle.setCursor(Cursor.HAND);
+            circle.setFill(Color.LIGHTSLATEGRAY);
+        });
+
+        // Add an onClick event to handle selection styling and storing the selected
+        // circle
+        circle.setOnMouseClicked(event -> {
+            // Remove style from the previously selected circle (if any)
+            if (selectedBetPositionIndicatorCircle != null) {
+                selectedBetPositionIndicatorCircle.setStyle(""); // Reset the style
+            }
+
+            // Apply new style to the clicked circle
+            circle.setStyle("-fx-stroke: blue; -fx-stroke-width: 3;"); // Example of a 'clicked' style
+
+            // Update the class property with the selected circle
+            selectedBetPositionIndicatorCircle = circle;
+        });
+
         return circle;
     }
 }
