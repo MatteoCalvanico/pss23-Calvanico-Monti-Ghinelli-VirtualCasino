@@ -9,7 +9,7 @@ import it.unibo.virtualCasino.model.games.impl.roulette.enums.RouletteBetType;
  * coordinates on the layout.
  * It is immutable, as all fields are declared {@code final}.
  */
-public class RouletteBetIndicatorDto {
+public class RouletteBetPositionIndicatorDto {
 
     public final String Id;
 
@@ -37,7 +37,7 @@ public class RouletteBetIndicatorDto {
      * @param betPositionNumber the position number associated with the bet.
      * @param coordinate        the coordinates of the bet on the layout.
      */
-    public RouletteBetIndicatorDto(RouletteBetType betType, int betPositionNumber, CoordinateDto coordinate) {
+    public RouletteBetPositionIndicatorDto(RouletteBetType betType, int betPositionNumber, CoordinateDto coordinate) {
         this.betType = betType;
         this.betPositionNumber = betPositionNumber;
         this.coordinate = coordinate;
