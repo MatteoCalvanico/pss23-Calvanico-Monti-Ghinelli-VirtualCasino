@@ -13,11 +13,6 @@ import javafx.scene.text.Text;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-// Import for sound
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import java.net.URL;
-
 public class BlackjackController extends BaseController {
     @FXML
     private Button btnCard0;
@@ -94,7 +89,7 @@ public class BlackjackController extends BaseController {
     protected void setGame() {
         BJGame = new Blackjack(6, currentPlayer);
 
-        deckBox1.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT); //TODO: non funziona
+        deckBox1.setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 
         // Set the dinamic text and images + disable the buttons
         updateScreen();
@@ -103,13 +98,11 @@ public class BlackjackController extends BaseController {
         btnSplit.disableProperty().set(true);
 
         // Set images - player deck
-        Image cardBack = new Image(getClass().getResourceAsStream("/sprite/cards/cardBack_red2.png"));
-        ImageView cardBackView = new ImageView(cardBack); // We gonna put this in the HBox
+        ImageView cardBackView = getImage("cardBack_red2.png");
         playDeckBox.getChildren().add(cardBackView);
 
         // Set images - chip
-        Image chip = new Image(getClass().getResourceAsStream("/sprite/chips/chipBlackWhite.png"));
-        ImageView chipView = new ImageView(chip); // We gonna put this in the HBox
+        ImageView chipView = getImage("chipBlackWhite.png");
         chipBox.getChildren().add(chipView);
     }
 
@@ -138,13 +131,13 @@ public class BlackjackController extends BaseController {
     /**
     * Method to get the image of the card
     * @param card the card to get the image
-    * @return the image of the card
+    * @return the file name of the card's image
     */
-    protected Image getCardImage(Card card){
-        Image cardImage;
+    protected String getCardImage(Card card){
+        String cardPath;
         
         if(card.isFlip()){
-            cardImage = new Image(getClass().getResourceAsStream("/sprite/cards/cardBack_red2.png"));
+            cardPath = "cardBack_red2.png";
         }
         else{
             String cardNumber;
@@ -172,26 +165,10 @@ public class BlackjackController extends BaseController {
 
             String cardSeed = card.getCardSeed().toString().toLowerCase();
 
-            cardImage = new Image(getClass().getResourceAsStream("/sprite/cards/card" + Character.toUpperCase(cardSeed.charAt(0)) + cardSeed.substring(1) + cardNumber + ".png"));
+            cardPath = "card" + Character.toUpperCase(cardSeed.charAt(0)) + cardSeed.substring(1) + cardNumber + ".png";
         }
 
-        return cardImage;
-    }
-
-    /**
-    * Method to play a sound
-    * @param soundFilePath the path of the sound file
-    */
-    protected void playSound(String soundFilePath){
-        URL resource = getClass().getResource(soundFilePath);
-
-        if (resource == null) {
-            throw new IllegalArgumentException("File not found: " + soundFilePath);
-        }
-
-        Media soundFile = new Media(resource.toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(soundFile);
-        mediaPlayer.play();
+        return cardPath;
     }
 
     /**
@@ -246,8 +223,7 @@ public class BlackjackController extends BaseController {
         // Set the images of the cards - player deck 0
         for(int i = 0; i < BJGame.getPlayerDeck(0).size(); i++){
             Card card = BJGame.getPlayerDeck(0).checkCardFromDeck(i);
-            Image cardImage = getCardImage(card);
-            ImageView cardView = new ImageView(cardImage);
+            ImageView cardView = getImage(getCardImage(card));
             deckBox0.getChildren().add(cardView);
 
             // Play the sound only for the last card
@@ -258,8 +234,7 @@ public class BlackjackController extends BaseController {
         if (isSplit) {
             for(int i = 0; i < BJGame.getPlayerDeck(1).size(); i++){
                 Card card = BJGame.getPlayerDeck(1).checkCardFromDeck(i);
-                Image cardImage = getCardImage(card);
-                ImageView cardView = new ImageView(cardImage);
+                ImageView cardView = getImage(getCardImage(card));
                 deckBox1.getChildren().add(cardView);
             }
 
@@ -269,8 +244,7 @@ public class BlackjackController extends BaseController {
         // Set the images of the cards - dealer deck
         for(int i = 0; i < BJGame.getDealerDeck().size(); i++){
             Card card = BJGame.getDealerDeck().checkCardFromDeck(i);
-            Image cardImage = getCardImage(card);
-            ImageView cardView = new ImageView(cardImage);
+            ImageView cardView = getImage(getCardImage(card));
             dealerDeckBox.getChildren().add(cardView);
 
             // Play the sound only for the last card
