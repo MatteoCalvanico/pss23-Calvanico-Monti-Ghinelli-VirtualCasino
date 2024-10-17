@@ -156,11 +156,11 @@ public class RouletteBet extends RouletteBase {
                 break;
             case ODD_EVEN: {
                 if (betPositionInTable == 1) {
-                    for (int i = 1; i <= 36; i += 2) {
+                    for (int i = 2; i <= 36; i += 2) {
                         numbers.add(i);
                     }
                 } else {
-                    for (int i = 0; i <= 36; i += 2) {
+                    for (int i = 1; i <= 36; i += 2) {
                         numbers.add(i);
                     }
                 }
