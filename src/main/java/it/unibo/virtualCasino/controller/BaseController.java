@@ -105,6 +105,8 @@ public abstract class BaseController implements Initializable {
                 sprite = new Image(getClass().getResourceAsStream("/sprite/cards/" + imageFilePath));   
             } else if (imageFilePath.contains("die")) {
                 sprite = new Image(getClass().getResourceAsStream("/sprite/dice/" + imageFilePath));   
+            } else if (imageFilePath.contains("Screen")) {
+                sprite = new Image(getClass().getResourceAsStream("/sprite/screenshot/" + imageFilePath));
             } else {
                 throw new IllegalArgumentException("File not found: " + imageFilePath);
             }
