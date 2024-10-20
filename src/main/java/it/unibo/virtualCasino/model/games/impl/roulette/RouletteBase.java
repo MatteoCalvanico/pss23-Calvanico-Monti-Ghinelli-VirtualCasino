@@ -67,13 +67,16 @@ public class RouletteBase {
     protected final Map<Integer, RouletteColors> colorNumberMap = createColorNumberMap();
 
     /**
-     * Maps a number to its corresponding color enum.
+     * Maps roulette sequence index
+     * to its corresponding color enum.
      *
-     * @param number The number to map.
+     * @param number The sequence index to map.
      * @return The corresponding color enum (RED, BLACK, or GREEN).
      */
-    private RouletteColors mapNumberToColorEnum(int number) {
-        return (number == 0 ? RouletteColors.GREEN : (number % 2 == 0) ? RouletteColors.BLACK : RouletteColors.RED);
+    private RouletteColors mapSequenceIndexToColorEnum(int rouletteSequenceIndex) {
+        return (rouletteSequenceIndex == 0
+                ? RouletteColors.GREEN
+                : (rouletteSequenceIndex % 2 == 0) ? RouletteColors.BLACK : RouletteColors.RED);
     }
 
     /**
@@ -87,7 +90,7 @@ public class RouletteBase {
         for (int i = 0; i <= this.NUMS_TOTAL; i++) {
             tempMap.put(
                     this.ROULETTE_SEQUENCE[i],
-                    mapNumberToColorEnum(i));
+                    mapSequenceIndexToColorEnum(i));
         }
 
         return tempMap;
