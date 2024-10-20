@@ -47,7 +47,7 @@ public class RouletteController extends BaseController {
     private Button btnCreateBet;
 
     @FXML
-    private Button btnSpeenWheel; // TODO implement
+    private Button btnSpeenWheel;
 
     @FXML
     private ListView<RouletteBet> betList;
@@ -91,6 +91,7 @@ public class RouletteController extends BaseController {
         // Set on action methods
         btnCreateBet.setOnAction(event -> onCreateBetClicked());
         cmbBetType.setOnAction(event -> onBetTypeSelected());
+        btnSpeenWheel.setOnAction(event -> onSpeenWheelClicked());
 
         // Initialize ListView to display custom cells
         initializeListViewCustomCells();
@@ -136,7 +137,7 @@ public class RouletteController extends BaseController {
         }
 
         // Create a new RouletteBet object using form data
-        RouletteBet bet = new RouletteBet(betAmount, betType, betPositionNumber); // Use form data
+        RouletteBet bet = new RouletteBet(betAmount, betType, betPositionNumber);
 
         // Try to place the bet
         try {
@@ -152,6 +153,11 @@ public class RouletteController extends BaseController {
         // Empty form fields
         txtBetAmount.setText("0");
         cmbBetType.setValue(null);
+    }
+
+    public void onSpeenWheelClicked() {
+        rouletteGame.showResult();
+        txtBalance.setText(Double.toString(this.currentPlayer.getAccount()));
     }
 
     public void onBetTypeSelected() {
