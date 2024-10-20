@@ -46,12 +46,6 @@ public class Blackjack implements Games{
     private double[] bet;
 
     /**
-     * The player can decide to make an insurance if the dealer have an ACE. 
-     * If the dealer do a blackjack and the insurance is true the player don't lose any money
-     */
-    private boolean insurance; 
-
-    /**
      * Init all we need for play Blackjack
      * @param numberOfDeck how many deck of card we want to use
      * @param player the one whos play
@@ -73,7 +67,23 @@ public class Blackjack implements Games{
         this.dealerDeck = new Deck();
 
         this.bet = new double[2];
-        this.insurance = false;
+    }
+
+    /**
+     * Return the dealer deck
+     * @return the dealer deck
+     */
+    public Deck getDealerDeck(){
+        return this.dealerDeck;
+    }
+
+    /**
+     * Return the player deck
+     * @param deckNumber indicates which deck we want to return
+     * @return the dealer deck
+     */
+    public Deck getPlayerDeck(int deckNumber){
+        return this.playerDeck[deckNumber];
     }
 
     /**
@@ -117,8 +127,6 @@ public class Blackjack implements Games{
 
         this.bet[0] = 0;
         this.bet[1] = 0;
-
-        this.insurance = false;
     }
 
     /**
@@ -134,13 +142,14 @@ public class Blackjack implements Games{
 
             if (this.playerDeck[1].countCard() > 21 || this.playerDeck[1].countCard() == 0) { //Check if the second deck is used and if exceeds 21. If the second deck is not used is usless to go on
                 this.currentPlayer.removeLoss(this.bet[1]);
-                nextRound();
+                return;
             }
         }
  
         while (this.dealerDeck.countCard() <= 16) { //Apply "Regola del banco"
             receive(1);
         }
+        this.dealerDeck.flipAll();
 
         int dealerCount = this.dealerDeck.countCard();
         int playerCount0 = this.playerDeck[0].countCard();
@@ -163,8 +172,6 @@ public class Blackjack implements Games{
                 this.currentPlayer.addWin(this.bet[1]);
             }
         }
-
-        nextRound();
     }
 
     /**
@@ -172,6 +179,8 @@ public class Blackjack implements Games{
      * @param deckNumber the deck that receives the card
      */
     public void call(int deckNumber){
+        checkAndChangeDeck(); //Check if the deck is over and change it if necessary
+         
         this.playerDeck[deckNumber].insert(this.playDeck.get(usedPlayDeck()).draw());
         this.playerDeck[deckNumber].flipAll();
     }
@@ -182,6 +191,8 @@ public class Blackjack implements Games{
      */
     public void receive(int numberOfCard){
         for(int i = 0; i < numberOfCard; i++ ){
+            checkAndChangeDeck(); //Check if the deck is over and change it if necessary
+
             this.dealerDeck.insert(this.playDeck.get(usedPlayDeck()).draw());
         }
     }
@@ -217,20 +228,6 @@ public class Blackjack implements Games{
     }
 
     /**
-     * Change between true and false the insurance variable
-     */
-    public void setInsurance(){
-        this.insurance = (this.insurance == false) ? true : false;
-    }
-
-    /**
-     * @return the value of insurace
-     */
-    public boolean checkInsurance(){
-        return this.insurance;
-    } 
-
-    /**
      * Check if the combination of card is a blackjack in the player deck
      * @return true if the player made a blackjack
      */
@@ -243,7 +240,11 @@ public class Blackjack implements Games{
      * @return true if possible, false otherwise
      */
     private boolean isSplit(){
-        return (this.playerDeck[0].checkCardFromDeck(0).getCardNumber() == this.playerDeck[0].checkCardFromDeck(1).getCardNumber()) ? true : false;
+        if (this.playerDeck[0].size() == 2 && this.playerDeck[1].size() == 0) {
+            return (this.playerDeck[0].checkCardFromDeck(0).getCardNumber() == this.playerDeck[0].checkCardFromDeck(1).getCardNumber()) ? true : false;            
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -254,7 +255,7 @@ public class Blackjack implements Games{
         if (isSplit()) {
             this.playerDeck[1].insert(this.playerDeck[0].draw());
         }else{
-            throw new RuntimeException("Impossible to split");
+            throw new RuntimeException("Split is not possible, you need two card with the same value");
         }
     }
 }

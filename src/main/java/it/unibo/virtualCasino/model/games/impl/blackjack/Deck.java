@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * @author it.unibo.virtualCasino
  * @see Card
  */
-public class Deck {
+public class Deck{
     private List<Card> deck;
 
     /**

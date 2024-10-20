@@ -2,20 +2,29 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #014508; -fx-border-style: solid; -fx-border-color: #2b1a01; -fx-border-width: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller='it.unibo.virtualCasino.controller.blackjack.BlackjackController'>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #014508; -fx-border-style: solid; -fx-border-color: #2b1a01; -fx-border-width: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.virtualCasino.controller.blackjack.BlackjackController">
    <children>
       <Text fill="#a91111" layoutX="262.4" layoutY="280.8" stroke="#eade07" strokeType="INSIDE" text="VIRTUAL CASINO - BLACKJACK" textAlignment="CENTER" wrappingWidth="459.4701232910156">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="60.0" />
          </font>
       </Text>
-      <HBox id="deckBox0" fx:id="deckBox0" layoutX="544.0" layoutY="340.0" prefHeight="190.0" prefWidth="140.0" style="-fx-border-style: solid;" />
-      <HBox id="deckBox1" fx:id="deckBox1" layoutX="327.0" layoutY="340.0" prefHeight="190.0" prefWidth="140.0" style="-fx-border-style: solid;" />
+      <ScrollPane layoutX="544.0" layoutY="340.0" maxWidth="434.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="195.0" prefWidth="434.0" style="-fx-background: trasparent;">
+         <content>
+            <HBox id="deckBox0" fx:id="deckBox0" prefHeight="190.0" prefWidth="140.0" style="-fx-border-style: solid;"/>
+         </content>
+      </ScrollPane>
+      <ScrollPane layoutX="19.0" layoutY="340.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="195.0" prefWidth="434.0" style="-fx-background: trasparent;">
+         <content>
+            <HBox id="deckBox1" fx:id="deckBox1" prefHeight="190.0" prefWidth="140.0" nodeOrientation="LEFT_TO_RIGHT" style="-fx-border-style: solid;"/>
+         </content>
+      </ScrollPane>
       <Text fill="#b40202" layoutX="544.0" layoutY="331.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Main deck:" textAlignment="CENTER" wrappingWidth="91.1334228515625">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="35.0" />
@@ -38,7 +47,7 @@
             <Font name="Bodoni MT Poster Compressed" size="40.0" />
          </font>
       </Text>
-      <Button id="btnCard0" fx:id="btnCard0" layoutX="589.0" layoutY="545.0" maxHeight="29.0" minHeight="0.0" minWidth="49.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="56.0" style="-fx-background-radius: 25; -fx-background-color: #b40202;" text="+" textAlignment="CENTER">
+      <Button id="btnCard0" fx:id="btnCard0" layoutX="589.0" layoutY="545.0" maxHeight="29.0" minHeight="0.0" minWidth="49.0" mnemonicParsing="false" onAction="#handleCall0" prefHeight="65.0" prefWidth="56.0" style="-fx-background-radius: 25; -fx-background-color: #b40202;" text="+" textAlignment="CENTER">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="28.0" />
          </font>
@@ -46,17 +55,17 @@
             <Insets bottom="-10.0" top="-10.0" />
          </padding>
       </Button>
-      <Button id="btnStay0" fx:id="btnStay0" layoutX="651.0" layoutY="542.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="56.0" style="-fx-background-radius: 10; -fx-background-color: #70d5fa;" text="Stay">
+      <Button id="btnStay0" fx:id="btnStay0" layoutX="651.0" layoutY="542.0" mnemonicParsing="false" onAction="#stay" prefHeight="30.0" prefWidth="56.0" style="-fx-background-radius: 10; -fx-background-color: #70d5fa;" text="Stay">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="19.0" />
          </font>
       </Button>
-      <Button id="btnExit" fx:id="btnExit" cancelButton="true" layoutX="882.0" layoutY="232.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="94.0" style="-fx-background-color: #FFD700;" text="Exit" textAlignment="CENTER" >
+      <Button id="btnExit" fx:id="btnExit" cancelButton="true" layoutX="806.0" layoutY="273.0" mnemonicParsing="false" onAction="#exit" prefHeight="54.0" prefWidth="170.0" style="-fx-background-color: #FFD700;" text="Exit" textAlignment="CENTER">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="28.0" />
          </font>
       </Button>
-      <Button id="btnCard1" fx:id="btnCard1" disable="true" layoutX="330.0" layoutY="544.0" maxHeight="29.0" minHeight="0.0" minWidth="49.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="56.0" style="-fx-background-radius: 25; -fx-background-color: #b40202;" text="+" textAlignment="CENTER">
+      <Button id="btnCard1" fx:id="btnCard1" disable="true" layoutX="330.0" layoutY="544.0" maxHeight="29.0" minHeight="0.0" minWidth="49.0" mnemonicParsing="false" onAction="#handleCall1" prefHeight="65.0" prefWidth="56.0" style="-fx-background-radius: 25; -fx-background-color: #b40202;" text="+" textAlignment="CENTER">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="28.0" />
          </font>
@@ -64,12 +73,12 @@
             <Insets bottom="-10.0" top="-10.0" />
          </padding>
       </Button>
-      <Button id="btnSplit" fx:id="btnSplit" layoutX="526.0" layoutY="542.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="56.0" style="-fx-background-radius: 10; -fx-background-color: #FFD700;" text="Split">
+      <Button id="btnSplit" fx:id="btnSplit" layoutX="526.0" layoutY="542.0" mnemonicParsing="false" onAction="#split" prefHeight="30.0" prefWidth="56.0" style="-fx-background-radius: 10; -fx-background-color: #FFD700;" text="Split">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="19.0" />
          </font>
       </Button>
-      <Button id="btnStay1" fx:id="btnStay1" disable="true" layoutX="405.0" layoutY="542.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="56.0" style="-fx-background-radius: 10; -fx-background-color: #70d5fa;" text="Stay">
+      <Button id="btnStay1" fx:id="btnStay1" disable="true" layoutX="405.0" layoutY="542.0" mnemonicParsing="false" onAction="#splitStay" prefHeight="30.0" prefWidth="56.0" style="-fx-background-radius: 10; -fx-background-color: #70d5fa;" text="Stay">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="19.0" />
          </font>
@@ -84,22 +93,12 @@
             <Font name="Bodoni MT Poster Compressed" size="35.0" />
          </font>
       </Text>
-      <Text id="txtPlayer" fx:id="txtPlayer1" fill="#b40202" layoutX="20.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insurace:" wrappingWidth="94.20248794555658">
-         <font>
-            <Font name="Bodoni MT Poster Compressed" size="40.0" />
-         </font>
-      </Text>
-      <Text id="txtInsurance" fx:id="txtInsurance" fill="#b40202" layoutX="119.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="False">
-         <font>
-            <Font name="Bodoni MT Poster Compressed" size="40.0" />
-         </font>
-      </Text>
       <Text fill="#b40202" layoutX="313.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dealer:" textAlignment="CENTER" wrappingWidth="70.80000000000018">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="35.0" />
          </font>
       </Text>
-      <Text id="txtDeckCards2" fx:id="txtDeckCards2" fill="#b40202" layoutX="380.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textAlignment="CENTER" wrappingWidth="41.999999999999886">
+      <Text id="txtDeckCards2" fx:id="txtDeckCards2" fill="#b40202" layoutX="380.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="41.999999999999886">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="35.0" />
          </font>
@@ -109,7 +108,7 @@
             <Font name="Bodoni MT Poster Compressed" size="24.0" />
          </font>
       </Text>
-      <Text id="txtBet0" fx:id="txtBet0" fill="#b40202" layoutX="479.0" layoutY="402.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textAlignment="CENTER" wrappingWidth="41.999999999999886">
+      <Text id="txtBet0" fx:id="txtBet0" fill="#b40202" layoutX="479.0" layoutY="402.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="41.999999999999886">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="35.0" />
          </font>
@@ -119,10 +118,26 @@
             <Font name="Bodoni MT Poster Compressed" size="24.0" />
          </font>
       </Text>
-      <Text id="txtBet1" fx:id="txtBet1" fill="#b40202" layoutX="480.0" layoutY="496.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00" textAlignment="CENTER" wrappingWidth="41.999999999999886">
+      <Text id="txtBet1" fx:id="txtBet1" fill="#b40202" layoutX="480.0" layoutY="496.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="41.999999999999886">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="35.0" />
          </font>
       </Text>
+      <Button id="btnBet100" fx:id="btnBet100" layoutX="806.0" layoutY="235.0" mnemonicParsing="false" onAction="#addBet" prefHeight="30.0" prefWidth="50.0" style="-fx-background-radius: 10; -fx-background-color: #b40202;" text="+ 100" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT Poster Compressed" size="17.0" />
+         </font>
+      </Button>
+      <Button id="btnBetMinus100" fx:id="btnBetMinus100" layoutX="926.0" layoutY="236.0" mnemonicParsing="false" onAction="#removeBet" prefHeight="30.0" prefWidth="50.0" style="-fx-background-radius: 10; -fx-background-color: #70d5fa;" text="- 100" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT Poster Compressed" size="17.0" />
+         </font>
+      </Button>
+      <HBox id="chipBox" fx:id="chipBox" layoutX="859.0" layoutY="164.0" prefHeight="64.0" prefWidth="64.0" />
+      <Button id="btnSetBet" fx:id="btnSetBet" layoutX="859.0" layoutY="233.0" mnemonicParsing="false" onAction="#setBet" prefHeight="35.0" prefWidth="64.0" style="-fx-background-radius: 10; -fx-background-color: #FFD700;" text="Set bet">
+         <font>
+            <Font name="Bodoni MT Poster Compressed" size="19.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
