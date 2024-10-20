@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #014508; -fx-border-style: solid; -fx-border-color: #2b1a01; -fx-border-width: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.virtualCasino.controller.menu.gamesMenuController">
    <children>
@@ -17,5 +19,31 @@
             <Font name="Bodoni MT Poster Compressed" size="40.0" />
          </font>
       </Text>
+      <Text fill="#a91111" layoutX="282.4" layoutY="167.8" stroke="#eade07" strokeType="INSIDE" text="Choose what you want to play" textAlignment="CENTER" wrappingWidth="459.4701232910156">
+         <font>
+            <Font name="Bodoni MT Poster Compressed" size="93.0" />
+         </font>
+      </Text>
+      <VBox alignment="CENTER" layoutX="185.0" layoutY="308.0">
+         <HBox fx:id="bjScreenBox" alignment="CENTER" maxHeight="146.0" maxWidth="288.0" prefHeight="146.0" prefWidth="288.0" />
+         <Button id="btnBlackjack" fx:id="btnBlackjack" cancelButton="true" mnemonicParsing="false" onAction="#playBlackjack" prefHeight="54.0" prefWidth="170.0" style="-fx-background-color: #FFD700;" text="Blackjack" textAlignment="CENTER">
+            <font>
+               <Font name="Bodoni MT Poster Compressed" size="28.0" />
+            </font>
+         </Button>
+      </VBox>
+      <VBox alignment="CENTER" layoutX="543.0" layoutY="308.0">
+         <HBox fx:id="rlScreenBox" alignment="CENTER" maxHeight="146.0" maxWidth="288.0" prefHeight="146.0" prefWidth="288.0" />
+         <Button id="btnRoulette" fx:id="btnRoulette" cancelButton="true" mnemonicParsing="false" onAction="#playRoulette" prefHeight="54.0" prefWidth="170.0" style="-fx-background-color: #FFD700;" text="Roulette" textAlignment="CENTER">
+            <font>
+               <Font name="Bodoni MT Poster Compressed" size="28.0" />
+            </font>
+         </Button>
+      </VBox>
+      <Button id="btnExit" fx:id="btnExit" cancelButton="true" layoutX="424.0" layoutY="515.0" mnemonicParsing="false" onAction="#exit" prefHeight="54.0" prefWidth="170.0" style="-fx-background-color: #FFD700;" text="Exit" textAlignment="CENTER">
+         <font>
+            <Font name="Bodoni MT Poster Compressed" size="28.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
