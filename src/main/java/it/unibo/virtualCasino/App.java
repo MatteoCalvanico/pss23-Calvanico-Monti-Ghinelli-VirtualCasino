@@ -4,7 +4,7 @@
 package it.unibo.virtualCasino;
 
 
-import it.unibo.virtualCasino.view.blackjack.BlackjackView;
+import it.unibo.virtualCasino.view.menu.MenuView;
 import javafx.application.Application;
 
 /** Main application entry-point's class. */
@@ -17,7 +17,7 @@ public final class App {
      * @param args
      */
     public static void main(final String[] args) {
-        Application.launch(BlackjackView.class, args);
+        Application.launch(MenuView.class, args);
         // The following line raises: Error: class it.unibo.samplejavafx.App is not a subclass of javafx.application.Application
         // JavaFXApp.launch(args);
         // While the following would do just fine:
