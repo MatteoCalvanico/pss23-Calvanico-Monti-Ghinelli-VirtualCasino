@@ -3,7 +3,7 @@
 </p>
 
 #
-# Try your luck at Blackjack or Roulette and risk it all with dice
+# Try your luck at Blackjack or Roulette and risk it all with the dice
 #
 ## Functionality
 The minimum and mandatory features are listed below:
