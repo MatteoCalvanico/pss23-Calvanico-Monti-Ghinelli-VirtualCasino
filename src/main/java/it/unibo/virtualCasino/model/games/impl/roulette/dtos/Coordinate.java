@@ -5,7 +5,7 @@ package it.unibo.virtualCasino.model.games.impl.roulette.dtos;
  * with X and Y axis values.
  * It is immutable, as both fields are declared {@code final}.
  */
-public class CoordinateDto {
+public class Coordinate {
 
     /**
      * The X-axis value of the coordinate.
@@ -23,7 +23,7 @@ public class CoordinateDto {
      * @param xAxisValue the value of the X-axis.
      * @param yAxisValue the value of the Y-axis.
      */
-    public CoordinateDto(double xAxisValue, double yAxisValue) {
+    public Coordinate(double xAxisValue, double yAxisValue) {
         this.xAxisValue = xAxisValue;
         this.yAxisValue = yAxisValue;
     }

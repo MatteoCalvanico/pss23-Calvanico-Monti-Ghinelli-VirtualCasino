@@ -6,8 +6,8 @@ import it.unibo.virtualCasino.controller.BaseController;
 import it.unibo.virtualCasino.model.games.impl.roulette.Roulette;
 import it.unibo.virtualCasino.model.games.impl.roulette.RouletteBet;
 import it.unibo.virtualCasino.model.games.impl.roulette.RouletteBetPositionsGrid;
-import it.unibo.virtualCasino.model.games.impl.roulette.dtos.CoordinateDto;
-import it.unibo.virtualCasino.model.games.impl.roulette.dtos.RouletteTableLayoutDto;
+import it.unibo.virtualCasino.model.games.impl.roulette.dtos.Coordinate;
+import it.unibo.virtualCasino.model.games.impl.roulette.dtos.RouletteTableLayout;
 import it.unibo.virtualCasino.model.games.impl.roulette.enums.RouletteBetType;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -78,11 +78,11 @@ public class RouletteController extends BaseController {
         // Initialize models
         rouletteGame = new Roulette(this.currentPlayer);
         rouletteBetPositionsGrid = new RouletteBetPositionsGrid(
-                new RouletteTableLayoutDto(
-                        new CoordinateDto(topLeftNumsTable.getLayoutX(), topLeftNumsTable.getLayoutY()),
-                        new CoordinateDto(topLeftNumsTable.getLayoutY(), bottomRightNumsTable.getLayoutX()),
-                        new CoordinateDto(bottomRightNumsTable.getLayoutX(), bottomRightNumsTable.getLayoutY()),
-                        new CoordinateDto(bottomLeftBetsTable.getLayoutX(), bottomLeftBetsTable.getLayoutY())));
+                new RouletteTableLayout(
+                        new Coordinate(topLeftNumsTable.getLayoutX(), topLeftNumsTable.getLayoutY()),
+                        new Coordinate(topLeftNumsTable.getLayoutY(), bottomRightNumsTable.getLayoutX()),
+                        new Coordinate(bottomRightNumsTable.getLayoutX(), bottomRightNumsTable.getLayoutY()),
+                        new Coordinate(bottomLeftBetsTable.getLayoutX(), bottomLeftBetsTable.getLayoutY())));
 
         // Set text items
         txtPlayer.setText(this.currentPlayer.getName());

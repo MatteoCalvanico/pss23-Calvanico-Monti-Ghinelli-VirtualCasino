@@ -5,27 +5,27 @@ package it.unibo.virtualCasino.model.games.impl.roulette.dtos;
  * bottom-right, and bottom-left coordinates.
  * It is immutable, as all fields are declared {@code final}.
  */
-public class RouletteTableLayoutDto {
+public class RouletteTableLayout {
 
     /**
      * The top-left coordinate of the layout.
      */
-    public final CoordinateDto topLeftCoordinate;
+    public final Coordinate topLeftCoordinate;
 
     /**
      * The top-right coordinate of the layout.
      */
-    public final CoordinateDto topRightCoordinate;
+    public final Coordinate topRightCoordinate;
 
     /**
      * The bottom-right coordinate of the layout.
      */
-    public final CoordinateDto bottomRightCoordinate;
+    public final Coordinate bottomRightCoordinate;
 
     /**
      * The bottom-left coordinate of the layout.
      */
-    public final CoordinateDto bottomLeftCoordinate;
+    public final Coordinate bottomLeftCoordinate;
 
     /**
      * Copy constructor for creating a new {@code LayoutDto} object based on an
@@ -34,7 +34,7 @@ public class RouletteTableLayoutDto {
      *
      * @param layoutDto the {@code LayoutDto} object to copy.
      */
-    public RouletteTableLayoutDto(RouletteTableLayoutDto layoutDto) {
+    public RouletteTableLayout(RouletteTableLayout layoutDto) {
         this(
                 layoutDto.topLeftCoordinate,
                 layoutDto.topRightCoordinate,
@@ -51,11 +51,11 @@ public class RouletteTableLayoutDto {
      * @param topLeftCoordinate     the top-left coordinate of the layout.
      * @param bottomRightCoordinate the bottom-right coordinate of the layout.
      */
-    public RouletteTableLayoutDto(CoordinateDto topLeftCoordinate, CoordinateDto bottomRightCoordinate) {
+    public RouletteTableLayout(Coordinate topLeftCoordinate, Coordinate bottomRightCoordinate) {
         this.topLeftCoordinate = topLeftCoordinate;
         this.bottomRightCoordinate = bottomRightCoordinate;
-        this.topRightCoordinate = new CoordinateDto(bottomRightCoordinate.xAxisValue, topLeftCoordinate.yAxisValue);
-        this.bottomLeftCoordinate = new CoordinateDto(topLeftCoordinate.xAxisValue, bottomRightCoordinate.yAxisValue);
+        this.topRightCoordinate = new Coordinate(bottomRightCoordinate.xAxisValue, topLeftCoordinate.yAxisValue);
+        this.bottomLeftCoordinate = new Coordinate(topLeftCoordinate.xAxisValue, bottomRightCoordinate.yAxisValue);
     }
 
     /**
@@ -66,11 +66,11 @@ public class RouletteTableLayoutDto {
      * @param bottomRightCoordinate the bottom-right coordinate of the layout.
      * @param bottomLeftCoordinate  the bottom-left coordinate of the layout.
      */
-    public RouletteTableLayoutDto(
-            CoordinateDto topLeftCoordinate,
-            CoordinateDto topRightCoordinate,
-            CoordinateDto bottomRightCoordinate,
-            CoordinateDto bottomLeftCoordinate) {
+    public RouletteTableLayout(
+            Coordinate topLeftCoordinate,
+            Coordinate topRightCoordinate,
+            Coordinate bottomRightCoordinate,
+            Coordinate bottomLeftCoordinate) {
         this.topLeftCoordinate = topLeftCoordinate;
         this.topRightCoordinate = topRightCoordinate;
         this.bottomRightCoordinate = bottomRightCoordinate;
