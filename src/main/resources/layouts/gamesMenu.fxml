@@ -9,12 +9,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #014508; -fx-border-style: solid; -fx-border-color: #2b1a01; -fx-border-width: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.virtualCasino.controller.menu.gamesMenuController">
    <children>
-      <Text id="txtPlayer" fx:id="txtPlayer" fill="#b40202" layoutX="28.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PlayerName:" wrappingWidth="125.60331726074219">
+      <Text id="txtPlayer" fx:id="txtPlayer" fill="#b40202" layoutX="18.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PlayerName:" wrappingWidth="125.60331726074219">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="40.0" />
          </font>
       </Text>
-      <Text id="txtBalance" fx:id="txtBalance" fill="#b40202" layoutX="161.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Balance">
+      <Text id="txtBalance" fx:id="txtBalance" fill="#b40202" layoutX="151.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Balance">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="40.0" />
          </font>

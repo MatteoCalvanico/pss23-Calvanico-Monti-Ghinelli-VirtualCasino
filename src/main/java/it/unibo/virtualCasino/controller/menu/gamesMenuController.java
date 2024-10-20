@@ -55,12 +55,12 @@ public class gamesMenuController extends BaseController {
 
     @FXML
     void playRoulette(ActionEvent event) {
-
+        //TODO: go to roulette
     }
 
     @FXML
     void exit(ActionEvent event) {
-        //TODO: go back to manu, but first ask the user if he wants to trow the dice and after that save the record (only if he made a new record)
+        //TODO: go back to menu, but first ask the user if he wants to trow the dice and after that save the record (only if he made a new record)
     }
 
     @Override
