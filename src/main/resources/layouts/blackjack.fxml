@@ -60,7 +60,7 @@
             <Font name="Bodoni MT Poster Compressed" size="19.0" />
          </font>
       </Button>
-      <Button id="btnExit" fx:id="btnExit" cancelButton="true" layoutX="806.0" layoutY="273.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="170.0" style="-fx-background-color: #FFD700;" text="Exit" textAlignment="CENTER">
+      <Button id="btnExit" fx:id="btnExit" cancelButton="true" layoutX="806.0" layoutY="273.0" mnemonicParsing="false" onAction="#exit" prefHeight="54.0" prefWidth="170.0" style="-fx-background-color: #FFD700;" text="Exit" textAlignment="CENTER">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="28.0" />
          </font>

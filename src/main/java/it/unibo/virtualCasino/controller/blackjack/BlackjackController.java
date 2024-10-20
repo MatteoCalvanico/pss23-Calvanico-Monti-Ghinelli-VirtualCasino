@@ -3,12 +3,16 @@ package it.unibo.virtualCasino.controller.blackjack;
 import it.unibo.virtualCasino.controller.BaseController;
 import it.unibo.virtualCasino.model.games.impl.blackjack.Blackjack;
 import it.unibo.virtualCasino.model.games.impl.blackjack.Card;
+import it.unibo.virtualCasino.view.menu.GamesView;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
@@ -401,14 +405,37 @@ public class BlackjackController extends BaseController {
 
     @FXML
     /**
-     * Method called when the player want to stay in the second deck
-     */
+    * Method called when the player want to stay in the second deck
+    */
     protected void splitStay(){
         if (btnStay0.disableProperty().get() == true) { // If the player stayed in the first deck we can show the result
             showResult();
         }else {                                         // Else we have to wait for the player to stay in the first deck
             btnCard1.disableProperty().set(true);
             btnStay1.disableProperty().set(true);
+        }
+    }
+
+    @FXML
+    /**
+    * Method called when the player want to exit the game
+    */
+    protected void exit(ActionEvent event){
+        // Save the player in the singleton class
+        sendData();
+
+        // Open the games menu
+        try {
+            GamesView gamesView = new GamesView();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            gamesView.start(stage);
+        } catch (Exception e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            return;
         }
     }
 }
