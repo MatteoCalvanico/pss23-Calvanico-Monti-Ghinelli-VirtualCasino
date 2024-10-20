@@ -1,23 +1,23 @@
 package it.unibo.virtualCasino.controller.menu;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.Optional;
 
 import it.unibo.virtualCasino.controller.BaseController;
+import it.unibo.virtualCasino.model.Player;
+import it.unibo.virtualCasino.view.menu.GamesView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 public class mainMenuController extends BaseController {
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
 
     @FXML
     private Button btnPlay;
@@ -60,12 +60,55 @@ public class mainMenuController extends BaseController {
 
     @FXML
     void showGames(ActionEvent event) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Enter Name");
+        dialog.setGraphic(null);
+        dialog.setHeaderText("Virtual Casino says:");
+        dialog.setContentText("Before starting, please enter your name:");
+    
+        Optional<String> result;
+        String name = "";
+        boolean validName = false;
+    
+        // Take the name from the user - loop until a valid name is entered
+        while (!validName) { 
+            result = dialog.showAndWait();
+            if (result.isPresent()) {
+                name = result.get().trim();
+                if (!name.isEmpty()) {
+                    validName = true;
+                } else {
+                    dialog.setHeaderText("Name cannot be empty. Please enter your name:");
+                }
+            } else { // User pressed "Cancel"
+                return;
+            }
+        }
+    
 
+        // Save the player in the singleton class
+        this.currentPlayer = new Player(name);
+        sendData();
+
+
+        // Open the games menu
+        try {
+            GamesView gamesView = new GamesView();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            gamesView.start(stage);
+        } catch (Exception e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            return;
+        }
     }
 
     @FXML
     void showScoreBoard(ActionEvent event) {
-
+        //TODO: apri la finestra del punteggio direttamente
     }
 
     @Override
