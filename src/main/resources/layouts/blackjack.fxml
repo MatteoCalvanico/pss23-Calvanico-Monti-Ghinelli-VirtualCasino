@@ -17,12 +17,12 @@
       </Text>
       <ScrollPane layoutX="544.0" layoutY="340.0" maxWidth="434.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="195.0" prefWidth="434.0" style="-fx-background: trasparent;">
          <content>
-            <HBox id="deckBox0" fx:id="deckBox0" />
+            <HBox id="deckBox0" fx:id="deckBox0" prefHeight="190.0" prefWidth="140.0" style="-fx-border-style: solid;"/>
          </content>
       </ScrollPane>
       <ScrollPane layoutX="19.0" layoutY="340.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="195.0" prefWidth="434.0" style="-fx-background: trasparent;">
          <content>
-            <HBox id="deckBox1" fx:id="deckBox1" nodeOrientation="LEFT_TO_RIGHT" />
+            <HBox id="deckBox1" fx:id="deckBox1" prefHeight="190.0" prefWidth="140.0" nodeOrientation="LEFT_TO_RIGHT" style="-fx-border-style: solid;"/>
          </content>
       </ScrollPane>
       <Text fill="#b40202" layoutX="544.0" layoutY="331.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Main deck:" textAlignment="CENTER" wrappingWidth="91.1334228515625">
