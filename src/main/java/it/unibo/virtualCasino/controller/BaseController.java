@@ -43,7 +43,9 @@ public abstract class BaseController implements Initializable {
      */
     @FXML
     protected void sendData(){
-        //TODO followe the example (https://dev.to/devtony101/javafx-3-ways-of-passing-information-between-scenes-1)
+        // Save the player in the singleton class
+        PlayerHolder holderInstance = PlayerHolder.getInstance();
+        holderInstance.setPlayerHolded(this.currentPlayer);
     }
 
     //Method to take the instance of the player thanks to the singleton class
