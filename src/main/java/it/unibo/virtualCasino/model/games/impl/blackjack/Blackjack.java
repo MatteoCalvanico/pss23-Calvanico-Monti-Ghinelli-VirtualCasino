@@ -7,13 +7,15 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Represents a blackjack game, handling player bets and deck creation and management
+ * Represents a blackjack game, handling player bets and deck creation and
+ * management
+ * 
  * @author it.unibo.virtualCasino
  * @see Deck
  * @see Card
  * @see Player
  */
-public class Blackjack implements Games{
+public class Blackjack implements Games {
 
     /**
      * The one who plays
@@ -31,7 +33,8 @@ public class Blackjack implements Games{
     private int playDeckIndex = 0;
 
     /**
-     * The cards the player have. The player have 2 deck, the normal one and one if he want to split
+     * The cards the player have. The player have 2 deck, the normal one and one if
+     * he want to split
      */
     private Deck[] playerDeck;
 
@@ -41,20 +44,22 @@ public class Blackjack implements Games{
     private Deck dealerDeck;
 
     /**
-     * Same thing with the playerDeck, in the 0 position we have the current bet and in the 1 position the bet for the split
+     * Same thing with the playerDeck, in the 0 position we have the current bet and
+     * in the 1 position the bet for the split
      */
     private double[] bet;
 
     /**
      * Init all we need for play Blackjack
+     * 
      * @param numberOfDeck how many deck of card we want to use
-     * @param player the one whos play
+     * @param player       the one whos play
      */
-    public Blackjack(int numberOfDeck, Player player){
+    public Blackjack(int numberOfDeck, Player player) {
         this.currentPlayer = player;
 
         this.playDeck = new ArrayList<>();
-        for(int i = 0; i < numberOfDeck; i++){ //Creation and adding of the number of playing deck
+        for (int i = 0; i < numberOfDeck; i++) { // Creation and adding of the number of playing deck
             Deck newDeck = new Deck();
             newDeck.initPlayDeck();
             newDeck.shuffleDeck();
@@ -71,47 +76,40 @@ public class Blackjack implements Games{
 
     /**
      * Return the dealer deck
+     * 
      * @return the dealer deck
      */
-    public Deck getDealerDeck(){
+    public Deck getDealerDeck() {
         return this.dealerDeck;
     }
 
     /**
      * Return the player deck
+     * 
      * @param deckNumber indicates which deck we want to return
      * @return the dealer deck
      */
-    public Deck getPlayerDeck(int deckNumber){
+    public Deck getPlayerDeck(int deckNumber) {
         return this.playerDeck[deckNumber];
     }
 
     /**
      * Bet the amount the money passed
+     * 
      * @param amount how much money you want to bet
-     * @throws IllegalArgumentException if the bet exceed the balance
      */
-    @Override
-    public void bet(double amount) throws IllegalArgumentException {
-        if (amount > this.currentPlayer.getAccount()){
-            throw new IllegalArgumentException("The bet exceed account balance");
-        }else{
-            bet[0] = amount;
-        }
+    public void bet(double amount) {
+        bet[0] = amount;
     }
 
     /**
      * Bet the amount the money passed
-     * @param amount how much money you want to bet
+     * 
+     * @param amount     how much money you want to bet
      * @param deckNumber indicates which deck the bet refers to
-     * @throws IllegalArgumentException if the bet exceed the balance
      */
-    public void bet(double amount, int deckNumber) throws IllegalArgumentException { //Overloading the method: bet(double amount)
-        if (amount > this.currentPlayer.getAccount()){
-            throw new IllegalArgumentException("The bet exceed account balance");
-        }else{
-            bet[deckNumber] = amount;
-        }
+    public void bet(double amount, int deckNumber) { // Overloading the method: bet(double amount)
+        bet[deckNumber] = amount;
     }
 
     /**
@@ -136,17 +134,21 @@ public class Blackjack implements Games{
     public void showResult() {
         this.dealerDeck.flipAll();
 
-        //If the player exceeds 21 he immediately loses
+        // If the player exceeds 21 he immediately loses
         if (this.playerDeck[0].countCard() > 21) {
             this.currentPlayer.removeLoss(this.bet[0]);
 
-            if (this.playerDeck[1].countCard() > 21 || this.playerDeck[1].countCard() == 0) { //Check if the second deck is used and if exceeds 21. If the second deck is not used is usless to go on
+            if (this.playerDeck[1].countCard() > 21 || this.playerDeck[1].countCard() == 0) { // Check if the second
+                                                                                              // deck is used and if
+                                                                                              // exceeds 21. If the
+                                                                                              // second deck is not used
+                                                                                              // is usless to go on
                 this.currentPlayer.removeLoss(this.bet[1]);
                 return;
             }
         }
- 
-        while (this.dealerDeck.countCard() <= 16) { //Apply "Regola del banco"
+
+        while (this.dealerDeck.countCard() <= 16) { // Apply "Regola del banco"
             receive(1);
         }
         this.dealerDeck.flipAll();
@@ -155,20 +157,20 @@ public class Blackjack implements Games{
         int playerCount0 = this.playerDeck[0].countCard();
         int playerCount1 = this.playerDeck[1].countCard();
 
-        if (dealerCount > 21) { //Dealer exceeds 21 - Player WON
+        if (dealerCount > 21) { // Dealer exceeds 21 - Player WON
             this.currentPlayer.addWin(this.bet[0] + this.bet[1]);
-        }else{
-            if (dealerCount > playerCount0) { //Dealer WON
+        } else {
+            if (dealerCount > playerCount0) { // Dealer WON
                 this.currentPlayer.removeLoss(this.bet[0]);
             }
-            if (dealerCount > playerCount1) { //Dealer WON
+            if (dealerCount > playerCount1) { // Dealer WON
                 this.currentPlayer.removeLoss(this.bet[1]);
             }
 
-            if (playerCount0 > dealerCount) { //Player WON
+            if (playerCount0 > dealerCount) { // Player WON
                 this.currentPlayer.addWin(this.bet[0]);
             }
-            if (playerCount1 > dealerCount) { //Player WON
+            if (playerCount1 > dealerCount) { // Player WON
                 this.currentPlayer.addWin(this.bet[1]);
             }
         }
@@ -176,22 +178,24 @@ public class Blackjack implements Games{
 
     /**
      * Ask the dealer for another card (already flipped)
+     * 
      * @param deckNumber the deck that receives the card
      */
-    public void call(int deckNumber){
-        checkAndChangeDeck(); //Check if the deck is over and change it if necessary
-         
+    public void call(int deckNumber) {
+        checkAndChangeDeck(); // Check if the deck is over and change it if necessary
+
         this.playerDeck[deckNumber].insert(this.playDeck.get(usedPlayDeck()).draw());
         this.playerDeck[deckNumber].flipAll();
     }
 
     /**
      * Give the dealer a number of cards
+     * 
      * @param numberOfCard the number of cards to add
      */
-    public void receive(int numberOfCard){
-        for(int i = 0; i < numberOfCard; i++ ){
-            checkAndChangeDeck(); //Check if the deck is over and change it if necessary
+    public void receive(int numberOfCard) {
+        for (int i = 0; i < numberOfCard; i++) {
+            checkAndChangeDeck(); // Check if the deck is over and change it if necessary
 
             this.dealerDeck.insert(this.playDeck.get(usedPlayDeck()).draw());
         }
@@ -199,62 +203,73 @@ public class Blackjack implements Games{
 
     /**
      * It says the index of the used playDeck
+     * 
      * @return the index
      */
-    private int usedPlayDeck(){
+    private int usedPlayDeck() {
         return this.playDeckIndex;
     }
 
     /**
      * Increment by one playDeckIndex
      */
-    private void setplayDeckIndex(){
+    private void setplayDeckIndex() {
         this.playDeckIndex++;
     }
 
     /**
-     * Check and change the playDeck if is over. If all the deck is over throw an exception
+     * Check and change the playDeck if is over. If all the deck is over throw an
+     * exception
+     * 
      * @throws IllegalAccessError if all the deck used to play are over
      */
-    private void checkAndChangeDeck() throws IllegalAccessError{
+    private void checkAndChangeDeck() throws IllegalAccessError {
         if (this.playDeck.get(usedPlayDeck() + 1) != null) {
             Deck currentPlayDeck = this.playDeck.get(usedPlayDeck());
-            if(currentPlayDeck.size() == 0 ){
+            if (currentPlayDeck.size() == 0) {
                 setplayDeckIndex();
             }
-        }else{
+        } else {
             throw new IllegalAccessError("All playDecks are over");
         }
     }
 
     /**
      * Check if the combination of card is a blackjack in the player deck
+     * 
      * @return true if the player made a blackjack
      */
-    public boolean isBlackjack(){
-        return (playerDeck[0].size() == 2 && playerDeck[0].countCard() == 21) ? true : false; //Is possible to do blackjack if you do 21 with the first two cards the dealer give
+    public boolean isBlackjack() {
+        return (playerDeck[0].size() == 2 && playerDeck[0].countCard() == 21) ? true : false; // Is possible to do
+                                                                                              // blackjack if you do 21
+                                                                                              // with the first two
+                                                                                              // cards the dealer give
     }
 
     /**
      * Check if the split is possible
+     * 
      * @return true if possible, false otherwise
      */
-    private boolean isSplit(){
+    private boolean isSplit() {
         if (this.playerDeck[0].size() == 2 && this.playerDeck[1].size() == 0) {
-            return (this.playerDeck[0].checkCardFromDeck(0).getCardNumber() == this.playerDeck[0].checkCardFromDeck(1).getCardNumber()) ? true : false;            
+            return (this.playerDeck[0].checkCardFromDeck(0).getCardNumber() == this.playerDeck[0].checkCardFromDeck(1)
+                    .getCardNumber()) ? true : false;
         } else {
             return false;
         }
     }
 
     /**
-     * Take one card from the main player deck and put in the second deck [ONLY IF THE DECK HAVE TWO CARD WITH THE SAME VALUE]
+     * Take one card from the main player deck and put in the second deck [ONLY IF
+     * THE DECK HAVE TWO CARD WITH THE SAME VALUE]
+     * 
      * @throws RuntimeException if you try to split a non-splitting deck
      */
-    public void split() throws RuntimeException{
+    public void split() throws RuntimeException {
         if (isSplit()) {
             this.playerDeck[1].insert(this.playerDeck[0].draw());
-        }else{
+        } else {
             throw new RuntimeException("Split is not possible, you need two card with the same value");
         }
     }

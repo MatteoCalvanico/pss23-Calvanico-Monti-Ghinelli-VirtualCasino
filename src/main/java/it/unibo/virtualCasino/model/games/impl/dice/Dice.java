@@ -2,13 +2,7 @@ package it.unibo.virtualCasino.model.games.impl.dice;
 
 import it.unibo.virtualCasino.model.games.Games;
 
-public class Dice implements Games{
-
-    @Override
-    public void bet(double amount) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'bet'");
-    }
+public class Dice implements Games {
 
     @Override
     public void nextRound() {
@@ -21,5 +15,5 @@ public class Dice implements Games{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'showResult'");
     }
-    
+
 }

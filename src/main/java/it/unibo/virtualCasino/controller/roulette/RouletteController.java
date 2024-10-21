@@ -2,7 +2,8 @@ package it.unibo.virtualCasino.controller.roulette;
 
 import java.util.function.UnaryOperator;
 
-import it.unibo.virtualCasino.controller.BaseController;
+import it.unibo.virtualCasino.controller.BaseGameController;
+import it.unibo.virtualCasino.controller.IPlaceBetObj;
 import it.unibo.virtualCasino.model.games.impl.roulette.Roulette;
 import it.unibo.virtualCasino.model.games.impl.roulette.RouletteBet;
 import it.unibo.virtualCasino.model.games.impl.roulette.RouletteBetPositionsGrid;
@@ -12,6 +13,7 @@ import it.unibo.virtualCasino.model.games.impl.roulette.enums.RouletteBetType;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
@@ -26,7 +28,7 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 // TODO JavaDoc
-public class RouletteController extends BaseController {
+public class RouletteController extends BaseGameController {
 
     private Roulette rouletteGame;
 
@@ -44,9 +46,6 @@ public class RouletteController extends BaseController {
     private TextField txtBetAmount;
 
     @FXML
-    private Button btnCreateBet;
-
-    @FXML
     private Button btnSpeenWheel;
 
     @FXML
@@ -55,14 +54,11 @@ public class RouletteController extends BaseController {
     @FXML
     private ComboBox<RouletteBetType> cmbBetType;
 
-    // Panes
-    // @FXML
-    // private Pane betFormPane;
-
     @FXML
     private Pane betPositionsIndicatorsPane;
 
-    // Bet position indicators (hidden circles used to define roulette numbers table
+    // Bet table position indicators (hidden circles used to define roulette numbers
+    // table
     // position)
     @FXML
     private Circle topLeftNumsTable;
@@ -89,7 +85,6 @@ public class RouletteController extends BaseController {
         txtBalance.setText(Double.toString(this.currentPlayer.getAccount()));
 
         // Set on action methods
-        btnCreateBet.setOnAction(event -> onCreateBetClicked());
         cmbBetType.setOnAction(event -> onBetTypeSelected());
         btnSpeenWheel.setOnAction(event -> onSpeenWheelClicked());
 
@@ -100,29 +95,32 @@ public class RouletteController extends BaseController {
         initializeBetForm();
     }
 
-    public void onCreateBetClicked() {
+    // IPlaceBetObj method implementation, inherits javadoc
+    public double getTotalBetsAmount() {
+        return rouletteGame.getTotalBetsAmount() + Integer.parseInt(txtBetAmount.getText());
+    }
+
+    // IPlaceBetObj method implementation, inherits javadoc
+    public void placeBet() {
 
         // Retrieve the selected bet type from the ComboBox
         RouletteBetType betType = cmbBetType.getValue();
         if (betType == null) {
-            // TODO alert message
-            System.out.println("Bet type can't be null");
+            showAlert(AlertType.WARNING, "Invalid bet", "Bet type can't be null");
             return;
         }
 
         // Retrieve the bet amount from the form and parse it as an integer
         int betAmount = Integer.parseInt(txtBetAmount.getText());
         if (betAmount == 0) {
-            // TODO alert message
-            System.out.println("Please, bets need to have a value greater then 0");
+            showAlert(AlertType.WARNING, "Invalid bet", "Please, bets need to have a value greater then 0");
             return;
         }
 
         // Retrieve bet position indicator number from selected bet position indicator
         // circle
         if (selectedBetPositionIndicatorCircle == null) {
-            // TODO alert message
-            System.out.println("Please, select a position on the table for your bet");
+            showAlert(AlertType.WARNING, "Invalid bet", "Please, select a position on the table for your bet");
             return;
         }
 
@@ -131,23 +129,15 @@ public class RouletteController extends BaseController {
             betPositionNumber = rouletteBetPositionsGrid
                     .getBetPositionIndicatorById(selectedBetPositionIndicatorCircle.getId()).betPositionNumber;
         } catch (Exception e) {
-            // TODO alert message
-            System.out.println(e.getMessage());
+            showAlert(AlertType.WARNING, "Internal error", e.getMessage());
             return;
         }
 
         // Create a new RouletteBet object using form data
         RouletteBet bet = new RouletteBet(betAmount, betType, betPositionNumber);
 
-        // Try to place the bet
-        try {
-            rouletteGame.bet(bet);
-        } catch (Exception e) {
-            // TODO alert message
-            System.out.println(e.getMessage());
-            return;
-        }
-
+        // Place the bet
+        rouletteGame.addRouletteBet(bet);
         betList.getItems().add(bet);
 
         // Empty form fields
@@ -156,6 +146,10 @@ public class RouletteController extends BaseController {
     }
 
     public void onSpeenWheelClicked() {
+        if (currentPlayer.isPlayerSolvent(rouletteGame.getTotalBetsAmount())) {
+            showAlert(AlertType.WARNING, "Insufficient balance", "Money at risk exeeds your balance");
+            return;
+        }
         rouletteGame.showResult();
         txtBalance.setText(Double.toString(this.currentPlayer.getAccount()));
     }

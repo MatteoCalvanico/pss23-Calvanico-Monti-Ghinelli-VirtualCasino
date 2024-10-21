@@ -134,7 +134,7 @@
          </font>
       </Button>
       <HBox id="chipBox" fx:id="chipBox" layoutX="859.0" layoutY="164.0" prefHeight="64.0" prefWidth="64.0" />
-      <Button id="btnSetBet" fx:id="btnSetBet" layoutX="859.0" layoutY="233.0" mnemonicParsing="false" onAction="#setBet" prefHeight="35.0" prefWidth="64.0" style="-fx-background-radius: 10; -fx-background-color: #FFD700;" text="Set bet">
+      <Button fx:id="btnPlaceBet" layoutX="859.0" layoutY="233.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="64.0" style="-fx-background-radius: 10; -fx-background-color: #FFD700;" text="Set bet">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="19.0" />
          </font>

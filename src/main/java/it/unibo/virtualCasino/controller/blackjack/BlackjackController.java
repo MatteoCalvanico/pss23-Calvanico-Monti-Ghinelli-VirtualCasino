@@ -1,6 +1,6 @@
 package it.unibo.virtualCasino.controller.blackjack;
 
-import it.unibo.virtualCasino.controller.BaseController;
+import it.unibo.virtualCasino.controller.BaseGameController;
 import it.unibo.virtualCasino.model.games.impl.blackjack.Blackjack;
 import it.unibo.virtualCasino.model.games.impl.blackjack.Card;
 import it.unibo.virtualCasino.view.menu.GamesView;
@@ -13,10 +13,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-public class BlackjackController extends BaseController {
+public class BlackjackController extends BaseGameController {
     @FXML
     private Button btnCard0;
 
@@ -77,12 +76,8 @@ public class BlackjackController extends BaseController {
     @FXML
     private Button btnBet100;
 
-    @FXML 
-    private Button btnBetMinus100;
-
     @FXML
-    private Button btnSetBet;
-
+    private Button btnBetMinus100;
 
     private Blackjack BJGame;
 
@@ -109,16 +104,43 @@ public class BlackjackController extends BaseController {
         chipBox.getChildren().add(chipView);
     }
 
+    // IPlaceBetObj method implementation, inherits javadoc
+    public void placeBet() {
+
+        if (currentBet == 0) {
+            showAlert(AlertType.WARNING, "Bet Warning", "You must bet something!");
+            return;
+        }
+        BJGame.nextRound(); // Clean the playing field
+        BJGame.bet(currentBet);
+
+        // Disable the buttons to change the bet
+        btnBet100.disableProperty().set(true);
+        btnBetMinus100.disableProperty().set(true);
+        btnPlaceBet.disableProperty().set(true);
+
+        // Disable the buttons to exitù
+        btnExit.disableProperty().set(true);
+
+        // The bet is set, we can start the game
+        startGame();
+    }
+
+    // IPlaceBetObj method implementation, inherits javadoc
+    public double getTotalBetsAmount() {
+        return currentBet;
+    }
+
     /*
-    * Method to start the game
-    */
-    protected void startGame(){
-        BJGame.receive(2);         // Give 2 cards to the dealer
+     * Method to start the game
+     */
+    protected void startGame() {
+        BJGame.receive(2); // Give 2 cards to the dealer
         BJGame.getDealerDeck().flipCard(0); // Set the first card of the dealer face up
 
         // Give 2 cards to the player
-        BJGame.call(0);           
-        BJGame.call(0); 
+        BJGame.call(0);
+        BJGame.call(0);
 
         updateScreen();
         btnCard0.disableProperty().set(false);
@@ -132,17 +154,17 @@ public class BlackjackController extends BaseController {
     }
 
     /**
-    * Method to get the image of the card
-    * @param card the card to get the image
-    * @return the file name of the card's image
-    */
-    protected String getCardImage(Card card){
+     * Method to get the image of the card
+     * 
+     * @param card the card to get the image
+     * @return the file name of the card's image
+     */
+    protected String getCardImage(Card card) {
         String cardPath;
-        
-        if(card.isFlip()){
+
+        if (card.isFlip()) {
             cardPath = "cardBack_red2.png";
-        }
-        else{
+        } else {
             String cardNumber;
             switch (card.getCardName()) {
                 case "JACK":
@@ -156,11 +178,11 @@ public class BlackjackController extends BaseController {
                 case "KING":
                     cardNumber = "K";
                     break;
-                
+
                 case "ACE":
                     cardNumber = "A";
                     break;
-            
+
                 default:
                     cardNumber = String.valueOf(card.getCardNumber());
                     break;
@@ -175,9 +197,10 @@ public class BlackjackController extends BaseController {
     }
 
     /**
-    * Method to display the result of the Blackjack game and updates the screen accordingly.
-    */
-    protected void showResult(){
+     * Method to display the result of the Blackjack game and updates the screen
+     * accordingly.
+     */
+    protected void showResult() {
         BJGame.showResult();
         updateScreen();
 
@@ -189,18 +212,18 @@ public class BlackjackController extends BaseController {
         btnSplit.disableProperty().set(true);
 
         // Re-able the buttons to change the bet
-        btnBet100.disableProperty().set(false); 
+        btnBet100.disableProperty().set(false);
         btnBetMinus100.disableProperty().set(false);
-        btnSetBet.disableProperty().set(false);
+        btnPlaceBet.disableProperty().set(false);
 
         // Re-able the buttons to exit
         btnExit.disableProperty().set(false);
     }
 
     /**
-    * Method to update the screen items
-    */
-    protected void updateScreen(){
+     * Method to update the screen items
+     */
+    protected void updateScreen() {
         boolean isSplit = BJGame.getPlayerDeck(1).countCard() > 0;
 
         // Update texts
@@ -227,18 +250,20 @@ public class BlackjackController extends BaseController {
         dealerDeckBox.getChildren().clear();
 
         // Set the images of the cards - player deck 0
-        for(int i = 0; i < BJGame.getPlayerDeck(0).size(); i++){
+        for (int i = 0; i < BJGame.getPlayerDeck(0).size(); i++) {
             Card card = BJGame.getPlayerDeck(0).checkCardFromDeck(i);
             ImageView cardView = getImage(getCardImage(card));
             deckBox0.getChildren().add(cardView);
 
             // Play the sound only for the last card
-            if (i == BJGame.getPlayerDeck(0).size() - 1) { playSound("/sound/cardPlace1.mp3"); }
+            if (i == BJGame.getPlayerDeck(0).size() - 1) {
+                playSound("/sound/cardPlace1.mp3");
+            }
         }
 
         // Set the images of the cards - player deck 1
         if (isSplit) {
-            for(int i = 0; i < BJGame.getPlayerDeck(1).size(); i++){
+            for (int i = 0; i < BJGame.getPlayerDeck(1).size(); i++) {
                 Card card = BJGame.getPlayerDeck(1).checkCardFromDeck(i);
                 ImageView cardView = getImage(getCardImage(card));
                 deckBox1.getChildren().add(cardView);
@@ -248,22 +273,23 @@ public class BlackjackController extends BaseController {
         }
 
         // Set the images of the cards - dealer deck
-        for(int i = 0; i < BJGame.getDealerDeck().size(); i++){
+        for (int i = 0; i < BJGame.getDealerDeck().size(); i++) {
             Card card = BJGame.getDealerDeck().checkCardFromDeck(i);
             ImageView cardView = getImage(getCardImage(card));
             dealerDeckBox.getChildren().add(cardView);
 
             // Play the sound only for the last card
-            if (i == BJGame.getDealerDeck().size() - 1) { playSound("/sound/cardPlace3.mp3"); }
+            if (i == BJGame.getDealerDeck().size() - 1) {
+                playSound("/sound/cardPlace3.mp3");
+            }
         }
     }
 
-
     @FXML
     /*
-    * Method to add 100 to the current bet
-    */
-    protected void addBet(){
+     * Method to add 100 to the current bet
+     */
+    protected void addBet() {
         currentBet += 100;
         txtBet0.setText(Integer.toString(currentBet));
         playSound("/sound/chipsCollide.mp3");
@@ -271,10 +297,10 @@ public class BlackjackController extends BaseController {
 
     @FXML
     /*
-    * Method to remove 100 to the current bet
-    */
-    protected void removeBet(){
-        if(currentBet >= 100){
+     * Method to remove 100 to the current bet
+     */
+    protected void removeBet() {
+        if (currentBet >= 100) {
             currentBet -= 100;
             txtBet0.setText(Integer.toString(currentBet));
             playSound("/sound/chipsCollide.mp3");
@@ -282,61 +308,15 @@ public class BlackjackController extends BaseController {
     }
 
     @FXML
-    /*
-    * Method to set the ultimate bet
-    * 
-    * !!! The balance don't change until the game is over !!!
-    */
-    protected void setBet(){
-        
-        if (currentBet == 0) {
-            Alert alert = new Alert(AlertType.WARNING);
-            alert.setTitle("Bet Warning");
-            alert.setHeaderText(null);
-            alert.setContentText("You must bet something!");
-            alert.showAndWait();
-            return;
-        }
-
-        try {
-            BJGame.nextRound(); // Clean the playing field
-            BJGame.bet(currentBet);
-
-            // Disable the buttons to change the bet
-            btnBet100.disableProperty().set(true); 
-            btnBetMinus100.disableProperty().set(true);
-            btnSetBet.disableProperty().set(true);
-
-            // Disable the buttons to exitù
-            btnExit.disableProperty().set(true);
-
-            // The bet is set, we can start the game
-            startGame();
-
-        } catch (IllegalArgumentException e) {
-            Alert alert = new Alert(AlertType.WARNING);
-            alert.setTitle("Warning");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-        
-        } catch (Exception e) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
     /**
-    * Method called when the player don't want to take other cards - check result and game ends
-    */
-    protected void stay(){
-        if (btnStay1.disableProperty().get() == true) { // If the player stayed in the second deck we can show the result
+     * Method called when the player don't want to take other cards - check result
+     * and game ends
+     */
+    protected void stay() {
+        if (btnStay1.disableProperty().get() == true) { // If the player stayed in the second deck we can show the
+                                                        // result
             showResult();
-        }else {                                         // Else we have to wait for the player to stay in the second deck
+        } else { // Else we have to wait for the player to stay in the second deck
             btnCard0.disableProperty().set(true);
             btnStay0.disableProperty().set(true);
             btnSplit.disableProperty().set(true);
@@ -347,7 +327,7 @@ public class BlackjackController extends BaseController {
     /**
      * Handle the call for the first deck
      */
-    protected void handleCall0(){
+    protected void handleCall0() {
         call(0);
     }
 
@@ -355,15 +335,15 @@ public class BlackjackController extends BaseController {
     /**
      * Handle the call for the second deck
      */
-    protected void handleCall1(){
+    protected void handleCall1() {
         call(1);
     }
 
     @FXML
     /**
-    * Method called when the player want to take other cards
-    */
-    protected void call(int deckNumber){
+     * Method called when the player want to take other cards
+     */
+    protected void call(int deckNumber) {
         BJGame.call(deckNumber);
 
         if (BJGame.getPlayerDeck(deckNumber).countCard() > 21) { // Check if the player has bust
@@ -373,33 +353,25 @@ public class BlackjackController extends BaseController {
             } else {
                 splitStay();
             }
-        }else {
+        } else {
             updateScreen();
         }
     }
 
     @FXML
     /**
-    * Method called when the player want to split
-    */
-    protected void split(){
+     * Method called when the player want to split
+     */
+    protected void split() {
         try {
             BJGame.split();
 
         } catch (RuntimeException e) {
-            Alert alert = new Alert(AlertType.WARNING);
-            alert.setTitle("Split Warning");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            showAlert(AlertType.WARNING, "Split Warning", e.getMessage());
             return;
-            
+
         } catch (Exception e) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            showAlert(AlertType.ERROR, "Error", e.getMessage());
             return;
         }
 
@@ -411,12 +383,12 @@ public class BlackjackController extends BaseController {
 
     @FXML
     /**
-    * Method called when the player want to stay in the second deck
-    */
-    protected void splitStay(){
+     * Method called when the player want to stay in the second deck
+     */
+    protected void splitStay() {
         if (btnStay0.disableProperty().get() == true) { // If the player stayed in the first deck we can show the result
             showResult();
-        }else {                                         // Else we have to wait for the player to stay in the first deck
+        } else { // Else we have to wait for the player to stay in the first deck
             btnCard1.disableProperty().set(true);
             btnStay1.disableProperty().set(true);
         }
@@ -424,9 +396,9 @@ public class BlackjackController extends BaseController {
 
     @FXML
     /**
-    * Method called when the player want to exit the game
-    */
-    protected void exit(ActionEvent event){
+     * Method called when the player want to exit the game
+     */
+    protected void exit(ActionEvent event) {
         // Save the player in the singleton class
         sendData();
 
@@ -436,11 +408,7 @@ public class BlackjackController extends BaseController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             gamesView.start(stage);
         } catch (Exception e) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            showAlert(AlertType.ERROR, "Error", e.getMessage());
             return;
         }
     }

@@ -35,38 +35,6 @@ public class Roulette extends RouletteBase implements Games {
     private Map<UUID, RouletteBet> placedBets = new HashMap<>();
 
     /**
-     * Check if amount exceeds player's account balance.
-     *
-     * @param amount The amount of money to bet.
-     * @throws IllegalArgumentException If the total bet amount exceeds the player's
-     *                                  account balance.
-     */
-    @Override
-    public void bet(double amount) {
-        double totalRiskedMoney = amount;
-        for (Map.Entry<UUID, RouletteBet> entry : placedBets.entrySet()) {
-            totalRiskedMoney += entry.getValue().getBetAmount();
-        }
-        if (totalRiskedMoney > currentPlayer.getAccount()) {
-            throw new IllegalArgumentException("Total bets amount exceed account balance");
-        }
-    }
-
-    /**
-     * Overloaded bet method, place a new bet and adds it to the list of placed
-     * bets.
-     *
-     * @param RouletteBet The roulette bet.
-     * @throws IllegalArgumentException If the total bet amount exceeds the player's
-     *                                  account balance.
-     */
-    public void bet(RouletteBet bet) {
-        this.bet((double) bet.getBetAmount());
-
-        this.placedBets.put(bet.getBetId(), bet);
-    }
-
-    /**
      * Prepares the game for a new round.
      *
      * This method resets the placed bets list to an empty HashMap, ensuring a fresh
@@ -102,6 +70,33 @@ public class Roulette extends RouletteBase implements Games {
     public Roulette(Player player) {
         new Random().nextBytes(seed);
         this.currentPlayer = player;
+    }
+
+    /**
+     * Place a new bet and adds it to the list of placed
+     * bets.
+     *
+     * @param RouletteBet The roulette bet.
+     */
+    public void addRouletteBet(RouletteBet bet) {
+        this.placedBets.put(bet.getBetId(), bet);
+    }
+
+    /**
+     * Calculates the total amount of money placed in all active bets.
+     * <p>
+     * This method iterates through all placed bets and sums the bet amounts
+     * to return the total amount of money risked by the player.
+     *
+     * @return the total amount of money placed in bets
+     */
+    public double getTotalBetsAmount() {
+        double totalRiskedMoney = 0;
+        for (Map.Entry<UUID, RouletteBet> entry : placedBets.entrySet()) {
+            totalRiskedMoney += entry.getValue().getBetAmount();
+        }
+
+        return totalRiskedMoney;
     }
 
     /**

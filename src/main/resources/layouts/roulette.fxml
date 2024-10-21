@@ -81,7 +81,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button id="btnCreateBet" fx:id="btnCreateBet" cancelButton="true" layoutX="136.0" layoutY="112.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="149.0" style="-fx-background-color: #70d5fa;" text="New Bet" textAlignment="CENTER">
+            <Button id="btnPlaceBet" fx:id="btnCreateBet" cancelButton="true" layoutX="136.0" layoutY="112.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="149.0" style="-fx-background-color: #70d5fa;" text="New Bet" textAlignment="CENTER">
                <font>
                   <Font name="Bodoni MT Poster Compressed" size="28.0" />
                </font>
