@@ -12,8 +12,6 @@ package it.unibo.virtualCasino.model.games;
  */
 public interface Games {
 
-    public void bet(double amount);
-
     public void nextRound();
 
     public void showResult();
