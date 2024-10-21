@@ -36,7 +36,6 @@ public class gamesMenuController extends BaseController {
     @FXML
     private Text txtPlayer;
 
-
     @FXML
     void playBlackjack(ActionEvent event) {
         try {
@@ -44,32 +43,28 @@ public class gamesMenuController extends BaseController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             BJView.start(stage);
         } catch (Exception e) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            showAlert(AlertType.ERROR, "Error", e.getMessage());
             return;
         }
     }
 
     @FXML
     void playRoulette(ActionEvent event) {
-        //TODO: go to roulette
+        // TODO: go to roulette
     }
 
     @FXML
     void exit(ActionEvent event) {
-        //TODO: go back to menu, but first ask the user if he wants to trow the dice and after that save the record (only if he made a new record)
+        // TODO: go back to menu, but first ask the user if he wants to trow the dice
+        // and after that save the record (only if he made a new record)
     }
 
     @Override
-    protected void setGame() {
+    protected void setBaseController() {
 
         // Set the current player
         txtPlayer.setText(currentPlayer.getName());
         txtBalance.setText(Double.toString(currentPlayer.getAccount()));
-
 
         // Set screenshots
         ImageView bjScreen = getImage("blackjackScreen.png");

@@ -8,7 +8,6 @@ import it.unibo.virtualCasino.view.menu.GamesView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
@@ -65,13 +64,13 @@ public class mainMenuController extends BaseController {
         dialog.setGraphic(null);
         dialog.setHeaderText("Virtual Casino says:");
         dialog.setContentText("Before starting, please enter your name:");
-    
+
         Optional<String> result;
         String name = "";
         boolean validName = false;
-    
+
         // Take the name from the user - loop until a valid name is entered
-        while (!validName) { 
+        while (!validName) {
             result = dialog.showAndWait();
             if (result.isPresent()) {
                 name = result.get().trim();
@@ -84,12 +83,10 @@ public class mainMenuController extends BaseController {
                 return;
             }
         }
-    
 
         // Save the player in the singleton class
         this.currentPlayer = new Player(name);
         sendData();
-
 
         // Open the games menu
         try {
@@ -97,22 +94,18 @@ public class mainMenuController extends BaseController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             gamesView.start(stage);
         } catch (Exception e) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            showAlert(AlertType.ERROR, "Error", e.getMessage());
             return;
         }
     }
 
     @FXML
     void showScoreBoard(ActionEvent event) {
-        //TODO: apri la finestra del punteggio direttamente
+        // TODO: apri la finestra del punteggio direttamente
     }
 
     @Override
-    protected void setGame() {
+    protected void setBaseController() {
 
         // Set images - chips
         ImageView chipView1 = getImage("chipBlackWhite.png");
@@ -130,14 +123,12 @@ public class mainMenuController extends BaseController {
         ImageView chipView5 = getImage("chipWhite.png");
         chipBox5.getChildren().add(chipView5);
 
-
         // Set images - cards
         ImageView cardView2 = getImage("cardHeartsQ.png");
         cardBox2.getChildren().add(cardView2);
 
         ImageView cardView1 = getImage("cardJoker.png");
         cardBox1.getChildren().add(cardView1);
-
 
         // Set images - dice
         ImageView diceView1 = getImage("dieRed3.png");
