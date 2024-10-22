@@ -6,7 +6,6 @@ import it.unibo.virtualCasino.view.roulette.RouletteView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -14,7 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class gamesMenuController extends BaseController {
+public class GamesMenuController extends BaseController {
 
     @FXML
     private HBox bjScreenBox;
@@ -56,11 +55,7 @@ public class gamesMenuController extends BaseController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             RLView.start(stage);
         } catch (Exception e) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            showAlert(AlertType.ERROR, "Error", e.getMessage());
             return;
         }
     }

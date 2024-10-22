@@ -3,7 +3,6 @@ package it.unibo.virtualCasino.controller.roulette;
 import java.util.function.UnaryOperator;
 
 import it.unibo.virtualCasino.controller.BaseGameController;
-import it.unibo.virtualCasino.controller.IPlaceBetObj;
 import it.unibo.virtualCasino.model.games.impl.roulette.Roulette;
 import it.unibo.virtualCasino.model.games.impl.roulette.RouletteBet;
 import it.unibo.virtualCasino.model.games.impl.roulette.RouletteBetPositionsGrid;
@@ -146,7 +145,7 @@ public class RouletteController extends BaseGameController {
     }
 
     public void onSpeenWheelClicked() {
-        if (currentPlayer.isPlayerSolvent(rouletteGame.getTotalBetsAmount())) {
+        if (!currentPlayer.isPlayerSolvent(rouletteGame.getTotalBetsAmount())) {
             showAlert(AlertType.WARNING, "Insufficient balance", "Money at risk exeeds your balance");
             return;
         }

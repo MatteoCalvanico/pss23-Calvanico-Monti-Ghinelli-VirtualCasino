@@ -16,7 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class mainMenuController extends BaseController {
+public class MainMenuController extends BaseController {
 
     @FXML
     private Button btnPlay;

@@ -69,6 +69,6 @@ public class Player {
      *         otherwise.
      */
     public boolean isPlayerSolvent(double amountAtRisk) {
-        return amountAtRisk < account;
+        return amountAtRisk <= account;
     }
 }
