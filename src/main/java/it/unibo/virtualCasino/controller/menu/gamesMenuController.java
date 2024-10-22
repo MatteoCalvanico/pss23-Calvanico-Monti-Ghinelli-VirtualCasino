@@ -2,6 +2,7 @@ package it.unibo.virtualCasino.controller.menu;
 
 import it.unibo.virtualCasino.controller.BaseController;
 import it.unibo.virtualCasino.view.blackjack.BlackjackView;
+import it.unibo.virtualCasino.view.roulette.RouletteView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -50,7 +51,18 @@ public class gamesMenuController extends BaseController {
 
     @FXML
     void playRoulette(ActionEvent event) {
-        // TODO: go to roulette
+        try {
+            RouletteView RLView = new RouletteView();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            RLView.start(stage);
+        } catch (Exception e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            return;
+        }
     }
 
     @FXML
