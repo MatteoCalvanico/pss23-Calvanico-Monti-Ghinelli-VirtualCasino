@@ -11,27 +11,38 @@ import java.util.ArrayList;
 
 /**
  * Represents a set of card
+ * 
  * @author it.unibo.virtualCasino
  * @see Card
  */
-public class Deck{
+public class Deck {
     private List<Card> deck;
 
     /**
      * Init a empty deck
      */
-    public Deck(){
+    public Deck() {
         this.deck = new ArrayList<>();
     }
 
     /**
-     * Popolate the deck with 52 card. 
-     * Every deck as 13 card for each seed. Example: "A♠", "2♠", "3♠", "4♠", "5♠", "6♠", "7♠", "8♠", "9♠", "10♠", "J♠", "Q♠", "K♠"
+     * Popolate the deck with 52 card.
+     * Every deck as 13 card for each seed. Example: "A♠", "2♠", "3♠", "4♠", "5♠",
+     * "6♠", "7♠", "8♠", "9♠", "10♠", "J♠", "Q♠", "K♠"
      */
-    public void initPlayDeck(){
-        for (CardSeed s : CardSeed.values()) { //We iterate for each seed
-            for (CardNumber c : CardNumber.values()) { //For each seed we associate a number
-                Card newC = new Card(c, s, (s == CardSeed.HEARTS || s == CardSeed.DIAMONDS) ? CardColor.RED : CardColor.BLACK); //The Heart and Diamonds have red cards, black for the other
+    public void initPlayDeck() {
+        for (CardSeed s : CardSeed.values()) { // We iterate for each seed
+            for (CardNumber c : CardNumber.values()) { // For each seed we associate a number
+                Card newC = new Card(c, s,
+                        (s == CardSeed.HEARTS || s == CardSeed.DIAMONDS) ? CardColor.RED : CardColor.BLACK); // The
+                                                                                                             // Heart
+                                                                                                             // and
+                                                                                                             // Diamonds
+                                                                                                             // have red
+                                                                                                             // cards,
+                                                                                                             // black
+                                                                                                             // for the
+                                                                                                             // other
                 this.deck.add(newC);
             }
         }
@@ -39,25 +50,27 @@ public class Deck{
 
     /**
      * Look at a specific card in the deck
+     * 
      * @param pos where to get the card
      * @return the card from the position (doesn't remove)
      */
-    public Card checkCardFromDeck(int pos){
+    public Card checkCardFromDeck(int pos) {
         return this.deck.get(pos);
     }
 
     /**
      * @return the number of card in the deck
      */
-    public int size(){
+    public int size() {
         return this.deck.size();
     }
 
     /**
      * Count the total value of the cards in the deck
+     * 
      * @return the sum of the values of all cards
      */
-    public int countCard(){
+    public int countCard() {
         int sum = 0;
         for (Card card : this.deck) {
             sum += card.getCardNumber();
@@ -67,54 +80,59 @@ public class Deck{
 
     /**
      * Shuffle the card in the deck
-    */
-    public void shuffleDeck(){
+     */
+    public void shuffleDeck() {
         Collections.shuffle(deck);
     }
 
     /**
      * Take the next card from the deck
+     * 
      * @return a Card (null if the deck is empty)
-    */
-    public Card draw(){
+     */
+    public Card draw() {
         return (deck.isEmpty()) ? null : deck.remove(0);
     }
 
     /**
      * Remove all the card from the deck
      */
-    public void emptyDeck(){
+    public void emptyDeck() {
         this.deck.clear();
     }
 
     /**
      * Insert a new card in the deck
+     * 
      * @param c the card to insert
      */
-    public void insert(Card c){
+    public void insert(Card c) {
         this.deck.add(c);
     }
 
     /**
      * Show all the card in the deck
      */
-    public void flipAll(){
-        for(Card c : this.deck){ 
-            if(c.isFlip() == true){ c.flip(); } 
+    public void flipAll() {
+        for (Card c : this.deck) {
+            if (c.isFlip() == true) {
+                c.flip();
+            }
         }
     }
 
     /**
      * Flip a specific card in the deck
+     * 
      * @param pos the position of the card to be flipped
      */
-    public void flipCard(int pos){
+    public void flipCard(int pos) {
         this.deck.get(pos).flip();
     }
 
     /**
      * @return the info of the deck
-    */
+     */
     @Override
     public String toString() {
         String info = "Deck: ";

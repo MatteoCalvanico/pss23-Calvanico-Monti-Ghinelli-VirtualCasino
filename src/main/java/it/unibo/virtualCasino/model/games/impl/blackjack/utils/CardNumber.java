@@ -2,7 +2,7 @@ package it.unibo.virtualCasino.model.games.impl.blackjack.utils;
 
 /**
  * Enums representing the number of French cards
-*/
+ */
 public enum CardNumber {
   ACE_ONE(1, "ACE"),
   ACE_ELEVEN(11, "ACE"), // The ACE can be both one or eleven [PLAYER DECIDE]
@@ -21,8 +21,9 @@ public enum CardNumber {
 
   private final int value;
   private final String displayName;
-  
-  private CardNumber(int val, String displayName) { //The constructor is private because the cards' value are already set
+
+  private CardNumber(int val, String displayName) { // The constructor is private because the cards' value are already
+                                                    // set
     this.value = val;
     this.displayName = displayName;
   }
@@ -31,13 +32,13 @@ public enum CardNumber {
    * @return the value of the card
    */
   public int getValue() {
-      return this.value;
+    return this.value;
   }
 
   /**
    * @return the displayName of the card
    */
   public String getName() {
-      return this.displayName;
+    return this.displayName;
   }
 }
