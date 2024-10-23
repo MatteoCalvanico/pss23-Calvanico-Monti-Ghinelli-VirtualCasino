@@ -140,4 +140,8 @@
          </font>
       </Button>
    </children>
+   <stylesheets>
+      <URL value="@styles.css" />
+      <URL value="@../css/style.css" />
+   </stylesheets>
 </AnchorPane>
