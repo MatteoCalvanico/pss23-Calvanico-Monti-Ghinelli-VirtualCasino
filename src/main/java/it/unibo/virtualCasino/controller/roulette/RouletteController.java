@@ -9,9 +9,12 @@ import it.unibo.virtualCasino.model.games.impl.roulette.RouletteBetPositionsGrid
 import it.unibo.virtualCasino.model.games.impl.roulette.dtos.Coordinate;
 import it.unibo.virtualCasino.model.games.impl.roulette.dtos.RouletteTableLayout;
 import it.unibo.virtualCasino.model.games.impl.roulette.enums.RouletteBetType;
+import it.unibo.virtualCasino.view.menu.GamesView;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -24,6 +27,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 /**
@@ -315,5 +319,24 @@ public class RouletteController extends BaseGameController {
         });
 
         return circle;
+    }
+
+    @FXML
+    /**
+     * Method called when the player want to exit the game
+     */
+    protected void exit(ActionEvent event) {
+        // Save the player in the singleton class
+        sendData();
+
+        // Open the games menu
+        try {
+            GamesView gamesView = new GamesView();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            gamesView.start(stage);
+        } catch (Exception e) {
+            showAlert(AlertType.ERROR, "Error", e.getMessage());
+            return;
+        }
     }
 }
