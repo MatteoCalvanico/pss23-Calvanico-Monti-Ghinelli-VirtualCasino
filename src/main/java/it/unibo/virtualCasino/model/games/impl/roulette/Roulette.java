@@ -34,6 +34,8 @@ public class Roulette extends RouletteBase implements Games {
 
     private Map<UUID, RouletteBet> placedBets = new HashMap<>();
 
+    private Integer winningNumber;
+
     /**
      * Prepares the game for a new round.
      *
@@ -52,8 +54,8 @@ public class Roulette extends RouletteBase implements Games {
      */
     @Override
     public void showResult() {
-        int winningNum = this.spinRoulette();
-        int gameRes = this.getGameProfitOrLoss(winningNum);
+        this.winningNumber = this.getNextWinningNumber();
+        int gameRes = this.getGameProfitOrLoss(winningNumber);
 
         if (gameRes < 0) {
             this.currentPlayer.removeLoss(Math.abs(gameRes));
@@ -140,11 +142,24 @@ public class Roulette extends RouletteBase implements Games {
     }
 
     /**
+     * get the winning number for the round.
+     *
+     * @return the winning number.
+     */
+    public Integer getWinningNumber() throws Exception {
+        if (winningNumber == null) {
+            throw new Exception("Winning number is null");
+        }
+
+        return this.winningNumber;
+    }
+
+    /**
      * Generates a random roulette spin result using a SecureRandom object.
      *
      * @return The generated random number representing the spin result.
      */
-    private int spinRoulette() {
+    private int getNextWinningNumber() {
         SecureRandom random = new SecureRandom(this.seed);
         return random.nextInt(this.NUMS_TOTAL + 1);
     }

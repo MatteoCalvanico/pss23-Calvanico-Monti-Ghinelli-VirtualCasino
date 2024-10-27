@@ -45,6 +45,9 @@ public class RouletteController extends BaseGameController {
     private TextField txtBetAmount;
 
     @FXML
+    private Text txtWinningNumber;
+
+    @FXML
     private Button btnSpeenWheel;
 
     @FXML
@@ -56,9 +59,6 @@ public class RouletteController extends BaseGameController {
     @FXML
     private Pane betPositionsIndicatorsPane;
 
-    // Bet table position indicators (hidden circles used to define roulette numbers
-    // table
-    // position)
     @FXML
     private Circle topLeftNumsTable;
 
@@ -128,7 +128,7 @@ public class RouletteController extends BaseGameController {
             betPositionNumber = rouletteBetPositionsGrid
                     .getBetPositionIndicatorById(selectedBetPositionIndicatorCircle.getId()).betPositionNumber;
         } catch (Exception e) {
-            showAlert(AlertType.WARNING, "Internal error", e.getMessage());
+            showAlert(AlertType.ERROR, "Error", e.getMessage());
             return;
         }
 
@@ -150,6 +150,13 @@ public class RouletteController extends BaseGameController {
             return;
         }
         rouletteGame.showResult();
+
+        try {
+            txtWinningNumber.setText(rouletteGame.getWinningNumber().toString());
+        } catch (Exception e) {
+            showAlert(AlertType.ERROR, "Error", e.getMessage());
+        }
+
         txtBalance.setText(Double.toString(this.currentPlayer.getAccount()));
     }
 
@@ -242,12 +249,16 @@ public class RouletteController extends BaseGameController {
         // Set styles
         circle.setRadius(6);
         circle.setStrokeType(StrokeType.INSIDE);
-        circle.setFill(Color.GRAY);
+        circle.setFill(Color.GOLD);
 
         // Set the cursor to hand when hovering over the circle
         circle.setOnMouseEntered(event -> {
             circle.setCursor(Cursor.HAND);
             circle.setFill(Color.LIGHTSLATEGRAY);
+        });
+        circle.setOnMouseExited(event -> {
+            circle.setCursor(Cursor.DEFAULT);
+            circle.setFill(Color.GOLD);
         });
 
         // Add an onClick event to handle selection styling and storing the selected
