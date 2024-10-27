@@ -26,7 +26,11 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
-// TODO JavaDoc
+/**
+ * Controller class for handling user interactions with the Roulette game UI.
+ * Manages bet placement, game state, and updates to the player's balance and
+ * winning number display.
+ */
 public class RouletteController extends BaseGameController {
 
     private Roulette rouletteGame;
@@ -68,6 +72,10 @@ public class RouletteController extends BaseGameController {
     @FXML
     private Circle bottomLeftBetsTable;
 
+    /**
+     * Initializes the game settings and UI elements, setting up event handlers and
+     * form input constraints.
+     */
     @Override
     protected void setGame() {
         // Initialize models
@@ -94,7 +102,12 @@ public class RouletteController extends BaseGameController {
         initializeBetForm();
     }
 
-    // IPlaceBetObj method implementation, inherits javadoc
+    /**
+     * Returns the total amount of all current bets combined with the input in
+     * txtBetAmount field.
+     *
+     * @return the sum of all bets placed and current bet input.
+     */
     public double getTotalBetsAmount() {
         return rouletteGame.getTotalBetsAmount() + Integer.parseInt(txtBetAmount.getText());
     }
@@ -144,6 +157,10 @@ public class RouletteController extends BaseGameController {
         cmbBetType.setValue(null);
     }
 
+    /**
+     * Spins the roulette wheel, determines the winning number, and updates the
+     * player's balance based on bets.
+     */
     public void onSpeenWheelClicked() {
         if (!currentPlayer.isPlayerSolvent(rouletteGame.getTotalBetsAmount())) {
             showAlert(AlertType.WARNING, "Insufficient balance", "Money at risk exeeds your balance");
@@ -160,6 +177,10 @@ public class RouletteController extends BaseGameController {
         txtBalance.setText(Double.toString(this.currentPlayer.getAccount()));
     }
 
+    /**
+     * Updates the list of selectable bet positions on the table according to the
+     * chosen bet type.
+     */
     public void onBetTypeSelected() {
         // Clear previous indicators
         betPositionsIndicatorsPane.getChildren().clear();
@@ -184,7 +205,11 @@ public class RouletteController extends BaseGameController {
                                 positionIndicator.Id)));
     }
 
-    // Initialize ListView to display custom cells
+    /**
+     * Initializes the custom cell layout for the bet list, including a delete
+     * button
+     * for each bet entry.
+     */
     private void initializeListViewCustomCells() {
         betList.setItems(FXCollections.observableArrayList());
         betList.setCellFactory(new Callback<ListView<RouletteBet>, ListCell<RouletteBet>>() {
@@ -218,6 +243,10 @@ public class RouletteController extends BaseGameController {
         });
     }
 
+    /**
+     * Sets up the bet form for user input, applying a formatter to ensure only
+     * numeric values are entered for bet amounts.
+     */
     private void initializeBetForm() {
         // Bet type combo select
         cmbBetType.setItems(FXCollections.observableArrayList(RouletteBetType.values()));
@@ -235,6 +264,15 @@ public class RouletteController extends BaseGameController {
         txtBetAmount.setTextFormatter(textFormatter);
     }
 
+    /**
+     * Creates a new circle element to represent a selectable bet position indicator
+     * on the UI.
+     *
+     * @param layoutX    the x-axis position of the circle.
+     * @param layoutY    the y-axis position of the circle.
+     * @param positionId the identifier for the position.
+     * @return a circle representing the bet position indicator.
+     */
     private Circle createBetPositionCircle(double layoutX, double layoutY, String positionId) {
         // Create the circle for positioning
         Circle circle = new Circle();
