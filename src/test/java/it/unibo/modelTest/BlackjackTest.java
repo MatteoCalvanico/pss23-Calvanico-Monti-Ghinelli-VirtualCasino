@@ -19,16 +19,18 @@ public class BlackjackTest {
     private Blackjack blackjack;
     private Player player;
     private Deck deck;
-    
+
     @BeforeEach
-    void setup(){
+    void setup() {
         player = new Player("Test Player");
         blackjack = new Blackjack(2, player);
     }
 
-    /*@Test
-    public void testBet_validAmount() throws Exception {
-        blackjack.bet(50);
-        assertEquals(50, blackjack.getBet(0));
-    }*/
+    /*
+     * @Test
+     * public void testBet_validAmount() throws Exception {
+     * blackjack.bet(50);
+     * assertEquals(50, blackjack.getBet(0));
+     * }
+     */
 }
