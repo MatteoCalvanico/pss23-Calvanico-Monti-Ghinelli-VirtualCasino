@@ -36,6 +36,7 @@ dependencies {
     // Library
     implementation("org.openjfx:javafx-controls:17.0.1") // JavaFX Controls
     implementation("org.openjfx:javafx-media:17.0.1")    // JavaFX Media (sound)
+    implementation("com.google.code.gson:gson:2.8.8")    // JSON serialization and deserialization
 
     // JavaFX: comment out if you do not need them
     val javaFxVersion = 15
