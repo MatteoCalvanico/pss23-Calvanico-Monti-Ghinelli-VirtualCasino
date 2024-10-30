@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #014508; -fx-border-style: solid; -fx-border-color: #2b1a01; -fx-border-width: 10;" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.virtualCasino.controller.scoreboard.ScoreboardController">
+   <children>
+      <Text fx:id="txtWelcome" fill="#a91111" layoutX="14.0" layoutY="335.0" stroke="#eade07" strokeType="INSIDE" text="Top 10 players" textAlignment="CENTER" wrappingWidth="351.4701232910156">
+         <font>
+            <Font name="Bodoni MT Poster Compressed" size="93.0" />
+         </font>
+      </Text>
+      <Text fx:id="txtWelcome1" fill="#a91111" layoutX="668.0" layoutY="335.0" stroke="#eade07" strokeType="INSIDE" text="SCOREBOARD" textAlignment="CENTER" wrappingWidth="336.4701232910156">
+         <font>
+            <Font name="Bodoni MT Poster Compressed" size="93.0" />
+         </font>
+      </Text>
+      <TableView fx:id="scoreboardTable" layoutX="365.0" layoutY="10.0" prefHeight="580.0" prefWidth="290.0" style="-fx-background-color: #014508; -fx-border-color: black; -fx-border-width: 4px;">
+        <columns>
+            <TableColumn fx:id="colName" prefWidth="141.0" text="Name" />
+            <TableColumn fx:id="colFinalBalance" prefWidth="148.0" text="Final balance" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>
