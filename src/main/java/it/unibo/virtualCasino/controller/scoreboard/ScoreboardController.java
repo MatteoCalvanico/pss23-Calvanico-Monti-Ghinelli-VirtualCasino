@@ -3,34 +3,64 @@ package it.unibo.virtualCasino.controller.scoreboard;
 import it.unibo.virtualCasino.controller.BaseController;
 import it.unibo.virtualCasino.model.scoreboard.Scoreboard;
 import it.unibo.virtualCasino.model.scoreboard.dtos.ScoreboardRecord;
+import it.unibo.virtualCasino.view.menu.MenuView;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
 public class ScoreboardController extends BaseController {
     @FXML
-    private TableView<ScoreboardRecord> scoreboardTable;
+    private ListView<String> scoreboardList;
+
     @FXML
     private TableColumn<ScoreboardRecord, String> colName;
+
     @FXML
     private TableColumn<ScoreboardRecord, Double> colFinalBalance;
 
+    @FXML
+    private Button btnExit;
+
     @Override
     protected void setBaseController() {
-        Scoreboard scoreboard = new Scoreboard();
+        btnExit.setOnAction(event -> exit(event));
 
-        // Retrieve records
-        ArrayList<ScoreboardRecord> records = scoreboard.getScoreBoardRecords();
+        ArrayList<ScoreboardRecord> scoreboardRecords = Scoreboard.loadScoreboard();
 
-        // Initialize columns without PropertyValueFactory
-        colName.setCellFactory(column -> new TextFieldTableCell<>());
-        colFinalBalance.setCellFactory(column -> new TextFieldTableCell<>());
+        for (int i = 1; i <= scoreboardRecords.size(); i++) {
+            ScoreboardRecord record = scoreboardRecords.get(i - 1);
 
-        // Add each record to the TableView
-        records.forEach(record -> scoreboardTable.getItems().add(record));
+            scoreboardList
+                    .getItems()
+                    .add(String.format("%s° %s - Balance: $%s", i, record.playerName, record.playerBalance));
+        }
+
+        // Center text in each ListView item
+        scoreboardList.setStyle("-fx-alignment: center; -fx-text: yellow;");
     }
 
+    /**
+     * Method called when the user want to exit the scorboard view
+     */
+    protected void exit(ActionEvent event) {
+        // Save the player in the singleton class
+        sendData();
+
+        // Open the menu
+        try {
+            MenuView gamesView = new MenuView();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            gamesView.start(stage);
+        } catch (Exception e) {
+            showAlert(AlertType.ERROR, "Error", e.getMessage());
+            return;
+        }
+    }
 }
