@@ -1,17 +1,15 @@
 package it.unibo.virtualCasino.controller.scoreboard;
 
 import it.unibo.virtualCasino.controller.BaseController;
+import it.unibo.virtualCasino.helpers.RoutingHelper;
 import it.unibo.virtualCasino.model.scoreboard.Scoreboard;
 import it.unibo.virtualCasino.model.scoreboard.dtos.ScoreboardRecord;
 import it.unibo.virtualCasino.view.menu.MenuView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -50,17 +48,6 @@ public class ScoreboardController extends BaseController {
      * Method called when the user want to exit the scorboard view
      */
     protected void exit(ActionEvent event) {
-        // Save the player in the singleton class
-        sendData();
-
-        // Open the menu
-        try {
-            MenuView gamesView = new MenuView();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            gamesView.start(stage);
-        } catch (Exception e) {
-            showAlert(AlertType.ERROR, "Error", e.getMessage());
-            return;
-        }
+        RoutingHelper.goTo(event, new MenuView());
     }
 }

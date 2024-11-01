@@ -1,6 +1,7 @@
 package it.unibo.virtualCasino.controller.menu;
 
 import it.unibo.virtualCasino.controller.BaseController;
+import it.unibo.virtualCasino.helpers.RoutingHelper;
 import it.unibo.virtualCasino.model.scoreboard.Scoreboard;
 import it.unibo.virtualCasino.model.scoreboard.dtos.ScoreboardRecord;
 import it.unibo.virtualCasino.view.blackjack.BlackjackView;
@@ -8,13 +9,10 @@ import it.unibo.virtualCasino.view.menu.MenuView;
 import it.unibo.virtualCasino.view.roulette.RouletteView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 public class GamesMenuController extends BaseController {
 
@@ -41,26 +39,12 @@ public class GamesMenuController extends BaseController {
 
     @FXML
     void playBlackjack(ActionEvent event) {
-        try {
-            BlackjackView BJView = new BlackjackView();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            BJView.start(stage);
-        } catch (Exception e) {
-            showAlert(AlertType.ERROR, "Error", e.getMessage());
-            return;
-        }
+        RoutingHelper.goTo(event, new BlackjackView());
     }
 
     @FXML
     void playRoulette(ActionEvent event) {
-        try {
-            RouletteView RLView = new RouletteView();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            RLView.start(stage);
-        } catch (Exception e) {
-            showAlert(AlertType.ERROR, "Error", e.getMessage());
-            return;
-        }
+        RoutingHelper.goTo(event, new RouletteView());
     }
 
     @FXML
@@ -73,14 +57,7 @@ public class GamesMenuController extends BaseController {
                         this.currentPlayer.getName(),
                         this.currentPlayer.getAccount()));
 
-        try {
-            MenuView RLView = new MenuView();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            RLView.start(stage);
-        } catch (Exception e) {
-            showAlert(AlertType.ERROR, "Error", e.getMessage());
-            return;
-        }
+        RoutingHelper.goTo(event, new MenuView());
     }
 
     @Override

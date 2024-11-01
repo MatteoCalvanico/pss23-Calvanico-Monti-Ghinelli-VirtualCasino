@@ -3,20 +3,18 @@ package it.unibo.virtualCasino.controller.menu;
 import java.util.Optional;
 
 import it.unibo.virtualCasino.controller.BaseController;
+import it.unibo.virtualCasino.helpers.RoutingHelper;
 import it.unibo.virtualCasino.model.Player;
 import it.unibo.virtualCasino.model.scoreboard.Scoreboard;
 import it.unibo.virtualCasino.view.menu.GamesView;
 import it.unibo.virtualCasino.view.scoreboard.ScoreboardView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 public class MainMenuController extends BaseController {
 
@@ -129,28 +127,12 @@ public class MainMenuController extends BaseController {
         this.currentPlayer = new Player(name);
         sendData();
 
-        // Open the games menu
-        try {
-            GamesView gamesView = new GamesView();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            gamesView.start(stage);
-        } catch (Exception e) {
-            showAlert(AlertType.ERROR, "Error", e.getMessage());
-            return;
-        }
+        RoutingHelper.goTo(event, new GamesView());
     }
 
     @FXML
     void showScoreBoard(ActionEvent event) {
-        // Open the games menu
-        try {
-            ScoreboardView gamesView = new ScoreboardView();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            gamesView.start(stage);
-        } catch (Exception e) {
-            showAlert(AlertType.ERROR, "Error", e.getMessage());
-            return;
-        }
+        RoutingHelper.goTo(event, new ScoreboardView());
     }
 
 }

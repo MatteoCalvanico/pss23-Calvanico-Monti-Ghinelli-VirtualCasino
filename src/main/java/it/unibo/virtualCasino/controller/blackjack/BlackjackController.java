@@ -1,18 +1,15 @@
 package it.unibo.virtualCasino.controller.blackjack;
 
 import it.unibo.virtualCasino.controller.BaseGameController;
+import it.unibo.virtualCasino.helpers.AlertHelper;
 import it.unibo.virtualCasino.model.games.impl.blackjack.Blackjack;
 import it.unibo.virtualCasino.model.games.impl.blackjack.Card;
-import it.unibo.virtualCasino.view.menu.GamesView;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.NodeOrientation;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
 
 public class BlackjackController extends BaseGameController {
@@ -21,9 +18,6 @@ public class BlackjackController extends BaseGameController {
 
     @FXML
     private Button btnCard1;
-
-    @FXML
-    private Button btnExit;
 
     @FXML
     private Button btnSplit;
@@ -108,7 +102,7 @@ public class BlackjackController extends BaseGameController {
     public void placeBet() {
 
         if (currentBet == 0) {
-            showAlert(AlertType.WARNING, "Bet Warning", "You must bet something!");
+            AlertHelper.show(AlertType.WARNING, "Bet Warning", "You must bet something!");
             return;
         }
         BJGame.nextRound(); // Clean the playing field
@@ -367,11 +361,11 @@ public class BlackjackController extends BaseGameController {
             BJGame.split();
 
         } catch (RuntimeException e) {
-            showAlert(AlertType.WARNING, "Split Warning", e.getMessage());
+            AlertHelper.show(AlertType.WARNING, "Split Warning", e.getMessage());
             return;
 
         } catch (Exception e) {
-            showAlert(AlertType.ERROR, "Error", e.getMessage());
+            AlertHelper.show(AlertType.ERROR, "Error", e.getMessage());
             return;
         }
 
@@ -391,25 +385,6 @@ public class BlackjackController extends BaseGameController {
         } else { // Else we have to wait for the player to stay in the first deck
             btnCard1.disableProperty().set(true);
             btnStay1.disableProperty().set(true);
-        }
-    }
-
-    @FXML
-    /**
-     * Method called when the player want to exit the game
-     */
-    protected void exit(ActionEvent event) {
-        // Save the player in the singleton class
-        sendData();
-
-        // Open the games menu
-        try {
-            GamesView gamesView = new GamesView();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            gamesView.start(stage);
-        } catch (Exception e) {
-            showAlert(AlertType.ERROR, "Error", e.getMessage());
-            return;
         }
     }
 }
