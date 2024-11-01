@@ -1,7 +1,10 @@
 package it.unibo.virtualCasino.controller.menu;
 
 import it.unibo.virtualCasino.controller.BaseController;
+import it.unibo.virtualCasino.model.scoreboard.Scoreboard;
+import it.unibo.virtualCasino.model.scoreboard.dtos.ScoreboardRecord;
 import it.unibo.virtualCasino.view.blackjack.BlackjackView;
+import it.unibo.virtualCasino.view.menu.MenuView;
 import it.unibo.virtualCasino.view.roulette.RouletteView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -64,6 +67,20 @@ public class GamesMenuController extends BaseController {
     void exit(ActionEvent event) {
         // TODO: go back to menu, but first ask the user if he wants to trow the dice
         // and after that save the record (only if he made a new record)
+
+        Scoreboard.addRecord(
+                new ScoreboardRecord(
+                        this.currentPlayer.getName(),
+                        this.currentPlayer.getAccount()));
+
+        try {
+            MenuView RLView = new MenuView();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            RLView.start(stage);
+        } catch (Exception e) {
+            showAlert(AlertType.ERROR, "Error", e.getMessage());
+            return;
+        }
     }
 
     @Override

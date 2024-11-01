@@ -4,7 +4,9 @@ import java.util.Optional;
 
 import it.unibo.virtualCasino.controller.BaseController;
 import it.unibo.virtualCasino.model.Player;
+import it.unibo.virtualCasino.model.scoreboard.Scoreboard;
 import it.unibo.virtualCasino.view.menu.GamesView;
+import it.unibo.virtualCasino.view.scoreboard.ScoreboardView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -57,53 +59,6 @@ public class MainMenuController extends BaseController {
     @FXML
     private Text txtWelcome;
 
-    @FXML
-    void showGames(ActionEvent event) {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Enter Name");
-        dialog.setGraphic(null);
-        dialog.setHeaderText("Virtual Casino says:");
-        dialog.setContentText("Before starting, please enter your name:");
-
-        Optional<String> result;
-        String name = "";
-        boolean validName = false;
-
-        // Take the name from the user - loop until a valid name is entered
-        while (!validName) {
-            result = dialog.showAndWait();
-            if (result.isPresent()) {
-                name = result.get().trim();
-                if (!name.isEmpty()) {
-                    validName = true;
-                } else {
-                    dialog.setHeaderText("Name cannot be empty. Please enter your name:");
-                }
-            } else { // User pressed "Cancel"
-                return;
-            }
-        }
-
-        // Save the player in the singleton class
-        this.currentPlayer = new Player(name);
-        sendData();
-
-        // Open the games menu
-        try {
-            GamesView gamesView = new GamesView();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            gamesView.start(stage);
-        } catch (Exception e) {
-            showAlert(AlertType.ERROR, "Error", e.getMessage());
-            return;
-        }
-    }
-
-    @FXML
-    void showScoreBoard(ActionEvent event) {
-        // TODO: apri la finestra del punteggio direttamente
-    }
-
     @Override
     protected void setBaseController() {
 
@@ -139,6 +94,63 @@ public class MainMenuController extends BaseController {
 
         ImageView diceView3 = getImage("dieRed1.png");
         diceBox3.getChildren().add(diceView3);
+    }
+
+    @FXML
+    void showGames(ActionEvent event) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Enter Name");
+        dialog.setGraphic(null);
+        dialog.setHeaderText("Virtual Casino says:");
+        dialog.setContentText("Before starting, please enter your name:");
+
+        Optional<String> result;
+        String name = "";
+        boolean validName = false;
+
+        // Take the name from the user - loop until a valid name is entered
+        while (!validName) {
+            result = dialog.showAndWait();
+            if (result.isPresent()) {
+                name = result.get().trim();
+                if (name.isEmpty()) {
+                    dialog.setHeaderText("Name cannot be empty. Please enter your name:");
+                } else if (Scoreboard.containsName(name)) {
+                    dialog.setHeaderText("Invalid name. Name already exists on the casino scoreboard!");
+                } else {
+                    validName = true;
+                }
+            } else { // User pressed "Cancel"
+                return;
+            }
+        }
+
+        // Save the player in the singleton class
+        this.currentPlayer = new Player(name);
+        sendData();
+
+        // Open the games menu
+        try {
+            GamesView gamesView = new GamesView();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            gamesView.start(stage);
+        } catch (Exception e) {
+            showAlert(AlertType.ERROR, "Error", e.getMessage());
+            return;
+        }
+    }
+
+    @FXML
+    void showScoreBoard(ActionEvent event) {
+        // Open the games menu
+        try {
+            ScoreboardView gamesView = new ScoreboardView();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            gamesView.start(stage);
+        } catch (Exception e) {
+            showAlert(AlertType.ERROR, "Error", e.getMessage());
+            return;
+        }
     }
 
 }
