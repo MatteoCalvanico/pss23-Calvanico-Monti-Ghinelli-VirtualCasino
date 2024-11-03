@@ -16,6 +16,9 @@ The minimum and mandatory features are listed below:
 </p>
 
 - *Scoreboard* to save and see all the previous records.
+<p align = "center">
+    <img src="./src/main/resources/sprite/screenshot/scoreboardScreen.jpg"/>
+</p>
 
 - A set of automated tests for both the model and view parts.
 #
