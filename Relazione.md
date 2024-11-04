@@ -130,261 +130,73 @@ BaseGameController -- View
 ```
 Nell'UML sopra viene mostrato in maniera sintetica come funziona la comunicazione tra vari componenti e l'implementazione del pattern MVC.
 
-## Design dettagliato
-
-In questa sezione si possono approfondire alcuni elementi del design con
-maggior dettaglio. Mentre ci attendiamo principalmente (o solo)
-interfacce negli schemi UML delle sezioni precedenti, in questa sezione
-è necessario scendere in maggior dettaglio presentando la struttura di
-alcune sottoparti rilevanti dell'applicazione. È molto importante che,
-descrivendo la soluzione ad un problema, quando possibile si mostri che
-non si è re-inventata la ruota ma si è applicato un design pattern noto.
-Che si sia utilizzato (o riconosciuto) o meno un pattern noto, è
-comunque bene definire qual è il problema che si è affrontato, qual è la
-soluzione messa in campo, e quali motivazioni l'hanno spinta. È
-assolutamente inutile, ed è anzi controproducente, descrivere
-classe-per-classe (o peggio ancora metodo-per-metodo) com'è fatto il
-vostro software: è un livello di dettaglio proprio della documentazione
-dell'API (deducibile dalla Javadoc).
-
-**È necessario che ciascun membro del gruppo abbia una propria sezione
-di design dettagliato, di cui sarà il solo responsabile**.
-
-Ciascun
-autore dovrà spiegare in modo corretto e giustamente approfondito (non
-troppo in dettaglio, non superficialmente) il proprio contributo. È
-importante focalizzarsi sulle scelte che hanno un impatto positivo sul
-riuso, sull'estensibilità, e sulla chiarezza dell'applicazione.
-Esattamente come nessun ingegnere meccanico presenta un solo foglio con
-l'intero progetto di una vettura di Formula 1, ma molteplici fogli di
-progetto che mostrano a livelli di dettaglio differenti le varie parti
-della vettura e le modalità di connessione fra le parti, così ci
-aspettiamo che voi, futuri ingegneri informatici, ci presentiate prima
-una visione globale del progetto, e via via siate in grado di
-dettagliare le singole parti, scartando i componenti che non interessano
-quella in esame. Per continuare il parallelo con la vettura di Formula
-1, se nei fogli di progetto che mostrano il design delle sospensioni
-anteriori appaiono pezzi che appartengono al volante o al turbo, c'è una
-chiara indicazione di qualche problema di design.
-
-Si divida la sezione in sottosezioni, e per ogni aspetto di design che
-si vuole approfondire, si presenti:
-
-1.  : una breve descrizione in linguaggio naturale del problema che si
-    vuole risolvere, se necessario ci si può aiutare con schemi o
-    immagini;
-2.  : una descrizione della soluzione proposta, analizzando eventuali
-    alternative che sono state prese in considerazione, e che descriva
-    pro e contro della scelta fatta;
-3.  : uno schema UML che aiuti a comprendere la soluzione sopra
-    descritta;
-4.  : se la soluzione è stata realizzata utilizzando uno o più pattern
-    noti, si spieghi come questi sono reificati nel progetto (ad
-    esempio: nel caso di Template Method, qual è il metodo template; nel
-    caso di Strategy, quale interfaccia del progetto rappresenta la
-    strategia, e quali sono le sue implementazioni; nel caso di
-    Decorator, qual è la classe astratta che fa da Decorator e quali
-    sono le sue implementazioni concrete; eccetera);
-
-La presenza di pattern di progettazione *correttamente utilizzati* è
-valutata molto positivamente. L'uso inappropriato è invece valutato
-negativamente: a tal proposito, si raccomanda di porre particolare
-attenzione all'abuso di Singleton, che, se usato in modo inappropriato,
-è di fatto un anti-pattern.
-
-### Elementi positivi
-
--   Ogni membro del gruppo discute le proprie decisioni di
-    progettazione, ed in particolare le azioni volte ad anticipare
-    possibili cambiamenti futuri (ad esempio l'aggiunta di una nuova
-    funzionalità, o il miglioramento di una esistente).
--   Si mostrano le principali interazioni fra le varie componenti che
-    collaborano alla soluzione di un determinato problema.
--   Si identificano, utilizzano *appropriatamente*, e descrivono diversi
-    design pattern.
--   Ogni membro del gruppo identifica i pattern utilizzati nella sua
-    sottoparte.
--   Si mostrano gli aspetti di design più rilevanti dell'applicazione,
-    mettendo in luce la maniera in cui si è costruita la soluzione ai
-    problemi descritti nell'analisi.
--   Si tralasciano aspetti strettamente implementativi e quelli non
-    rilevanti, non mostrandoli negli schemi UML (ad esempio, campi
-    privati) e non descrivendoli.
--   Ciascun elemento di design identificato presenta una piccola
-    descrizione del problema calato nell'applicazione, uno schema UML
-    che ne mostra la concretizzazione nelle classi del progetto, ed una
-    breve descrizione della motivazione per cui tale soluzione è stata
-    scelta, specialmente se è stato utilizzato un pattern noto. Ad
-    esempio, se si dichiara di aver usato Observer, è necessario
-    specificare chi sia l'observable e chi l'observer; se si usa
-    Template Method, è necessario indicare quale sia il metodo template;
-    se si usa Strategy, è necessario identificare l'interfaccia che
-    rappresenta la strategia; e via dicendo.
-
-### Elementi negativi
-
--   Il design del modello risulta scorrelato dal problema descritto in
-    analisi.
--   Si tratta in modo prolisso, classe per classe, il software
-    realizzato, o comunque si riduce la sezione ad un mero elenco di
-    quanto fatto.
--   Non si presentano schemi UML esemplificativi.
--   Non si individuano design pattern, o si individuano in modo errato
-    (si spaccia per design pattern qualcosa che non lo è).
--   Si utilizzano design pattern in modo inopportuno.
--   Si producono schemi UML caotici e difficili da leggere, che
-    comprendono inutili elementi di dettaglio.
--   Si presentano schemi UML con classi (nel senso UML del termine) che
-    "galleggiano" nello schema, non connesse, ossia senza relazioni con
-    il resto degli elementi inseriti.
--   Si tratta in modo inutilmente prolisso la divisione in package,
-    elencando ad esempio le classi una per una.
-
-### Esempio minimale (e quindi parziale) di sezione di progetto con UML ben realizzati
-
-#### Personalità intercambiabili
-
-Rappresentazione UML del pattern Strategy per la personalità di
-GLaDOS
+## Design dettagliato - Matteo Calvanico
+### Condivisione informazioni Player
+Rappresentazione UML del pattern Singleton per salvare e condividere le informazioni del Player tra le varie scene.
 
 ```mermaid
 classDiagram
-
-class Personality {
-    onSuccess()
+class Player {
+    +getAccount() Account
+    +addWin(amount)
+    +removeLost(amount)
 }
-<<interface>> Personality
+<<interface>> Player
 
-class AbstractPersonality {
-    +onSuccess()
+class PlayerHolder {
+    +getPlayerHolded()
+    setPlayerHolded(Player)
+    +getInstance()
 }
-<<abstract>> AbstractPersonality
+<<interface>> PlayerHolder
 
-class AI {
-    +setPersonality(Personality)
-}
-<<interface>> AI
-
-AbstractPersonality --|> Personality
-Personality -- AI
-Good --|> AbstractPersonality
-Evil --|> AbstractPersonality
-
+Player -- PlayerHolder
+PlayerHolder <|-- PlayerHolder
 ```
+#### Problema
+Riuscire a mantenere salvata l'istanza del player, in modo da gestire le varie vincite/perdite e condividere le informazioni tra le varie scene
 
-##### Problema
+#### Soluzione
+Utilizzo del design patter *Singleton*, dove si salva il Player e si modifica utilizzando i metodi della classe singleton tramite l'istanza creata privatamente e resa disponibile tramite un metodo pubblico
 
-GLaDOS ha più personalità intercambiabili, la cui presenza deve essere
-trasparente al client.
-
-##### Soluzione
-
-Il sistema per la gestione della personalità utilizza il *pattern
-Strategy*, come da : le implementazioni di `Personality` possono essere
-modificate, e la modifica impatta direttamente sul comportamento di
-GLaDOS.
-
-#### Riuso del codice delle personalità
-
-Rappresentazione UML dell'applicazione del pattern Template Method
-alla gerarchia delle Personalità
+### Gestione delle carte
+Rappresentazione UML della gestione delle carte
 
 ```mermaid
-classDiagram
-
-class AbstractPersonality {
-    #makeCake() Cake
-    +onSuccess()
-}
-<<abstract>> AbstractPersonality
-
-class Good {
-    #makeCake() Cake
+class Card {
+    +Card(CardNumber, CardSeed, CardColor)
+    +getCardNumber() int
+    +getCardSeed() CardSeed
+    +getCardColor() CardColor
+    +getCardName() string
 }
 
-class Evil {
-    #makeCake() Cake
+class CardNumber{
+    +getValue() int
+    +getName() string
 }
+<<Enumeration>> CardNumber
 
-Good --|> AbstractPersonality
-Evil --|> AbstractPersonality
+class CardSeed
+<<Enumeration>> CardSeed
+
+class CardColor
+<<Enumeration>> CardColor
+
+Card -- CardNumber
+Card -- CardSeed
+Card -- CardColor
 ```
 
-##### Problema
+#### Problema
+Gestire le varie informazioni (semi, valore, colore) delle carte in maniera pulita e riusicire a creare un mazzo equilibrato e velocemente.
 
-In fase di sviluppo, sono state sviluppate due personalità, una buona ed
-una cattiva. Quella buona restituisce sempre una torta vera, mentre
-quella cattiva restituisce sempre la promessa di una torta che verrà in
-realtà disattesa. Ci si è accorti che diverse personalità condividevano
-molto del comportamento, portando a classi molto simili e a
-duplicazione.
+#### Soluzione
+Utilizzo degli Enumeratori per le informazioni, dove ognuno contiene determinati valori che sono anche iterabili, permettendo di creare in **Deck** un mazzo seguendo le regole classiche delle carte francesi e senza troppe righe di codice 
 
-##### Soluzione
+## Design dettagliato - Filippo Monti
 
-Dato che le due personalità differiscono solo per il comportamento da
-effettuarsi in caso di percorso completato con successo, è stato
-utilizzato il *pattern template method* per massimizzare il riuso, come
-da . Il metodo template è `onSuccess()`, che chiama un metodo astratto e
-protetto `makeCake()`.
-
-#### Gestione di output multipli
-
-Il pattern Observer è usato per consentire a GLaDOS di informare tutti
-i sistemi di output in ascolto.
-
-```mermaid
-classDiagram
-
-class Output {
-    +update(Subject)
-}
-class GLaDOS {
-    -List~Output~ outputs
-}
-MonitorGui --|> Output
-Logger --|> Output
-GLaDOS o-- Output
-
-```
-
-##### Problema
-
-Il sistema deve supportare output multipli. In particolare, si richiede
-che vi sia un logger che stampa a terminale o su file, e un'interfaccia
-grafica che mostri una rappresentazione grafica del sistema.
-
-##### Soluzione
-
-Dato che i due sistemi di reporting utilizzano le medesime informazioni,
-si è deciso di raggrupparli dietro l'interfaccia `Output`. A questo
-punto, le due possibilità erano quelle di far sì che `GLaDOS` potesse
-pilotarle entrambe. Invece di fare un sistema in cui questi output sono
-obbligatori e connessi, si è deciso di usare maggior flessibilità (anche
-in vista di future estensioni) e di adottare una comunicazione
-uno-a-molti fra `GLaDOS` ed i sistemi di output. La scelta è quindi
-ricaduta sul *pattern Observer*: `GLaDOS` è observable, e le istanze di
-`Output` sono observer. Il suo utilizzo è esemplificato in
-
-### Contro-esempio: pessimo diagramma UML 
-
-![badarch](https://user-images.githubusercontent.com/1991673/207835689-932d3c09-cd0b-4144-a34b-20974a6bcf1c.jpg)
-
-Qui sopra è mostrato il modo **sbagliato** di fare le cose. Questo schema è
-fatto male perché:
--   È caotico.
--   È difficile da leggere e capire.
--   Vi sono troppe classi, e non si capisce bene quali siano i rapporti
-    che intercorrono fra loro.
--   Si mostrano elementi implementativi irrilevanti, come i campi e i
-    metodi privati nella classe `AbstractEnvironment`.
--   Se l'intenzione era quella di costruire un diagramma architetturale,
-    allora lo schema è ancora più sbagliato, perché mostra pezzi di
-    implementazione.
--   Una delle classi, in alto al centro, galleggia nello schema, non
-    connessa a nessuna altra classe, e di fatto costituisce da sola un
-    secondo schema UML scorrelato al resto
--   Le interfacce presentano tutti i metodi e non una selezione che
-    aiuti il lettore a capire quale parte del sistema si vuol mostrare.
+## Design dettagliato - Giacomo Ghinelli
 
 # Sviluppo
 
