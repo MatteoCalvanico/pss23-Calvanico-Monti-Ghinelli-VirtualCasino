@@ -81,9 +81,9 @@ Blackjack o-- Card
 
 # Design
 ## Architettura
-l'architettura di **Virtual Casinò** è di tipo MVC, dove ogni componente principale ha una parte di *model*, dove c'è la logica del componnte, una parte di *view*, cioè la parte visuale e con cui l'utente interagisce e per concludere la parte cardine, il controller.
+l'architettura di **Virtual Casinò** è di tipo MVC, dove ogni componente principale ha una parte di *model*, dove c'è la logica del componente, una parte di *view*, cioè la parte visuale e con cui l'utente interagisce e per concludere la parte cardine, il controller.
 
-Quest'ultimo è ciò che permette di collegare model e view prendendo gli input da quest'ultima, passarli al model che li elabora e restituire gli output alla view.
+Quest'ultimo è ciò che permette di collegare model e view, prendendo gli input da quest'ultima per poi passarli al model che li elabora e restituire gli output nuovamente alla view.
 I macro controller sono **BaseController**, scheletro generico usato da tutti, e **BaseGameController** più specifico, utilizzato dai giochi e che estende quello precedente.
 Il primo è sicuramente quello più interessante dove è presente la logica, usata da tutti, per ricevere e passare dati tra view, per funzionare usa un *singleton* cioè una classe già inizializzata con un'istanza che rappresenta il **Player** e permette di salvare le varie informazioni, come nome e saldo.
 
@@ -98,6 +98,7 @@ class Player {
 
 class PlayerHolder {
     +getInstance() PlayerHolder
+    +setInstance()
 }
 <<interface>> PlayerHolder
 
