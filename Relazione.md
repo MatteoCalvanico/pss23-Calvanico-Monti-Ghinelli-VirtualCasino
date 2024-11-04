@@ -119,9 +119,7 @@ class BaseGameController {
 }
 <<interface>> Game
 
-class View {
-
-}
+class View
 
 Player -- PlayerHolder
 PlayerHolder -- BaseController
