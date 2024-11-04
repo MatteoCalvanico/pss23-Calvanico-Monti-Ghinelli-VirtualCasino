@@ -15,7 +15,7 @@ Il casinò da la possibilità di terminare la partita in maniera definitiva ed e
     - Blackjack: tramite interfaccia apposita i giocatori potranno ricevere carte e decidere se "restare" o richiedere carte, il banco si occuperà di dare e mescolare le carte;
     - Roulette: tramite tabellone sarà possibile fare le proprie puntate e aspettare il verdetto controllando la roulette;
     - Dadi [gioco bonus]: opzione bonus e facoltativa che si attiva alla decisione dell'utente di terminare la sessione di gioco per salvare il proprio punteggio, il giocatore dovrà inserire un numero cercando di indovinare la combinazione dei dadi;
-- Organizzazione vincite tramite classifica: i records rappresenteranno nome, profitto blackjack, profitto roulette, fattore dado e il profitto totale.
+- Organizzazione vincite tramite classifica: i records rappresenteranno nome e profitto.
 
 #### Requisiti non funzionali
 
@@ -80,139 +80,56 @@ Blackjack o-- Card
 ```
 
 # Design
-
-In questo capitolo si spiegano le strategie messe in campo per
-soddisfare i requisiti identificati nell'analisi.
-
-Si parte da una visione architetturale, il cui scopo è informare il
-lettore di quale sia il funzionamento dell'applicativo realizzato ad
-alto livello. In particolare, è necessario descrivere accuratamente in
-che modo i componenti principali del sistema si coordinano fra loro. A
-seguire, si dettagliano alcune parti del design, quelle maggiormente
-rilevanti al fine di chiarificare la logica con cui sono stati
-affrontati i principali aspetti dell'applicazione.
-
 ## Architettura
+l'architettura di **Virtual Casinò** è di tipo MVC, dove ogni componente principale ha una parte di *model*, dove c'è la logica del componnte, una parte di *view*, cioè la parte visuale e con cui l'utente interagisce e per concludere la parte cardine, il controller.
 
-Questa sezione spiega come le componenti principali del software
-interagiscono fra loro.
-
-In questa sezione vanno descritte, per ciascun componente architetturale
-che ruoli ricopre (due o tre ruoli al massimo), ed in che modo
-interagisce (ossia, scambia informazioni) con gli altri componenti
-dell'architettura.
-
-### Elementi positivi
-
--   Si mostrano pochi, mirati schemi UML dai quali si deduce con
-    chiarezza quali sono le parti principali del software e come
-    interagiscono fra loro.
-
-### Elementi negativi
-
--   Si presentano UML caotici, difficili da leggere.
--   Si presentano UML in cui sono mostrati elementi di dettaglio non
-    appartenenti all'architettura, ad esempio includenti campi o con
-    metodi che non interessano la parte di interazione fra le componenti
-    principali del software.
--   Si presentano schemi UML con classi (nel senso UML del termine) che
-    "galleggiano" nello schema, non connesse, ossia senza relazioni con
-    il resto degli elementi inseriti.
--   Si presentano elementi di design di dettaglio, ad esempio tutte le
-    classi e interfacce del modello o della view.
--   Si discutono aspetti implementativi, ad esempio eventuali librerie
-    usate oppure dettagli di codice.
-
-### Esempio
-
-L'architettura di GLaDOS segue il pattern architetturale MVC. Più nello
-specifico, a livello architetturale, si è scelto di utilizzare MVC in
-forma "ECB", ossia "entity-control-boundary"[^4]. GLaDOS implementa
-l'interfaccia AI, ed è il controller del sistema. Essendo una
-intelligenza artificiale, è una classe attiva. GLaDOS accetta la
-registrazione di Input ed Output, che fanno parte della "view" di MVC, e
-sono il "boundary" di ECB. Gli Input rappresentano delle nuove
-informazioni che vengono fornite all'IA, ad esempio delle modifiche nel
-valore di un sensore, oppure un comando da parte dell'operatore. Questi
-input infatti forniscono eventi. Ottenere un evento è un'operazione
-bloccante: chi la esegue resta in attesa di un effettivo evento. Di
-fatto, quindi, GLaDOS si configura come entità *reattiva*. Ogni volta
-che c'è un cambio alla situazione del soggetto, GLaDOS notifica i suoi
-Output, informandoli su quale sia la situazione corrente.
-Conseguentemente, GLaDOS è un "observable" per Output.
-
-Il seguente è lo schema UML architetturale di GLaDOS.
-L'interfaccia `GLaDOS` è il
-controller del sistema,
-mentre `Input` ed `Output` sono le interfacce
-che mappano la view (o, più correttamente in questo specifico esempio,
-il boundary). Un'eventuale interfaccia grafica interattiva dovrà
-implementarle entrambe.
+Quest'ultimo è ciò che permette di collegare model e view prendendo gli input da quest'ultima, passarli al model che li elabora e restituire gli output alla view.
+I macro controller sono **BaseController**, scheletro generico usato da tutti, e **BaseGameController** più specifico, utilizzato dai giochi e che estende quello precedente.
+Il primo è sicuramente quello più interessante dove è presente la logica, usata da tutti, per ricevere e passare dati tra view, per funzionare usa un *singleton* cioè una classe già inizializzata con un'istanza che rappresenta il **Player** e permette di salvare le varie informazioni, come nome e saldo.
 
 ```mermaid
 classDiagram
-
-class Event
-<<interface>> Event
-
-class AI {
-    +registerInputSource(Input)
-    +registerView(Output)
-    +computeSuggestion(Subject, Event) Suggestion
+class Player {
+    +getAccount() Account
+    +addWin(amount)
+    +removeLost(amount)
 }
-<<interface>> AI
+<<interface>> Player
 
-class Output {
-    +update(Subject)
+class PlayerHolder {
+    +getInstance() PlayerHolder
 }
-<<interface>> Output
+<<interface>> PlayerHolder
 
-class Subject
-<<interface>> Subject
-
-class Personality
-<<interface>> Personality
-
-class Input {
-    +getBlocking() Event
+class Game {
+    +nextRound()
+    +showResult()    
 }
-<<interface>> Input
+<<interface>> Game
 
-class GLaDOS {
-    -List~Output~ outputs
-    -List~Input~ inputs
-    -Personality personality 
+class BaseController {
+    #sendData()
+    +receiveData()
 }
+<<interface>> Game
 
-class AbstractSensor {
-    +getName() String
+class BaseGameController {
+    #setGame()
+    +placeBetInternal()
+}
+<<interface>> Game
+
+class View {
+
 }
 
-GLaDOS --|> AI
-AI o-- Output
-AI o-- Input
-GLaDOS o-- Output
-GLaDOS o-- Input
-Event -- AI
-Event -- Input
-Subject -- AI
-Personality --o GLaDOS 
-Personality --o AI
-Output -- Subject
-AbstractSensor --|> Input
-MonitorGui --|> Output
+Player -- PlayerHolder
+PlayerHolder -- BaseController
+BaseController <|-- BaseGameController
+Game -- BaseGameController
+BaseGameController -- View
 ```
-
-Con questa architettura, possono essere aggiunti un numero arbitrario di
-input ed output all'intelligenza artificiale. Ovviamente, mentre
-l'aggiunta di output è semplice e non richiede alcuna modifica all'IA,
-la presenza di nuovi tipi di evento richiede invece in potenza aggiunte
-o rifiniture a GLaDOS. Questo è dovuto al fatto che nuovi Input
-rappresentano di fatto nuovi elementi della business logic, la cui
-alterazione od espansione inevitabilmente impatta il controller del
-progetto.
-
-In è esemplificato il diagramma UML architetturale.
+Nell'UML sopra viene mostrato in maniera sintetica come funziona la comunicazione tra vari componenti e l'implementazione del pattern MVC.
 
 ## Design dettagliato
 

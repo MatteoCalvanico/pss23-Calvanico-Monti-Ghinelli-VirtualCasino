@@ -11,10 +11,10 @@ public class Player {
     private String name; // Player's name [NOT EDITABLE AFTER THE INIT]
 
     /**
-     * Each player instance have a unique name and start with 1000 credits
+     * Each player instance have a name and start with 1000 credits
      */
     public Player(String newName) {
-        this.name = newName; // TODO: check the leaderboard
+        this.name = newName;
         this.account = 1000.0;
     }
 
