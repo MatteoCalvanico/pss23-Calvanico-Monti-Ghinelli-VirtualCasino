@@ -236,217 +236,83 @@ finale.
 -   Si descrivono test non presenti nei sorgenti del progetto.
 -   I test, quando eseguiti, falliscono.
 
-## Note di sviluppo
+## Note di sviluppo - Matteo Calvanico
+### Utilizzo della libreria Media di JavaFX
 
-Questa sezione, come quella riguardante il design dettagliato va svolta
-**singolarmente da ogni membro del gruppo**.
+**Dove**: Nella classe `it.unibo.virtualCasino.controller`, dentro al metodo *playSound*, che verrà chiamato ogni volta che bisogna far partire un suono.
 
-Ciascuno dovrà mettere in
-evidenza da un minimo di 3 ad un massimo di 5 punti in cui ritiene di aver scritto codice particolarmente ben congegnato,
-ad esempio perché sfrutta una libreria o feature avanzata non vista a lezione,
-oppure perché usa costrutti del linguaggio avanzati.
+**Permalink**: https://github.com/MatteoCalvanico/pss23-Calvanico-Monti-Ghinelli-VirtualCasino/blob/master/src/main/java/it/unibo/virtualCasino/controller/BaseController.java#L104
 
-Ciascun elemento deve presentare:
-1. Nome del sorgente dove reperirlo, a scelta uno fra:
-   * nome qualificato della classe
-   * percorso del file
-   * permalink GitHub
-2. Uno snippet con il codice cui ci si riferisce
-3. Una *brevissima* descrizione della feature avanzata che si vuole mostrare.
+**Snippet**:
+``` java
+protected void playSound(String soundFilePath) {
+    URL resource = getClass().getResource(soundFilePath);
 
-Esempi di feature interessanti potrebbero essere:
-- Progettazione con generici, ad esempio costruzione di nuovi tipi
-  generici, e uso di generici bounded.
-- Uso di lambda expressions
-- Uso di `Stream`, di `Optional` o di altri costrutti funzionali
-- Uso della reflection
-- Definizione ed uso di nuove annotazioni
-- Uso del Java Platform Module System
-- Uso di parti della libreria JDK non spiegate a lezione
-  (networking, compressione, parsing XML, eccetera)
-- Uso di librerie di terze parti: JavaFX, Google Guava, Apache Commons...
-- Sviluppo di algoritmi particolarmente interessanti
-  *non forniti da alcuna libreria*
-  (spesso può convenirvi chiedere sul forum se ci sia
-  una libreria per fare una certa cosa, prima di gettarvi a capofitto
-  per scriverla voi stessi).
-
-In questa sezione, *dopo l'elenco*, vanno menzionati ed attributi con
-precisione eventuali pezzi di codice "riadattati" (o scopiazzati...) da
-Internet o da altri progetti, pratica che tolleriamo ma che non
-raccomandiamo.
-Si rammenta agli studenti che non è consentito partire da
-progetti esistenti e procedere per modifiche successive.
-Si ricorda
-anche che i docenti hanno in mano strumenti antiplagio piuttosto
-raffinati e che "capiscono" il codice e la storia delle modifiche del
-progetto, per cui tecniche banali come cambiare nomi (di classi, metodi,
-campi, parametri, o variabili locali), aggiungere o togliere commenti,
-oppure riordinare i membri di una classe vengono individuate senza
-problemi.
-Le regole del progetto spiegano in dettaglio l'approccio dei
-docenti verso atti gravi come il plagiarismo.
-
-I pattern di design **non** vanno messi qui. L'uso di pattern di design
-(come suggerisce il nome) è un aspetto avanzato di design, non di
-implementazione, e non va in questa sezione.
-
-### Elementi positivi
-
-- Ogni studente ha almeno 3 sottosezioni con snippet e descrizione
-- Nessuno studente ha più di 5 sottosezioni con snippet e descrizione
-- Si identificano parti di codice prese da altri progetti, dal web, o
-comunque scritte in forma originale da altre persone. In tal senso,
-si ricorda che agli ingegneri non è richiesto di re-inventare la
-ruota continuamente: se si cita debitamente la sorgente è tollerato
-fare uso di di snippet di codice open source per risolvere
-velocemente problemi non banali. Nel caso in cui si usino snippet di
-codice di qualità discutibile, oltre a menzionarne l'autore
-originale si invitano gli studenti ad adeguare tali parti di codice
-agli standard e allo stile del progetto. Contestualmente, si fa
-presente che è largamente meglio fare uso di una libreria che
-copiarsi pezzi di codice: qualora vi sia scelta (e tipicamente c'è),
-si preferisca la prima via.
-
-### Elementi negativi
-- Si elencano applicazioni di terze parti
-  (peggio se per usarle occorre licenza, e lo studente ne è sprovvisto)
-  che non c'entrano nulla con lo sviluppo, ad esempio:
-    -   Editor di grafica vettoriale come Inkscape o Adobe Illustrator;
-    -   Editor di grafica scalare come GIMP o Adobe Photoshop;
-    -   Editor di audio come Audacity;
-    -   Strumenti di design dell'interfaccia grafica come SceneBuilder:
-        il codice è in ogni caso inteso come sviluppato da voi.
-- Si descrivono aspetti di scarsa rilevanza, o si scende in dettagli inutili.
-- Sono presenti parti di codice sviluppate originalmente da altri che
-non vengono debitamente segnalate. In tal senso, si ricorda agli
-studenti che i docenti hanno accesso a tutti i progetti degli anni
-passati, a Stack Overflow, ai principali blog di sviluppatori ed
-esperti Java, ai blog dedicati allo sviluppo di soluzioni e
-applicazioni (inclusi blog dedicati ad Android e allo sviluppo di
-videogame), nonché ai vari GitHub, GitLab, e Bitbucket.
-Conseguentemente, è *molto* conveniente *citare* una fonte ed usarla
-invece di tentare di spacciare per proprio il lavoro di altri.
-- Si elencano design pattern
-
-### Esempio
-
-#### Utilizzo della libreria SLF4J
-
-**Dove**: diverse classi, ad esempio `it.unibo.alchemist.boundary.swingui.effect.impl.EffectBuilder`
-
-**Permalink**: https://github.com/AlchemistSimulator/Alchemist/blob/5c17f8b76920c78d955d478864ac1f11508ed9ad/alchemist-swingui/src/main/java/it/unibo/alchemist/boundary/swingui/effect/impl/EffectBuilder.java#L49
-
-**Snippet**
-
-```java
-    private static final Logger L = LoggerFactory.getLogger(EffectBuilder.class);
-...
-        try {
-            barrier.await();
-        } catch (final InterruptedException e) {
-            L.error("Bug in " + getClass(), e);
-        }
-...
-}
-```
-
-#### Utilizzo della `LoadingCache` di Google Guava
-
-**Dove**: `it.unibo.alchemist.protelis.AlchemistExecutionContext`
-
-**Permalink**: https://github.com/AlchemistSimulator/Alchemist/blob/d8a1799027d7d685569e15316a32e6394632ce71/alchemist-incarnation-protelis/src/main/java/it/unibo/alchemist/protelis/AlchemistExecutionContext.java#L63-L79
-
-**Snippet**
-
-```java
-private final LoadingCache<P, Double> cache = CacheBuilder.newBuilder()
-    .expireAfterAccess(10, TimeUnit.MINUTES)
-    .maximumSize(100)
-    .build(new CacheLoader<>() {
-        @Nonnull
-        @Override
-        public Double load(@Nonnull final P dest) {
-        if (environment instanceof MapEnvironment) {
-            if (dest instanceof GeoPosition) {
-                return ((MapEnvironment<Object, ?, ?>) environment).computeRoute(node, (GeoPosition) dest).length();
-            } else {
-                throw new IllegalStateException("Illegal position type: " + dest.getClass() + " " + dest);
-            }
-        }
-        return getDevicePosition().distanceTo(dest);
+    if (resource == null) {
+        throw new IllegalArgumentException("File path is null");
     }
-});
-```
 
-#### Scrittura di metodo generico con parametri contravarianti
-
-**Dove**: `it.unibo.alchemist.protelis.AlchemistExecutionContext`
-
-**Permalink**: https://github.com/AlchemistSimulator/Alchemist/blob/d8a1799027d7d685569e15316a32e6394632ce71/alchemist-incarnation-protelis/src/main/java/it/unibo/alchemist/protelis/AlchemistExecutionContext.java#L141-L143
-
-**Snippet**
-```java
-private <X> Field<X> buildFieldWithPosition(final Function<? super P, X> fun) {
-    return buildField(fun, getDevicePosition());
+    try {
+        Media soundFile = new Media(resource.toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(soundFile);
+        mediaPlayer.play();
+    } catch (Exception e) {
+        throw new IllegalArgumentException("Error playing sound: " + soundFilePath);
+    }
 }
 ```
 
-#### Utilizzo della libreria `Stream` e di lambda expressions
+### Utilizzo operatore ternario
 
-**Dove**: molte classi, ad esempio `it.unibo.alchemist.model.ProtelisIncarnation`
+**Dove**: in diverse classi, ad esempio: `it.unibo.virtualCasino.model.games.impl.blackjack`
 
-**Permalink**: https://github.com/AlchemistSimulator/Alchemist/blob/d8a1799027d7d685569e15316a32e6394632ce71/alchemist-incarnation-protelis/src/main/java/it/unibo/alchemist/model/ProtelisIncarnation.java#L98-L120
+**Permalink**: https://github.com/MatteoCalvanico/pss23-Calvanico-Monti-Ghinelli-VirtualCasino/blob/master/src/main/java/it/unibo/virtualCasino/model/games/impl/blackjack/Blackjack.java#L243
 
-**Snippet**
-```java
-@Nonnull
-private static List<RunProtelisProgram<?>> getIncomplete(
-    final Node<?> protelisNode,
-    final List<RunProtelisProgram<?>> alreadyDone
-) {
-    return protelisNode.getReactions().stream()
-        /*
-        * Get the actions
-        */
-        .flatMap(r -> r.getActions().stream())
-        /*
-        * Get only the ProtelisPrograms
-        */
-        .filter(a -> a instanceof RunProtelisProgram)
-        .map(a -> (RunProtelisProgram<?>) a)
-        /*
-        * Retain only those ProtelisPrograms that have no associated ComputationalRoundComplete.
-        *
-        * Only one should be available.
-        */
-        .filter(prog -> !alreadyDone.contains(prog))
-        .collect(Collectors.toList());
+**Snippet**:
+``` java
+public boolean isBlackjack() {
+    return (playerDeck[0].size() == 2 && playerDeck[0].countCard() == 21) ? true : false;
+    }
+```
+
+### Utilizzo Optional di java.util
+
+**Dove**: Nella classe `it.unibo.virtualCasino.controller.menu.MainMenuController` in *showGames()*
+
+**Permalink**: https://github.com/MatteoCalvanico/pss23-Calvanico-Monti-Ghinelli-VirtualCasino/blob/master/src/main/java/it/unibo/virtualCasino/controller/menu/MainMenuController.java#L105
+
+**Snippet**:
+``` java
+void showGames(ActionEvent event) {
+    ...
+    Optional<String> result;
+    String name = "";
+    boolean validName = false;
+
+    while (!validName) {
+        result = dialog.showAndWait();
+        if (result.isPresent()) {
+            name = result.get().trim();
+            if (name.isEmpty()) {
+                dialog.setHeaderText("Name cannot be empty. Please enter your name:");
+            } else if (Scoreboard.containsName(name)) {
+                dialog.setHeaderText("Invalid name. Name already exists on the casino scoreboard!");
+            } else {
+                validName = true;
+            }
+        } else {
+            return;
+        }
+    }
+    ...
 }
 ```
 
-#### Protezione da corse critiche usando `Semaphore`
+## Note di sviluppo - Filippo Monti
 
-**Dove**: `it.unibo.alchemist.model.ProtelisIncarnation.DummyContext`
 
-**Permalink**: https://github.com/AlchemistSimulator/Alchemist/blob/d8a1799027d7d685569e15316a32e6394632ce71/alchemist-incarnation-protelis/src/main/java/it/unibo/alchemist/model/ProtelisIncarnation.java#L388-L440
+## Note di sviluppo - Giacomo Ghinelli
 
-**Snippet**
-
-```java
-private static final Semaphore MUTEX = new Semaphore(1);
-private static final int SEED = -241_837_578;
-private static final RandomGenerator RNG = new MersenneTwister(SEED);
-...
-@Override
-public double nextRandomDouble() {
-    final double result;
-    MUTEX.acquireUninterruptibly();
-    result = RNG.nextDouble();
-    MUTEX.release();
-    return result;
-}
-```
 
 # Commenti finali
 
