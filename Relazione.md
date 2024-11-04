@@ -163,6 +163,7 @@ Utilizzo del design patter *Singleton*, dove si salva il Player e si modifica ut
 Rappresentazione UML della gestione delle carte
 
 ```mermaid
+classDiagram
 class Card {
     +Card(CardNumber, CardSeed, CardColor)
     +getCardNumber() int
