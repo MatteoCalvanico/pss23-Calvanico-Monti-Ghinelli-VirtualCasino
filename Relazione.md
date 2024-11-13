@@ -84,6 +84,7 @@ class Dice {
 
 class Scoreboard {
   + shotBestPlayers()
+  + isPlayerInTop10()
 }
 <<interface>> Scoreboard
 
@@ -91,6 +92,7 @@ Player --* Bet
 Player --* MainMenu
 MainMenu --* GamesMenu
 MainMenu --* Scoreboard
+Player *-- Scoreboard
 Bet --* Roulette
 Bet --* BlackJack
 Bet --* Dice
