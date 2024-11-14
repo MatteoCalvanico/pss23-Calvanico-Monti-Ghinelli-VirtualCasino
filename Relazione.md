@@ -99,6 +99,7 @@ Bet --* Dice
 GamesMenu --* Roulette
 GamesMenu --* BlackJack
 GamesMenu --* Dice
+Dice --* MainMenu
 ```
 
 Al fine di garantire un'esperienza di gioco fluida e stabile nella prima release, abbiamo deciso di concentrarci sull'implementazione delle funzionalità core del casinò. Le interazioni avanzate come il drag and drop e le funzionalità online, pur essendo altamente desiderabili, richiederanno un ulteriore sviluppo e saranno pertanto oggetto di future iterazioni del prodotto.
@@ -111,7 +112,7 @@ l'architettura di **Virtual Casinò** è di tipo MVC, dove ogni componente princ
 
 Quest'ultimo è ciò che permette di collegare model e view, prendendo gli input da quest'ultima per poi passarli al model che li elabora e restituire gli output nuovamente alla view.
 I macro controller sono **BaseController**, scheletro generico usato da tutti, e **BaseGameController** più specifico, utilizzato dai giochi e che estende quello precedente.
-Il primo è sicuramente quello più interessante dove è presente la logica, usata da tutti, per ricevere e passare dati tra view, per funzionare usa un _singleton_ cioè una classe già inizializzata con un'istanza che rappresenta il **Player** e permette di salvare le varie informazioni, come nome e saldo.
+Il primo è sicuramente quello più interessante dove è presente la logica per ricevere e passare dati tra view. Per funzionare usa un _singleton_ cioè una classe già inizializzata con un'istanza che rappresenta il **Player** e permette di salvare le varie informazioni, come nome e saldo.
 
 ```mermaid
 classDiagram
@@ -233,6 +234,68 @@ Utilizzo degli Enumeratori per le informazioni, dove ognuno contiene determinati
 ## Design dettagliato - Filippo Monti
 
 ## Design dettagliato - Giacomo Ghinelli
+
+### Roulette Game
+
+Il gioco della Roulette, per quanto semplice possa sembrare a primo impatto, è un gioco che possiede una grande variabilità in termini di tipologia di scommesse. In questo gioco esistono ben 149 tipologie di scommesse diverse.
+Al fine di gestire in modo efficace questa grossa variabilità, oltre che per separare e differenziare il più possibile la logica interna del gioco e stato progettato un sistema basato su tre modelli principali: **Roulette**, **RouletteBet** e **RouletteBetPositionsGrid**.
+
+Tutti e tre questi modelli estendono una classe base contentente costanti di valori e sequenze specifiche e condivise nel gioco della roulette.
+
+La classe Roulette si occupa principalmente della gestione della lista di scommesse piazzate e della generazione del numero vincente sulla base del quale viene calcolato il risultato della partita.
+
+La classe RouletteBetPositionsGrid e RouletteBet contengono la logica che permette la gestione di tutte le tipologie di scommesse diverse:
+
+- RouletteBetPositionsGrid presenta al controller le possibili posizioni delle scommesse all'interno della tavola dei numeri.
+- RouletteBet contiene la logica che permette di converire tipologia e posizione della scommessa nella combinazione di numeri vincenti.
+
+```mermaid
+classDiagram
+class Roulette {
+    - placedBets: List<RouletteBet>
+    - generateWinningNumber(): int
+    - calculateGameResult(): double
+}
+
+class RouletteBet {
+    - betType: BetType
+    - betPosition: BetPosition
+    - winningNumbers: List<int>
+    - calculateWinningNumbers(): void
+}
+
+class BetType {
+    - name: String
+    - payoutRatio: double
+}
+
+class BetPosition {
+    - value: int
+}
+
+class RouletteBetPositionsGrid {
+    - createBetIndicators(): List<BetIndicator>
+}
+
+class BetIndicator {
+    - betType: BetType
+    - betPosition: BetPosition
+    - coordinates: (int, int)
+}
+
+class RouletteController {
+    - roulette: Roulette
+    - betPositionsGrid: RouletteBetPositionsGrid
+    - createBet(indicator: BetIndicator): RouletteBet
+}
+
+RouletteBet --|> BetType : has a
+RouletteBet --|> BetPosition : has a
+Roulette *-- RouletteBet : has many
+RouletteController --* Roulette : uses
+RouletteController --* RouletteBetPositionsGrid : uses
+RouletteBetPositionsGrid *-- BetIndicator : has many
+```
 
 # Sviluppo
 
