@@ -160,37 +160,49 @@ Nell'UML sopra viene mostrato in maniera sintetica come funziona la comunicazion
 
 ## Design dettagliato - Matteo Calvanico
 
-### Condivisione informazioni Player
+### Blackjack Game
 
-Rappresentazione UML del pattern Singleton per salvare e condividere le informazioni del Player tra le varie scene.
-
+Rappresentazione UML **minimale** del Blackjack:
 ```mermaid
 classDiagram
-class Player {
-    +getAccount() Account
-    +addWin(amount)
-    +removeLost(amount)
+class Blackjack{
+    -currentPlayer: Player
+    -playDeck: List<Deck>
+    -playDeckIndex: int
+    -dealerDeck: Deck
+    -playerDeck: Array[Deck]
+    -checkAndChangeDeck(): void
+    -usedPlayDeck(): int
+    -setPlayDeckIndex(): void
 }
-<<interface>> Player
 
-class PlayerHolder {
-    +getPlayerHolded()
-    setPlayerHolded(Player)
-    +getInstance()
+class Deck{
+    -deck: List<Card>
+    +Deck()
+    +initPlayDeck(): void
 }
-<<interface>> PlayerHolder
 
-Player -- PlayerHolder
-PlayerHolder <|-- PlayerHolder
+class Player{
+    +Player(String)
+    +getName(): String
+    +getAccount(): double
+}
+
+Blackjack -- Deck
+Blackjack -- Player
 ```
 
-#### Problema
+La sfida principale nell'implementazione del gioco è stata la gestione di tutti i vari mazzi (successivamente nel dettaglio la gestione delle carte). Infatti nel gioco del Blackjack i mazzi sono molteplici:
+- Mazzo del banco (dealer): che rappresenta il numero da battere.
+- Mazzi del giocatore: ben due, il primo è quello principale e il secondo usato in caso di *split*.
+- Mazzi da gioco: i mazzi da dove si prendono le carte da assegnare, normalmente possono variare tra 2 e 6 (in base al tipo di blackjack) e quando uno finisce si cambia subito con un altro.
 
-Riuscire a mantenere salvata l'istanza del player, in modo da gestire le varie vincite/perdite e condividere le informazioni tra le varie scene
+## Problema
+Fin da subito si è capito che il mazzo più complicato da gestire sarebbe stato quello da gioco, creato tramite una lista di **Deck**, infatti è necessario tenere conto del numero di mazzo utilizzato e, se necessario, cambiarlo prima di ogni azione per evitare di andare in eccessione.
 
-#### Soluzione
+## Soluzione
+Per far fronte a questo continuo controllo si è creato un indice, chiamato **playDeckIndex**, per tenere conto del mazzo utilizzato e un metodo, chiamato **checkAndChangeDeck**, che controlla se il mazzo è finito e in caso lo cambia, in modo da far continuare il gioco senza far notare nulla al player.
 
-Utilizzo del design patter _Singleton_, dove si salva il Player e si modifica utilizzando i metodi della classe singleton tramite l'istanza creata privatamente e resa disponibile tramite un metodo pubblico
 
 ### Gestione delle carte
 
@@ -200,15 +212,17 @@ Rappresentazione UML della gestione delle carte
 classDiagram
 class Card {
     +Card(CardNumber, CardSeed, CardColor)
-    +getCardNumber() int
+    +getCardNumber(): int
     +getCardSeed() CardSeed
-    +getCardColor() CardColor
-    +getCardName() string
+    +getCardColor(): CardColor
+    +getCardName(): string
+    +isFlip(): boolean
+    +flip(): void
 }
 
 class CardNumber{
-    +getValue() int
-    +getName() string
+    +getValue(): int
+    +getName(): string
 }
 <<Enumeration>> CardNumber
 
@@ -229,7 +243,43 @@ Gestire le varie informazioni (semi, valore, colore) delle carte in maniera puli
 
 #### Soluzione
 
-Utilizzo degli Enumeratori per le informazioni, dove ognuno contiene determinati valori che sono anche iterabili, permettendo di creare in **Deck** un mazzo seguendo le regole classiche delle carte francesi e senza troppe righe di codice
+Utilizzo degli Enumeratori per le informazioni, dove ognuno contiene determinati valori che sono anche iterabili, permettendo di creare in **Deck** un mazzo seguendo le regole classiche delle carte francesi e senza troppe righe di codice.
+
+Inoltre visto la necessità di dover rappresentare lo stato della carta (Nascosta/Visibile) si è pensato di aggiungere un flag per indicare se la carta è girata o meno, accessibile tramite setter e getter.
+
+
+### Condivisione informazioni Player
+
+Rappresentazione UML del pattern Singleton per salvare e condividere le informazioni del Player tra le varie scene.
+
+```mermaid
+classDiagram
+class Player {
+    +getAccount(): Account
+    +addWin(amount): void
+    +removeLost(amount): void
+}
+<<interface>> Player
+
+class PlayerHolder {
+    +getPlayerHolded(): Player
+    setPlayerHolded(Player): void
+    +getInstance(): PlayerHolder
+}
+<<interface>> PlayerHolder
+
+Player -- PlayerHolder
+PlayerHolder <|-- PlayerHolder
+```
+
+#### Problema
+
+Riuscire a mantenere salvata l'istanza del player, in modo da gestire le varie vincite/perdite e condividere le informazioni tra le varie scene
+
+#### Soluzione
+
+Utilizzo del design patter _Singleton_, dove si salva il Player e si modifica utilizzando i metodi della classe singleton tramite l'istanza creata privatamente e resa disponibile tramite un metodo pubblico
+
 
 ## Design dettagliato - Filippo Monti
 
