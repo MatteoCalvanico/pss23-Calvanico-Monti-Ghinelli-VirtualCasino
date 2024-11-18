@@ -477,16 +477,14 @@ formulato la valutazione.
 
 ## Autovalutazione e lavori futuri
 
-**È richiesta una sezione per ciascun membro del gruppo,
-obbligatoriamente**.
+### Matteo Calvanico
+Per quanto riguarda la mia parte all'interno del progetto (Blackjack e vari menù) sono più che soddisfatto, soprattuto della parte di *Controller* e *View* dove credo di aver passato anche la maggior parte del tempo. Per quanto riguarda il *Model del Blackjack*, anche se sono estremamente soddisfatto, credo di poter fare alcuni miglioramenti, soprattutto perchè è stata sviluppata molto prima e con parecchi mesi di distanza dalle altre e nel mentre sono "migliorato" come sviluppatore.
 
-Ciascuno dovrà autovalutare il proprio lavoro,
-elencando i punti di forza e di debolezza in quanto prodotto. Si dovrà
-anche cercare di descrivere _in modo quanto più obiettivo possibile_ il
-proprio ruolo all'interno del gruppo. Si ricorda, a tal proposito, che
-ciascuno studente è responsabile solo della propria sezione: non è un
-problema se ci sono opinioni contrastanti, a patto che rispecchino
-effettivamente l'opinione di chi le scrive.
+Come team abbiamo lavorato molto bene insieme e credo che il carico di lavoro sia stato abbastanza equilibrato, forse solo la di Roulette (sviluppata da Giacomo) è più complicata concettualmente rispetto alle altre e quindi ha richiesto più impegno da parte sua.
+
+### Filippo Monti
+
+## Giacomo Ghinelli
 
 ## Difficoltà incontrate e commenti per i docenti
 
