@@ -171,21 +171,21 @@ class Blackjack{
     -playDeckIndex: int
     -dealerDeck: Deck
     -playerDeck: Array[Deck]
-    -checkAndChangeDeck(): void
-    -usedPlayDeck(): int
-    -setPlayDeckIndex(): void
+    -checkAndChangeDeck() void
+    -usedPlayDeck() int
+    -setPlayDeckIndex() void
 }
 
 class Deck{
     -deck: List<Card>
     +Deck()
-    +initPlayDeck(): void
+    +initPlayDeck() void
 }
 
 class Player{
     +Player(String)
-    +getName(): String
-    +getAccount(): double
+    +getName() String
+    +getAccount() double
 }
 
 Blackjack -- Deck
@@ -212,17 +212,17 @@ Rappresentazione UML della gestione delle carte
 classDiagram
 class Card {
     +Card(CardNumber, CardSeed, CardColor)
-    +getCardNumber(): int
+    +getCardNumber() int
     +getCardSeed() CardSeed
-    +getCardColor(): CardColor
-    +getCardName(): string
-    +isFlip(): boolean
-    +flip(): void
+    +getCardColor() CardColor
+    +getCardName() string
+    +isFlip() boolean
+    +flip() void
 }
 
 class CardNumber{
-    +getValue(): int
-    +getName(): string
+    +getValue() int
+    +getName() string
 }
 <<Enumeration>> CardNumber
 
@@ -255,16 +255,16 @@ Rappresentazione UML del pattern Singleton per salvare e condividere le informaz
 ```mermaid
 classDiagram
 class Player {
-    +getAccount(): Account
-    +addWin(amount): void
-    +removeLost(amount): void
+    +getAccount() Account
+    +addWin(amount) void
+    +removeLost(amount) void
 }
 <<interface>> Player
 
 class PlayerHolder {
-    +getPlayerHolded(): Player
-    setPlayerHolded(Player): void
-    +getInstance(): PlayerHolder
+    +getPlayerHolded() Player
+    setPlayerHolded(Player) void
+    +getInstance() PlayerHolder
 }
 <<interface>> PlayerHolder
 
