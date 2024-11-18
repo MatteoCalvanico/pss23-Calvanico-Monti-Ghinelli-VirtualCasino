@@ -508,6 +508,17 @@ All'avvio di una nuova partita sarà richiesto un nome, finchè non lo si inseri
 Ora davanti a voi sarà presente la scelta dei giochi, di seguito le regole nel dettaglio...
 
 ## Blackjack
-Per iniziare a giocare bisogna fare una puntata, è possibile puntare di 100 alla volta, e appena confermata la partita inizia.
-Saranno date due carte a voi e al banco (una girata), il vostro scopo è fare più del banco ma senza superare il 21, se fate 21 con le prime due carte vincete automaticamente (il cosidetto **blackjack**). Avete a disposizione tre pulsanti:
-- *Split*: se avete due carte ugali potete spostarne una nel secondo mazzo a se stante, quindi non importa quanto fate nell'altro, e come fare due partite contemporaneamente con due puntate uguali.
+Per iniziare a giocare bisogna fare una puntata, è possibile puntare di 100 alla volta, e appena confermata la puntata(pulsante *Set bet* collocato a destra) la partita inizia.
+
+All'inizio del turno voi e il banco riceverete due carte (nel suo caso una è girata), il vostro scopo è fare più del banco ma senza superare il 21, se fate 21 con le prime due carte vincete automaticamente (il cosidetto **blackjack**). 
+
+Durante il gioco avete a disposizione tre pulsanti:
+- *Split*: se avete due carte uguali potete spostarne una nel secondo mazzo a se stante, quindi non importa quanto fate nell'altro, e come fare due partite contemporaneamente con due puntate uguali.
+- *+*: come potete immaginare serve per riceve una carta nel mazzo corrispondente...attenzione a non chiederne troppe.
+- *Stay*: anche qui abbastanza esplicativo, fa capire al dealer che non si vogliono più carte, può voler dire fine del turno e quindi mostrare i risultati.
+
+Si può uscire in qualsiasi momento (tranne quando è in corso un turno) dal comodo pulsante *Exit* posto a destra sotto la sezione delle scommesse.
+
+## Roulette
+
+## Dadi
