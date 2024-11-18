@@ -501,23 +501,13 @@ Ovviamente **il contenuto della sezione non impatterà il voto finale**.
 
 # Guida utente
 
-Capitolo in cui si spiega come utilizzare il software. Nel caso in cui
-il suo uso sia del tutto banale, tale capitolo può essere omesso. A tal
-riguardo, si fa presente agli studenti che i docenti non hanno mai
-utilizzato il software prima, per cui aspetti che sembrano del tutto
-banali a chi ha sviluppato l'applicazione possono non esserlo per chi la
-usa per la prima volta. Se, ad esempio, per cominciare una partita con
-un videogioco è necessario premere la barra spaziatrice, o il tasto "P",
-è necessario che gli studenti lo segnalino.
+L'utilizzo dell'applicativo è abbastanza banale, all'avvio sarà possibile iniziare una nuova partita o vedere la classifica (in caso di primo avvio la classifica sarà normalmente vuota).
 
-### Elementi positivi
+All'avvio di una nuova partita sarà richiesto un nome, finchè non lo si inserirà non sarà possibile continuare, successivamente vi sarannò accreditati 1000 crediti e finiti questi non sarà più possibile giocare ad altro. Se si decide di uscire sarà possibile giocare opzionalmente al bonus **Dadi** che permette di raddoppiare o azzerrare i vostri crediti in base all'esito del gioco.
 
-- Si istruisce in modo semplice l'utente sull'uso dell'applicazione,
-  eventualmente facendo uso di schermate e descrizioni.
+Ora davanti a voi sarà presente la scelta dei giochi, di seguito le regole nel dettaglio...
 
-### Elementi negativi
-
-- Si descrivono in modo eccessivamente minuzioso tutte le
-  caratteristiche, anche minori, del software in oggetto.
-- Manca una descrizione che consenta ad un utente qualunque di
-  utilizzare almeno le funzionalità primarie dell'applicativo.
+## Blackjack
+Per iniziare a giocare bisogna fare una puntata, è possibile puntare di 100 alla volta, e appena confermata la partita inizia.
+Saranno date due carte a voi e al banco (una girata), il vostro scopo è fare più del banco ma senza superare il 21, se fate 21 con le prime due carte vincete automaticamente (il cosidetto **blackjack**). Avete a disposizione tre pulsanti:
+- *Split*: se avete due carte ugali potete spostarne una nel secondo mazzo a se stante, quindi non importa quanto fate nell'altro, e come fare due partite contemporaneamente con due puntate uguali.
