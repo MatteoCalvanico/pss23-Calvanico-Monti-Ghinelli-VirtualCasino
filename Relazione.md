@@ -482,6 +482,8 @@ Per quanto riguarda la mia parte all'interno del progetto (Blackjack e vari men�
 
 Come team abbiamo lavorato molto bene insieme e credo che il carico di lavoro sia stato abbastanza equilibrato, forse solo la di Roulette (sviluppata da Giacomo) è più complicata concettualmente rispetto alle altre e quindi ha richiesto più impegno da parte sua.
 
+Vorrei aggiungere che mi piacerebbe molto implementare altri giochi in futuro, rendendo l'applicativo simile a quello pre-installato su Windows (*Solitaire & Casual Games*). Alcune possibili aggiunte potrebbero essere Mahjong e Caravan (*Fallout: New Vegas*)
+
 ### Filippo Monti
 
 ## Giacomo Ghinelli
