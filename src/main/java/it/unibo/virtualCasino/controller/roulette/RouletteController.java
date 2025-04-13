@@ -3,18 +3,16 @@ package it.unibo.virtualCasino.controller.roulette;
 import java.util.function.UnaryOperator;
 
 import it.unibo.virtualCasino.controller.BaseGameController;
+import it.unibo.virtualCasino.helpers.AlertHelper;
 import it.unibo.virtualCasino.model.games.impl.roulette.Roulette;
 import it.unibo.virtualCasino.model.games.impl.roulette.RouletteBet;
 import it.unibo.virtualCasino.model.games.impl.roulette.RouletteBetPositionsGrid;
 import it.unibo.virtualCasino.model.games.impl.roulette.dtos.Coordinate;
 import it.unibo.virtualCasino.model.games.impl.roulette.dtos.RouletteTableLayout;
 import it.unibo.virtualCasino.model.games.impl.roulette.enums.RouletteBetType;
-import it.unibo.virtualCasino.view.menu.GamesView;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -27,7 +25,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 
 /**
@@ -122,21 +119,21 @@ public class RouletteController extends BaseGameController {
         // Retrieve the selected bet type from the ComboBox
         RouletteBetType betType = cmbBetType.getValue();
         if (betType == null) {
-            showAlert(AlertType.WARNING, "Invalid bet", "Bet type can't be null");
+            AlertHelper.show(AlertType.WARNING, "Invalid bet", "Bet type can't be null");
             return;
         }
 
         // Retrieve the bet amount from the form and parse it as an integer
         int betAmount = Integer.parseInt(txtBetAmount.getText());
         if (betAmount == 0) {
-            showAlert(AlertType.WARNING, "Invalid bet", "Please, bets need to have a value greater then 0");
+            AlertHelper.show(AlertType.WARNING, "Invalid bet", "Please, bets need to have a value greater then 0");
             return;
         }
 
         // Retrieve bet position indicator number from selected bet position indicator
         // circle
         if (selectedBetPositionIndicatorCircle == null) {
-            showAlert(AlertType.WARNING, "Invalid bet", "Please, select a position on the table for your bet");
+            AlertHelper.show(AlertType.WARNING, "Invalid bet", "Please, select a position on the table for your bet");
             return;
         }
 
@@ -145,7 +142,7 @@ public class RouletteController extends BaseGameController {
             betPositionNumber = rouletteBetPositionsGrid
                     .getBetPositionIndicatorById(selectedBetPositionIndicatorCircle.getId()).betPositionNumber;
         } catch (Exception e) {
-            showAlert(AlertType.ERROR, "Error", e.getMessage());
+            AlertHelper.show(AlertType.ERROR, "Error", e.getMessage());
             return;
         }
 
@@ -167,7 +164,7 @@ public class RouletteController extends BaseGameController {
      */
     public void onSpeenWheelClicked() {
         if (!currentPlayer.isPlayerSolvent(rouletteGame.getTotalBetsAmount())) {
-            showAlert(AlertType.WARNING, "Insufficient balance", "Money at risk exeeds your balance");
+            AlertHelper.show(AlertType.WARNING, "Insufficient balance", "Money at risk exeeds your balance");
             return;
         }
         rouletteGame.showResult();
@@ -175,7 +172,7 @@ public class RouletteController extends BaseGameController {
         try {
             txtWinningNumber.setText(rouletteGame.getWinningNumber().toString());
         } catch (Exception e) {
-            showAlert(AlertType.ERROR, "Error", e.getMessage());
+            AlertHelper.show(AlertType.ERROR, "Error", e.getMessage());
         }
 
         txtBalance.setText(Double.toString(this.currentPlayer.getAccount()));
@@ -319,24 +316,5 @@ public class RouletteController extends BaseGameController {
         });
 
         return circle;
-    }
-
-    @FXML
-    /**
-     * Method called when the player want to exit the game
-     */
-    protected void exit(ActionEvent event) {
-        // Save the player in the singleton class
-        sendData();
-
-        // Open the games menu
-        try {
-            GamesView gamesView = new GamesView();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            gamesView.start(stage);
-        } catch (Exception e) {
-            showAlert(AlertType.ERROR, "Error", e.getMessage());
-            return;
-        }
     }
 }

@@ -7,40 +7,43 @@
 
 .list-cell:odd {
   -fx-background-color: #007700;
+  -fx-alignment: center;
+  -fx-text-fill: yellow;
 }
 
 .list-cell:even {
   -fx-background-color: #006600;
+  -fx-alignment: center;
+  -fx-text-fill: yellow;
 }
 
 .list-cell:hover {
   -fx-background-color: #008800;
 }
 
-
 /* Blackjack */
 .scroll-pane .scroll-bar:vertical,
 .scroll-pane .scroll-bar:horizontal {
-    -fx-pref-width: 5px;
-    -fx-pref-height: 5px; 
+  -fx-pref-width: 5px;
+  -fx-pref-height: 5px;
 }
 
 .scroll-pane .scroll-bar .thumb {
-    -fx-background-color: #000000; 
-    -fx-background-radius: 4px; 
+  -fx-background-color: #000000;
+  -fx-background-radius: 4px;
 }
 
 .scroll-pane .scroll-bar .track {
-    -fx-background-color: #014508; 
+  -fx-background-color: #014508;
 }
 
 .scroll-pane .scroll-bar .increment-button,
 .scroll-pane .scroll-bar .decrement-button {
-    -fx-padding: 0;
-    -fx-background-color: #014508;
-    -fx-background-insets: 0;
-    -fx-background-radius: 0;
-    -fx-shape: null;
+  -fx-padding: 0;
+  -fx-background-color: #014508;
+  -fx-background-insets: 0;
+  -fx-background-radius: 0;
+  -fx-shape: null;
 }
 
 .scroll-pane .corner {

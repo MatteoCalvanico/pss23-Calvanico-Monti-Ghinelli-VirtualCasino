@@ -5,8 +5,6 @@ import it.unibo.virtualCasino.model.Player;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
@@ -94,27 +92,6 @@ public abstract class BaseController implements Initializable {
         // Set the image in the ImageView
         ImageView spriteView = new ImageView(sprite);
         return spriteView;
-    }
-
-    /**
-     * Displays an alert dialog with the specified type, title, and content.
-     * <p>
-     * This method creates an {@link Alert} of the given {@code AlertType}, sets its
-     * title and content,
-     * and displays it to the user. The header text is set to {@code null}.
-     * The alert waits for the user to close it before proceeding.
-     *
-     * @param type    the type of alert (e.g., {@link AlertType#INFORMATION},
-     *                {@link AlertType#ERROR})
-     * @param title   the title of the alert window
-     * @param content the message to be displayed in the alert
-     */
-    protected void showAlert(AlertType type, String title, String content) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
     }
 
     /**
