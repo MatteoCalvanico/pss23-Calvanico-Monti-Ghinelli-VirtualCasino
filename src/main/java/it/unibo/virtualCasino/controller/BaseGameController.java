@@ -1,5 +1,6 @@
 package it.unibo.virtualCasino.controller;
 
+import it.unibo.virtualCasino.abstractions.IPlaceBet;
 import it.unibo.virtualCasino.helpers.AlertHelper;
 import it.unibo.virtualCasino.helpers.RoutingHelper;
 import it.unibo.virtualCasino.view.menu.GamesView;
@@ -11,13 +12,18 @@ import javafx.scene.control.Button;
 /**
  * Base class that define the base methods of a controller
  */
-public abstract class BaseGameController extends BaseController implements IPlaceBetObj {
+public abstract class BaseGameController extends BaseController implements IPlaceBet {
 
     @FXML
     protected Button btnPlaceBet;
 
     @FXML
     protected Button btnExit;
+
+    /**
+     * Override this method to set your own game
+     */
+    abstract protected void setGame();
 
     /**
      * Initializes the controller when the FXML file is loaded
@@ -27,11 +33,6 @@ public abstract class BaseGameController extends BaseController implements IPlac
         btnPlaceBet.setOnAction(event -> placeBetInternal());
         setGame();
     }
-
-    /**
-     * Override this method to set your own game
-     */
-    abstract protected void setGame();
 
     /**
      * Handles the internal logic for placing a bet, including validation.

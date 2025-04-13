@@ -1,8 +1,10 @@
 package it.unibo.virtualCasino.controller;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import it.unibo.virtualCasino.controller.singleton.PlayerHolder;
 import it.unibo.virtualCasino.model.Player;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
@@ -10,15 +12,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 /**
  * Base class that define the base methods of a controller
  */
 public abstract class BaseController implements Initializable {
 
     protected Player currentPlayer;
+
+    /**
+     * Override this method to set the base contoller
+     */
+    abstract protected void setBaseController();
 
     /**
      * Initializes the controller when the FXML file is loaded
@@ -29,11 +33,6 @@ public abstract class BaseController implements Initializable {
         receiveData();
         setBaseController();
     }
-
-    /**
-     * Override this method to set the base contoller
-     */
-    abstract protected void setBaseController();
 
     /**
      * Method to be invoked when you need to change scene, save the player in the
@@ -85,7 +84,7 @@ public abstract class BaseController implements Initializable {
             } else {
                 throw new IllegalArgumentException("File not found: " + imageFilePath);
             }
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Error during image load: " + imageFilePath);
         }
 

@@ -32,7 +32,7 @@ public class RouletteBet extends RouletteBase {
     /**
      * The amount of the bet.
      */
-    private int amount;
+    private final int amount;
 
     /**
      * Creates a new RouletteBet instance.
@@ -102,10 +102,8 @@ public class RouletteBet extends RouletteBase {
     private ArrayList<Integer> getWinningNumbers(RouletteBetType betType, int betPositionInTable) {
         ArrayList<Integer> numbers = new ArrayList<>();
         switch (betType) {
-            case STRAIGHT_UP:
-                numbers.add(betPositionInTable);
-                break;
-            case SPLIT: {
+            case STRAIGHT_UP -> numbers.add(betPositionInTable);
+            case SPLIT -> {
                 if (betPositionInTable < this.MAX_VERTICAL_SPLITS) {
                     int topNum = calcBottomNumberBasedOnPosition(betPositionInTable);
                     numbers.add(topNum + 1);
@@ -116,45 +114,39 @@ public class RouletteBet extends RouletteBase {
                     numbers.add(bottomNum + this.TABLE_COLS);
                 }
             }
-                break;
-            case STREET: {
+            case STREET -> {
                 int topNum = betPositionInTable * this.TABLE_COLS;
                 numbers.add(topNum--);
                 numbers.add(topNum--);
                 numbers.add(topNum);
             }
-                break;
-            case CORNER: {
+            case CORNER -> {
                 int topNum = calcTopNumberBasedOnPosition(betPositionInTable);
                 numbers.add(topNum);
                 numbers.add(topNum - 1);
                 numbers.add(topNum + 2);
                 numbers.add(topNum + 3);
             }
-                break;
-            case DOUBLE_STREET: {
+            case DOUBLE_STREET -> {
                 int startingNum = (betPositionInTable * this.TABLE_COLS) - 2;
                 for (int i = 0; i < this.DOUBLE_STREET_W_NUMS; i++) {
                     numbers.add(startingNum + i);
                 }
             }
-                break;
-            case COLUMN: {
+            case COLUMN -> {
                 int startingNum = betPositionInTable;
                 for (int i = 0; i < this.TABLE_ROWS; i++) {
                     numbers.add(startingNum);
                     startingNum += this.TABLE_COLS;
                 }
             }
-                break;
-            case DOZEN: {
+            case DOZEN -> {
                 int startingNum = betPositionInTable * this.TABLE_ROWS;
                 for (int i = startingNum; i > startingNum - this.TABLE_ROWS; i--) {
                     numbers.add(i);
                 }
             }
-                break;
-            case ODD_EVEN: {
+            case ODD_EVEN -> {
                 if (betPositionInTable == 1) {
                     for (int i = 2; i <= 36; i += 2) {
                         numbers.add(i);
@@ -165,8 +157,7 @@ public class RouletteBet extends RouletteBase {
                     }
                 }
             }
-                break;
-            case RED_BLACK: {
+            case RED_BLACK -> {
                 for (Map.Entry<Integer, RouletteColors> entry : colorNumberMap.entrySet()) {
                     if (betPositionInTable == 1 && entry.getValue() == RouletteColors.RED) {
                         numbers.add(entry.getKey());
@@ -175,16 +166,14 @@ public class RouletteBet extends RouletteBase {
                     }
                 }
             }
-                break;
-            case HALF: {
+            case HALF -> {
                 int startingNum = betPositionInTable * (this.NUMS_TOTAL / 2);
                 for (int i = startingNum; i > startingNum - (this.NUMS_TOTAL / 2); i--) {
                     numbers.add(i);
                 }
             }
-                break;
-            default:
-                break;
+            default -> {
+            }
         }
 
         return numbers;

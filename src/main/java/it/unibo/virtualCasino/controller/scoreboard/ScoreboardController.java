@@ -1,5 +1,7 @@
 package it.unibo.virtualCasino.controller.scoreboard;
 
+import java.util.ArrayList;
+
 import it.unibo.virtualCasino.controller.BaseController;
 import it.unibo.virtualCasino.helpers.RoutingHelper;
 import it.unibo.virtualCasino.model.scoreboard.Scoreboard;
@@ -9,19 +11,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-
-import java.util.ArrayList;
 
 public class ScoreboardController extends BaseController {
     @FXML
     private ListView<String> scoreboardList;
-
-    @FXML
-    private TableColumn<ScoreboardRecord, String> colName;
-
-    @FXML
-    private TableColumn<ScoreboardRecord, Double> colFinalBalance;
 
     @FXML
     private Button btnExit;
@@ -35,7 +28,7 @@ public class ScoreboardController extends BaseController {
         for (int i = 1; i <= scoreboardRecords.size(); i++) {
             ScoreboardRecord record = scoreboardRecords.get(i - 1);
 
-            // \u00B0 is the unicode squence for the char ° that has some porability issues
+            // \u00B0 is the unicode squence for the char ° that has some portability issues
             scoreboardList
                     .getItems()
                     .add(String.format("%d\u00B0 %s - Balance: $%.2f", i, record.playerName, record.playerBalance));

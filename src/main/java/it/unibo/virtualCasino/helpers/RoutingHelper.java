@@ -30,7 +30,6 @@ public final class RoutingHelper {
             appView.start(stage);
         } catch (Exception e) {
             AlertHelper.show(AlertType.ERROR, "Error", e.getMessage());
-            return;
         }
     }
 }

@@ -24,13 +24,11 @@ public class Roulette extends RouletteBase implements Games {
 
     private final int SEED_ARRAY_MAX_LENGHT = 30;
 
-    private final int[][] tableMatrix = createRouletteTableMatrix();
-
     private final int seedArrayLenght = new Random().nextInt(SEED_ARRAY_MAX_LENGHT);
 
     private final byte[] seed = new byte[seedArrayLenght];
 
-    private Player currentPlayer;
+    private final Player currentPlayer;
 
     private Map<UUID, RouletteBet> placedBets = new HashMap<>();
 
@@ -99,15 +97,6 @@ public class Roulette extends RouletteBase implements Games {
         }
 
         return totalRiskedMoney;
-    }
-
-    /**
-     * Returns a copy of the current roulette table layout (2D integer array).
-     *
-     * @return a copy of the roulette table as an integer array
-     */
-    public int[][] getRouletteTable() {
-        return this.tableMatrix;
     }
 
     /**
@@ -185,22 +174,5 @@ public class Roulette extends RouletteBase implements Games {
         }
 
         return profitOrLoss;
-    }
-
-    /**
-     * Creates the initial roulette table layout as a 2D integer array.
-     *
-     * @return A 2D integer array representing the roulette table structure.
-     */
-    private int[][] createRouletteTableMatrix() {
-        int[][] tempMatrix = new int[this.TABLE_ROWS][this.TABLE_COLS];
-
-        for (int i = 0; i < tempMatrix.length; i++) {
-            for (int j = 0; j < tempMatrix[i].length; j++) {
-                tempMatrix[i][j] = i + 1;
-            }
-        }
-
-        return tempMatrix;
     }
 }

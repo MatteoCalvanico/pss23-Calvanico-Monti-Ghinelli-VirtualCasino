@@ -1,14 +1,14 @@
 package it.unibo.virtualCasino.model;
 
-import it.unibo.virtualCasino.controller.IPlaceBetObj;
+import it.unibo.virtualCasino.abstractions.IPlaceBet;
 
 /**
  * This class represent the one who play
  */
 public class Player {
 
+    private final String name; // Player's name [NOT EDITABLE AFTER THE INIT]
     private double account; // Total amount of money the player have
-    private String name; // Player's name [NOT EDITABLE AFTER THE INIT]
 
     /**
      * Each player instance have a name and start with 1000 credits
@@ -50,10 +50,10 @@ public class Player {
      * Places a bet for the player, if the total bet amount does not exceed the
      * player's account balance.
      *
-     * @param placeBetObj the bet object containing the bet details.
+     * @param placeBetObj the bet object containing the bet logic.
      * @throws Exception if the total bet amount exceeds the player's balance.
      */
-    public void placeBet(IPlaceBetObj placeBetObj) throws Exception {
+    public void placeBet(IPlaceBet placeBetObj) throws Exception {
         if (!isPlayerSolvent(placeBetObj.getTotalBetsAmount())) {
             throw new Exception("Unable to play, bets amount at risk exceeds player balance");
         }

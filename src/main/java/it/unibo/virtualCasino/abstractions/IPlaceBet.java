@@ -1,10 +1,10 @@
-package it.unibo.virtualCasino.controller;
+package it.unibo.virtualCasino.abstractions;
 
 /**
  * Interface for placing bets in the virtual casino.
  * It defines methods for placing a bet and retrieving the total bet amount.
  */
-public interface IPlaceBetObj {
+public interface IPlaceBet {
 
     /**
      * Places a bet.

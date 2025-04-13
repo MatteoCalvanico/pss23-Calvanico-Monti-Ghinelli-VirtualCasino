@@ -2,9 +2,9 @@ package it.unibo.virtualCasino.model.games.impl.roulette;
 
 import java.util.ArrayList;
 
-import it.unibo.virtualCasino.model.games.impl.roulette.dtos.RouletteTableLayout;
 import it.unibo.virtualCasino.model.games.impl.roulette.dtos.Coordinate;
 import it.unibo.virtualCasino.model.games.impl.roulette.dtos.RouletteBetPositionIndicator;
+import it.unibo.virtualCasino.model.games.impl.roulette.dtos.RouletteTableLayout;
 import it.unibo.virtualCasino.model.games.impl.roulette.enums.RouletteBetType;
 
 /**
@@ -37,7 +37,7 @@ public class RouletteBetPositionsGrid extends RouletteBase {
     /**
      * The list of bet position indicators.
      */
-    private final ArrayList<RouletteBetPositionIndicator> betPositionIdicatorsList = new ArrayList<RouletteBetPositionIndicator>();
+    private final ArrayList<RouletteBetPositionIndicator> betPositionIdicatorsList = new ArrayList<>();
 
     /**
      * Constructs a {@code RouletteBetPositionsGrid} with the specified table

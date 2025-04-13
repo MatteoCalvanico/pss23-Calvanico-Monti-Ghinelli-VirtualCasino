@@ -25,7 +25,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
 
 /**
  * Controller class for handling user interactions with the Roulette game UI.
@@ -109,11 +108,13 @@ public class RouletteController extends BaseGameController {
      *
      * @return the sum of all bets placed and current bet input.
      */
+    @Override
     public double getTotalBetsAmount() {
         return rouletteGame.getTotalBetsAmount() + Integer.parseInt(txtBetAmount.getText());
     }
 
     // IPlaceBetObj method implementation, inherits javadoc
+    @Override
     public void placeBet() {
 
         // Retrieve the selected bet type from the ComboBox
@@ -208,38 +209,31 @@ public class RouletteController extends BaseGameController {
 
     /**
      * Initializes the custom cell layout for the bet list, including a delete
-     * button
-     * for each bet entry.
+     * button for each bet entry.
      */
     private void initializeListViewCustomCells() {
         betList.setItems(FXCollections.observableArrayList());
-        betList.setCellFactory(new Callback<ListView<RouletteBet>, ListCell<RouletteBet>>() {
+        betList.setCellFactory((ListView<RouletteBet> param) -> new ListCell<RouletteBet>() {
             @Override
-            public ListCell<RouletteBet> call(ListView<RouletteBet> param) {
-                return new ListCell<RouletteBet>() {
-                    @Override
-                    protected void updateItem(RouletteBet bet, boolean empty) {
-                        super.updateItem(bet, empty);
-                        if (bet != null) {
-                            // Create a horizontal layout with text and a delete button
-                            Button deleteButton = new Button("X");
-                            deleteButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
-
-                            deleteButton.setOnAction(event -> {
-                                // Delete bet from the game
-                                rouletteGame.deleteBet(bet.getBetId());
-                                betList.getItems().remove(bet);
-                            });
-
-                            setText(String.format("$%s %s", bet.getBetAmount(), bet.getBetType()));
-                            setGraphic(deleteButton); // Set button on the right side
-                            // getStyleClass().add("list-cell");
-                        } else {
-                            setText(null);
-                            setGraphic(null);
-                        }
-                    }
-                };
+            protected void updateItem(RouletteBet bet, boolean empty) {
+                super.updateItem(bet, empty);
+                if (bet != null) {
+                    // Create a horizontal layout with text and a delete button
+                    Button deleteButton = new Button("X");
+                    deleteButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+                    
+                    deleteButton.setOnAction(event -> {
+                        // Delete bet from the game
+                        rouletteGame.deleteBet(bet.getBetId());
+                        betList.getItems().remove(bet);
+                    });
+                    
+                    setText(String.format("$%s %s", bet.getBetAmount(), bet.getBetType()));
+                    setGraphic(deleteButton); // Set button on the right side
+                } else {
+                    setText(null);
+                    setGraphic(null);
+                }
             }
         });
     }

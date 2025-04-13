@@ -1,14 +1,18 @@
 package it.unibo.virtualCasino.model.scoreboard;
 
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import it.unibo.virtualCasino.helpers.AlertHelper;
 import it.unibo.virtualCasino.helpers.PersistentStorageHelper;
 import it.unibo.virtualCasino.model.scoreboard.dtos.ScoreboardRecord;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Comparator;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * The {@code Scoreboard} class provides static methods to manage the scoreboard
@@ -61,7 +65,7 @@ public final class Scoreboard {
                 return new ArrayList<>();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            AlertHelper.show(AlertType.ERROR, "Error", e.getMessage());
             return new ArrayList<>(); // Return empty list if file doesn't exist or on error
         }
     };
@@ -112,7 +116,7 @@ public final class Scoreboard {
             ensureRecordListFormat(records);
             gson.toJson(records, writer);
         } catch (IOException e) {
-            e.printStackTrace();
+            AlertHelper.show(AlertType.ERROR, "Error", e.getMessage());
         }
     }
 

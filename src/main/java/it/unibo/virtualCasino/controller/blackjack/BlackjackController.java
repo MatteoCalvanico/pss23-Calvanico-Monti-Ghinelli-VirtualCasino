@@ -6,11 +6,11 @@ import it.unibo.virtualCasino.model.games.impl.blackjack.Blackjack;
 import it.unibo.virtualCasino.model.games.impl.blackjack.Card;
 import javafx.fxml.FXML;
 import javafx.geometry.NodeOrientation;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import javafx.scene.control.Alert.AlertType;
 
 public class BlackjackController extends BaseGameController {
     @FXML
@@ -99,6 +99,7 @@ public class BlackjackController extends BaseGameController {
     }
 
     // IPlaceBetObj method implementation, inherits javadoc
+    @Override
     public void placeBet() {
 
         if (currentBet == 0) {
@@ -121,6 +122,7 @@ public class BlackjackController extends BaseGameController {
     }
 
     // IPlaceBetObj method implementation, inherits javadoc
+    @Override
     public double getTotalBetsAmount() {
         return currentBet;
     }
@@ -160,27 +162,13 @@ public class BlackjackController extends BaseGameController {
             cardPath = "cardBack_red2.png";
         } else {
             String cardNumber;
-            switch (card.getCardName()) {
-                case "JACK":
-                    cardNumber = "J";
-                    break;
-
-                case "QUEEN":
-                    cardNumber = "Q";
-                    break;
-
-                case "KING":
-                    cardNumber = "K";
-                    break;
-
-                case "ACE":
-                    cardNumber = "A";
-                    break;
-
-                default:
-                    cardNumber = String.valueOf(card.getCardNumber());
-                    break;
-            }
+            cardNumber = switch (card.getCardName()) {
+                case "JACK" -> "J";
+                case "QUEEN" -> "Q";
+                case "KING" -> "K";
+                case "ACE" -> "A";
+                default -> String.valueOf(card.getCardNumber());
+            };
 
             String cardSeed = card.getCardSeed().toString().toLowerCase();
 
