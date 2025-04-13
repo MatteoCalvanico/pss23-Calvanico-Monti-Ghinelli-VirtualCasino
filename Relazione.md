@@ -29,7 +29,7 @@ Ricapitolando, l'utente può fare avanti ed indietro tra il **menu dei giochi** 
 
 Quello dei **Dadi** è un gioco bonus in cui il giocatore deve inserire un numero per indovinare la combinazione uscente dopo il lancio dei dadi.
 
-Una volta giocato o meno ad i **Dadi** l'utente è uscito dal casinò e si ritrova al punto di partenza, il **menu principale**
+Una volta giocato o meno ai **Dadi** l'utente è uscito dal casinò e si ritrova al punto di partenza, il **menu principale**
 
 ## Requisiti non funzionali
 
@@ -163,6 +163,7 @@ Nell'UML sopra viene mostrato in maniera sintetica come funziona la comunicazion
 ### Blackjack Game
 
 Rappresentazione UML **minimale** del Blackjack:
+
 ```mermaid
 classDiagram
 class Blackjack{
@@ -193,16 +194,18 @@ Blackjack -- Player
 ```
 
 La sfida principale nell'implementazione del gioco è stata la gestione di tutti i vari mazzi (successivamente nel dettaglio la gestione delle carte). Infatti nel gioco del Blackjack i mazzi sono molteplici:
+
 - Mazzo del banco (dealer): che rappresenta il numero da battere.
-- Mazzi del giocatore: ben due, il primo è quello principale e il secondo usato in caso di *split*.
+- Mazzi del giocatore: ben due, il primo è quello principale e il secondo usato in caso di _split_.
 - Mazzi da gioco: i mazzi da dove si prendono le carte da assegnare, normalmente possono variare tra 2 e 6 (in base al tipo di blackjack) e quando uno finisce si cambia subito con un altro.
 
-## Problema
+#### Problema
+
 Fin da subito si è capito che il mazzo più complicato da gestire sarebbe stato quello da gioco, creato tramite una lista di **Deck**, infatti è necessario tenere conto del numero di mazzo utilizzato e, se necessario, cambiarlo prima di ogni azione per evitare di andare in eccessione.
 
-## Soluzione
-Per far fronte a questo continuo controllo si è creato un indice, chiamato **playDeckIndex**, per tenere conto del mazzo utilizzato e un metodo, chiamato **checkAndChangeDeck**, che controlla se il mazzo è finito e in caso lo cambia, in modo da far continuare il gioco senza far notare nulla al player.
+#### Soluzione
 
+Per far fronte a questo continuo controllo si è creato un indice, chiamato **playDeckIndex**, per tenere conto del mazzo utilizzato e un metodo, chiamato **checkAndChangeDeck**, che controlla se il mazzo è finito e in caso lo cambia, in modo da far continuare il gioco senza far notare nulla al player.
 
 ### Gestione delle carte
 
@@ -247,7 +250,6 @@ Utilizzo degli Enumeratori per le informazioni, dove ognuno contiene determinati
 
 Inoltre visto la necessità di dover rappresentare lo stato della carta (Nascosta/Visibile) si è pensato di aggiungere un flag per indicare se la carta è girata o meno, accessibile tramite setter e getter.
 
-
 ### Condivisione informazioni Player
 
 Rappresentazione UML del pattern Singleton per salvare e condividere le informazioni del Player tra le varie scene.
@@ -280,72 +282,144 @@ Riuscire a mantenere salvata l'istanza del player, in modo da gestire le varie v
 
 Utilizzo del design patter _Singleton_, dove si salva il Player e si modifica utilizzando i metodi della classe singleton tramite l'istanza creata privatamente e resa disponibile tramite un metodo pubblico
 
-
 ## Design dettagliato - Filippo Monti
 
 ## Design dettagliato - Giacomo Ghinelli
 
 ### Roulette Game
 
-Il gioco della Roulette, per quanto semplice possa sembrare a primo impatto, è un gioco che possiede una grande variabilità in termini di tipologia di scommesse. In questo gioco esistono ben 149 tipologie di scommesse diverse.
-Al fine di gestire in modo efficace questa grossa variabilità, oltre che per separare e differenziare il più possibile la logica interna del gioco e stato progettato un sistema basato su tre modelli principali: **Roulette**, **RouletteBet** e **RouletteBetPositionsGrid**.
+#### Problema
+
+Visualizzare a schermo in maniera dinamica dei selettori che l'utente può selezionare per indicare la posizione della scommessa, evitando di scrivere in maniera hard-coded la posizione degli stessi.
+
+Nel caso in cui il lettore non conosca il gioco della roulette è giusto specificare che le scommesse, nel gioco reale, vengono effettuate posizionando le fiches sulla tabella dei numeri. La posizione scelta indica direttamente la tipologia di scommessa, i numeri su cui si sta puntando ed il moltiplicatore in caso di vincita.
+
+La sfida quindi è stata quella di riuscire a gestire tutti i tipi e le posizioni delle possibili scommesse che si possono fare alla roulette (ben 149 possibili scommesse diverse).
+
+Per il gioco della roulette è stato progettato un sistema basato su tre modelli principali: **Roulette**, **RouletteBetPositionsGrid** e **RouletteBet**.
 
 Tutti e tre questi modelli estendono una classe base contentente costanti di valori e sequenze specifiche e condivise nel gioco della roulette.
 
-La classe Roulette si occupa principalmente della gestione della lista di scommesse piazzate e della generazione del numero vincente sulla base del quale viene calcolato il risultato della partita.
+#### Soluzione
 
-La classe RouletteBetPositionsGrid e RouletteBet contengono la logica che permette la gestione di tutte le tipologie di scommesse diverse:
+Differenziare il più possibile la logica interna del gioco, secondo il principio di singola responsabilità, introducendo le classi **RouletteBetPositionsGrid** e **RouletteBet**
 
-- RouletteBetPositionsGrid presenta al controller le possibili posizioni delle scommesse all'interno della tavola dei numeri.
-- RouletteBet contiene la logica che permette di converire tipologia e posizione della scommessa nella combinazione di numeri vincenti.
+1. **RouletteBetPositionsGrid** contiene la logica responsabile del calcolo dinamico delle posizioni all'interno della tabella dei numeri di tutte le possibili scommesse. Questo approccio di calcolo delle posizioni a run-time rende il software maggiormente mantenibile. Al contrario, optando per una dichiarazione hard-coded delle posizioni, nel caso in cui si fosse deciso di cambiare la dimensione della schermata dell'applicazione, si sarebbero dovute aggiornare tutte le costanti manualmente.
+
+2. **RouletteBet** oltre a fungere da contenitore per l'ammontare ed il tipo di scommessa, contiene la logica responsabile del calcolo dei numeri vincenti. I numeri vincenti sono infatti derivati dalla posizione della scommessa all'interno della tabella dei numeri.
 
 ```mermaid
 classDiagram
 class Roulette {
-    - placedBets: List<RouletteBet>
     - generateWinningNumber(): int
     - calculateGameResult(): double
 }
 
 class RouletteBet {
-    - betType: BetType
-    - betPosition: BetPosition
-    - winningNumbers: List<int>
     - calculateWinningNumbers(): void
 }
 
-class BetType {
-    - name: String
-    - payoutRatio: double
-}
-
-class BetPosition {
-    - value: int
-}
-
 class RouletteBetPositionsGrid {
-    - createBetIndicators(): List<BetIndicator>
+    - getBetPositionIdicatorsListByBetType(): List[RouletteBetPositionIndicator]
+    - getBetPositionIndicatorById(): RouletteBetPositionIndicator
 }
 
-class BetIndicator {
+class RouletteBetPositionIndicator {
     - betType: BetType
     - betPosition: BetPosition
-    - coordinates: (int, int)
+    - coordinate: Coordinate
 }
 
 class RouletteController {
     - roulette: Roulette
     - betPositionsGrid: RouletteBetPositionsGrid
-    - createBet(indicator: BetIndicator): RouletteBet
+    - createBet(indicator: RouletteBetPositionIndicator): RouletteBet
 }
 
-RouletteBet --|> BetType : has a
-RouletteBet --|> BetPosition : has a
 Roulette *-- RouletteBet : has many
 RouletteController --* Roulette : uses
 RouletteController --* RouletteBetPositionsGrid : uses
-RouletteBetPositionsGrid *-- BetIndicator : has many
+RouletteBetPositionsGrid *-- RouletteBetPositionIndicator : has many
 ```
+
+### Score board
+
+#### Problema
+
+L’applicazione richiede la gestione di una classifica persistente tra diverse esecuzioni dell'applicazione dei 10 migliori giocatori. Il saldo del giocatore deve venir salvato nel momento in cui esce dal casinò.
+
+#### Soluzione
+
+Classe statica **Scoreboard** che funge da servizio per il salvataggio e il recupero dei dati relativi alla scoreboard su file.
+
+**PersistentStorageHelper**: helper generico per la gestione dei file e cartelle usate come storage. Contiente della logica che in futuro potrà essere riutilizzata da altri modelli che richiedono l'inserimento di dati in uno storage persistente.
+
+```mermaid
+classDiagram
+class Scoreboard {
+    + loadScoreboard(): List~ScoreboardRecord~
+    + addRecord(ScoreboardRecord): boolean
+    + containsName(String): boolean
+}
+
+class PersistentStorageHelper {
+    + getStorageFile(String): File
+    + getStorageDirectory(): String
+}
+
+class ScoreboardController {
+    + ListView~String~ scoreboardList
+    + Button btnExit
+    + exit(event): void
+}
+
+class MainMenuController
+
+MainMenuController --> Scoreboard : uses
+ScoreboardController --> Scoreboard : uses
+Scoreboard --> PersistentStorageHelper : uses
+```
+
+### Interscambiabilità delle modalità con cui il player piazza scommesse nei giochi del casino.
+
+In un casinò tutti i giochi danno la possibilità di piazzare scommesse.
+L'azione di piazzare una scommessa però non è effettuata dal gioco stesso, il gioco si limita ad esporre al giocatore la modalità con cui è possibile piazzare le scommesse. Sarà poi il giocatore a controllare di aver soldi da scommettere ed effettivamente piazzare la scommessa.
+
+Rappresentazione UML del pattarn Strategy per esporre le modalità con cui il player può scommettere.
+
+```mermaid
+classDiagram
+
+class BlackJackController
+
+class RouletteController
+
+class BaseGameController
+<<abstract>> BaseGameController
+
+class IPlaceBet {
+    + placeBet(): void
+    + getTotalBetsAmount(): double
+}
+<<interface>> IPlaceBet
+
+class Player {
+    placeBet(): void
+}
+
+BaseGameController --> IPlaceBet : implements
+BlackJackController --> BaseGameController : extends
+RouletteController --> BaseGameController : extends
+IPlaceBet -- Player : uses
+```
+
+#### Problema
+
+Ogni gioco ha la sua specifica logica interna con cui vengono piazzate le scommesse, tale logica deve essere usata dal giocatore per piazzare le scommesse.
+
+#### Soluzione
+
+Il sistema per pizzare le scommesse utilizza il **pattern Strategy**. Tutti i giochi del casino, implementano l'interfaccia **IPlaceBet**, i metodi di questa interfaccia vengono poi esposti ed usati dal giocatore per piazzare le scommesse. In questo modo, il giocatore non deve conoscere la logica interna di ogni gioco per piazzare le scommesse ma è soltato a conoscenza che è possibile piazzare una scommessa su di esso.
 
 # Sviluppo
 
@@ -464,6 +538,94 @@ void showGames(ActionEvent event) {
 
 ## Note di sviluppo - Giacomo Ghinelli
 
+### Calcolo dinamico dei selettori di posizione delle scommesse nella tabella dei numeri.
+
+**Dove**: Nel costruttore della classe `it.unibo.virtualCasino.model.games.impl.roulette.RouletteBetPositionsGrid`,
+
+**Permalink**: https://github.com/MatteoCalvanico/pss23-Calvanico-Monti-Ghinelli-VirtualCasino/blob/f138e2c61eac0d5b68cfbdfb95616795a6b41817/src/main/java/it/unibo/virtualCasino/model/games/impl/roulette/RouletteBetPositionsGrid.java
+
+Questa classe continene un'algoritmo che prende come input le coordinate degli angoli della tabella dei numeri e genera come output, per ogni possibile scommessa, la sua posizione all'interno della tabella dei numeri.
+
+**Snippet**:
+
+```java
+public RouletteBetPositionsGrid(RouletteTableLayout tableLayout) {
+    this.tableLayout = new RouletteTableLayout(tableLayout);
+
+    this.horizontalLinesVerticalOffset = Math
+            .abs(tableLayout.topLeftCoordinate.yAxisValue - tableLayout.bottomRightCoordinate.yAxisValue)
+            / this.TABLE_COLS;
+
+    this.verticalLinesHorizontalOffset = Math
+            .abs(tableLayout.topLeftCoordinate.xAxisValue - tableLayout.bottomRightCoordinate.xAxisValue)
+            / (this.TABLE_ROWS + 1);
+
+    prepareBetPositionIdicatorsLayoutData();
+}
+```
+
+### Utilizzo di lambda expression per il filtraggio di elementi in una lista
+
+**Dove**: Nella classe `it.unibo.virtualCasino.model.games.impl.roulette.RouletteBetPositionsGrid`, nel metodo _getBetPositionIdicatorsListByBetType()_
+
+**Permalink**: https://github.com/MatteoCalvanico/pss23-Calvanico-Monti-Ghinelli-VirtualCasino/blob/f138e2c61eac0d5b68cfbdfb95616795a6b41817/src/main/java/it/unibo/virtualCasino/model/games/impl/roulette/RouletteBetPositionsGrid.java
+
+**Snippet**:
+
+```java
+public ArrayList<RouletteBetPositionIndicator> getBetPositionIdicatorsListByBetType(RouletteBetType betType) {
+    ArrayList<RouletteBetPositionIndicator> listCopy = new ArrayList<>(betPositionIdicatorsList);
+
+    listCopy.removeIf(betPositionIndicator -> betPositionIndicator.betType != betType);
+
+    return listCopy;
+}
+```
+
+### Algoritmo per il calcolo dei numeri vincenti dato il tipo e la posizione di una scommessa all'interno della tabella dei numeri nella roulette
+
+**Dove**: Nella classe `it.unibo.virtualCasino.model.games.impl.roulette.RouletteBet`, nel metodo _getWinningNumbers(RouletteBetType betType, int betPositionInTable)_
+
+**Permalink**: https://github.com/MatteoCalvanico/pss23-Calvanico-Monti-Ghinelli-VirtualCasino/blob/f138e2c61eac0d5b68cfbdfb95616795a6b41817/src/main/java/it/unibo/virtualCasino/model/games/impl/roulette/RouletteBet.java
+
+**Snippet**:
+
+```java
+private ArrayList<Integer> getWinningNumbers(RouletteBetType betType, int betPositionInTable) {
+    ArrayList<Integer> numbers = new ArrayList<>();
+    switch (betType) {
+        case STRAIGHT_UP -> numbers.add(betPositionInTable);
+        case SPLIT -> {
+            if (betPositionInTable < this.MAX_VERTICAL_SPLITS) {
+                int topNum = calcBottomNumberBasedOnPosition(betPositionInTable);
+                numbers.add(topNum + 1);
+                numbers.add(topNum);
+            } else {
+                int bottomNum = betPositionInTable - this.MAX_VERTICAL_SPLITS + 1;
+                numbers.add(bottomNum);
+                numbers.add(bottomNum + this.TABLE_COLS);
+            }
+        }
+        case STREET -> {
+            int topNum = betPositionInTable * this.TABLE_COLS;
+            numbers.add(topNum--);
+            numbers.add(topNum--);
+            numbers.add(topNum);
+        }
+        case CORNER -> {...}
+        case DOUBLE_STREET -> {...}
+        case COLUMN -> {...}
+        case DOZEN -> {...}
+        case ODD_EVEN -> {...}
+        case RED_BLACK -> {...}
+        case HALF -> {...}
+        default -> {}
+    }
+
+    return numbers;
+}
+```
+
 # Commenti finali
 
 In quest'ultimo capitolo si tirano le somme del lavoro svolto e si
@@ -478,15 +640,25 @@ formulato la valutazione.
 ## Autovalutazione e lavori futuri
 
 ### Matteo Calvanico
-Per quanto riguarda la mia parte all'interno del progetto (Blackjack e vari menù) sono più che soddisfatto, soprattuto della parte di *Controller* e *View* dove credo di aver passato anche la maggior parte del tempo. Per quanto riguarda il *Model del Blackjack*, anche se sono estremamente soddisfatto, credo di poter fare alcuni miglioramenti, soprattutto perchè è stata sviluppata molto prima e con parecchi mesi di distanza dalle altre e nel mentre sono "migliorato" come sviluppatore.
+
+Per quanto riguarda la mia parte all'interno del progetto (Blackjack e vari menù) sono più che soddisfatto, soprattuto della parte di _Controller_ e _View_ dove credo di aver passato anche la maggior parte del tempo. Per quanto riguarda il _Model del Blackjack_, anche se sono estremamente soddisfatto, credo di poter fare alcuni miglioramenti, soprattutto perchè è stata sviluppata molto prima e con parecchi mesi di distanza dalle altre e nel mentre sono "migliorato" come sviluppatore.
 
 Come team abbiamo lavorato molto bene insieme e credo che il carico di lavoro sia stato abbastanza equilibrato, forse solo la di Roulette (sviluppata da Giacomo) è più complicata concettualmente rispetto alle altre e quindi ha richiesto più impegno da parte sua.
 
-Vorrei aggiungere che mi piacerebbe molto implementare altri giochi in futuro, rendendo l'applicativo simile a quello pre-installato su Windows (*Solitaire & Casual Games*). Alcune possibili aggiunte potrebbero essere Mahjong e Caravan (*Fallout: New Vegas*)
+Vorrei aggiungere che mi piacerebbe molto implementare altri giochi in futuro, rendendo l'applicativo simile a quello pre-installato su Windows (_Solitaire & Casual Games_). Alcune possibili aggiunte potrebbero essere Mahjong e Caravan (_Fallout: New Vegas_)
+
+---
 
 ### Filippo Monti
 
-## Giacomo Ghinelli
+---
+
+### Giacomo Ghinelli
+
+Per quanto possibile ho cercato di promuovere riutilizzo e condivisione del codice all'interno progetto, tramite l'uso di helper per logiche comuni ai vari componenti software.
+Anche per le sezioni di cui ho curato completamente lo sviluppo ho sempre cercato di mantenere le responsabilità e le logiche il più separate possibili al fine di avere un software modulare e facilmente mentenibile. La complessita della gestione delle scommesse della roulette ha richiesto la scrittura di molta logica che per forza di cose non sarà facilmente mantenibile in futuro o per chi vede per la prima volta il codice.
+
+Nonostante ciò penso che come team abbiamo dato tutti il massimo e per questo motivo mi ritengo estremamente soddisfatto del progetto.
 
 ## Difficoltà incontrate e commenti per i docenti
 
@@ -503,24 +675,54 @@ Ovviamente **il contenuto della sezione non impatterà il voto finale**.
 
 # Guida utente
 
-L'utilizzo dell'applicativo è abbastanza banale, all'avvio sarà possibile iniziare una nuova partita o vedere la classifica (in caso di primo avvio la classifica sarà normalmente vuota).
+L'utilizzo dell'applicativo è abbastanza intuitivo, all'avvio sarà possibile iniziare una nuova partita o vedere la classifica (in caso di primo avvio la classifica sarà normalmente vuota).
 
 All'avvio di una nuova partita sarà richiesto un nome, finchè non lo si inserirà non sarà possibile continuare, successivamente vi sarannò accreditati 1000 crediti e finiti questi non sarà più possibile giocare ad altro. Se si decide di uscire sarà possibile giocare opzionalmente al bonus **Dadi** che permette di raddoppiare o azzerrare i vostri crediti in base all'esito del gioco.
 
 Ora davanti a voi sarà presente la scelta dei giochi, di seguito le regole nel dettaglio...
 
 ## Blackjack
-Per iniziare a giocare bisogna fare una puntata, è possibile puntare di 100 alla volta, e appena confermata la puntata(pulsante *Set bet* collocato a destra) la partita inizia.
 
-All'inizio del turno voi e il banco riceverete due carte (nel suo caso una è girata), il vostro scopo è fare più del banco ma senza superare il 21, se fate 21 con le prime due carte vincete automaticamente (il cosidetto **blackjack**). 
+Per iniziare a giocare bisogna fare una puntata, è possibile puntare di 100 alla volta, e appena confermata la puntata(pulsante _Set bet_ collocato a destra) la partita inizia.
+
+All'inizio del turno voi e il banco riceverete due carte (nel suo caso una è girata), il vostro scopo è fare più del banco ma senza superare il 21, se fate 21 con le prime due carte vincete automaticamente (il cosidetto **blackjack**).
 
 Durante il gioco avete a disposizione tre pulsanti:
-- *Split*: se avete due carte uguali potete spostarne una nel secondo mazzo a se stante, quindi non importa quanto fate nell'altro, e come fare due partite contemporaneamente con due puntate uguali.
-- *+*: come potete immaginare serve per riceve una carta nel mazzo corrispondente...attenzione a non chiederne troppe.
-- *Stay*: anche qui abbastanza esplicativo, fa capire al dealer che non si vogliono più carte, può voler dire fine del turno e quindi mostrare i risultati.
 
-Si può uscire in qualsiasi momento (tranne quando è in corso un turno) dal comodo pulsante *Exit* posto a destra sotto la sezione delle scommesse.
+- _Split_: se avete due carte uguali potete spostarne una nel secondo mazzo a se stante, quindi non importa quanto fate nell'altro, e come fare due partite contemporaneamente con due puntate uguali.
+- _+_: come potete immaginare serve per riceve una carta nel mazzo corrispondente...attenzione a non chiederne troppe.
+- _Stay_: anche qui abbastanza esplicativo, fa capire al dealer che non si vogliono più carte, può voler dire fine del turno e quindi mostrare i risultati.
+
+Si può uscire in qualsiasi momento (tranne quando è in corso un turno) dal comodo pulsante _Exit_ posto a destra sotto la sezione delle scommesse.
 
 ## Roulette
+
+**Obiettivo del Gioco** : Punta su uno o più numeri o combinazioni, premi **Spin!**, e scopri se hai indovinato il numero vincente!
+
+- **Piazza una scommessa**:
+
+  - Scrivi quanto vuoi scommettere nel campo **Bet amount**.
+  - Seleziona dal menu a tendina il tipo di scommessa: `STRAIGHT_UP` (un numero singolo) `SPLIT`, `CORNER`, ecc. (in base alle opzioni disponibili)
+  - In base al tipo selezionato, il gioco proporrà degli indicatori sulla tavola dei numeri, usando questi indicatori seleziona la posizione della scommessa.
+  - Clicca su **New Bet**
+
+- **Controlla le puntate piazzate**
+
+  - Nella sezione **Placed bets**, vedi l’elenco delle puntate attive
+  - Puoi annullarle cliccando sul pulsante rosso **X**
+
+- **Gira la ruota**
+
+  - Clicca sul pulsante **Spin!**
+  - Il numero vincente apparirà al centro della ruota (in giallo)
+  - Il tuo saldo si aggiornerà in base al risultato
+
+- **Fine o nuovo giro**
+
+  - Continua a giocare usando oppure esci dal gioco premendo **Exit**
+
+- **Consigli**
+  - Puoi piazzare più puntate prima di girare
+  - Il gioco non permette di scommettere più di quanto possiedi
 
 ## Dadi
