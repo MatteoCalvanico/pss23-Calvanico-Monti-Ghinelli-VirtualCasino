@@ -2,6 +2,9 @@ package it.unibo.modelTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Map;
+import java.util.UUID;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -49,4 +52,31 @@ public class RouletteTest {
                                 0.01,
                                 "La somma totale delle puntate deve essere 70");
         }
+
+        // Testo che deleteBet rimuova la puntata corretta dalla mappa.
+        @Test
+        void deleteBet_removesCorrectBet() {
+                RouletteBet bet = new RouletteBet(15, RouletteBetType.STRAIGHT_UP, 3);
+                roulette.addRouletteBet(bet);
+
+                Map<UUID, RouletteBet> afterDelete = roulette.deleteBet(bet.getBetId());
+
+                assertFalse(afterDelete.containsKey(bet.getBetId()),
+                                "La puntata deve essere rimossa dalla mappa");
+                assertEquals(0,
+                                afterDelete.size(),
+                                "Dopo la rimozione la mappa deve essere vuota");
+        }
+
+        // Testo che nextRound azzeri la lista delle puntate posizionate.
+        @Test
+        void nextRound_clearsBetsList() {
+                roulette.addRouletteBet(new RouletteBet(25, RouletteBetType.STRAIGHT_UP, 5));
+                roulette.nextRound();
+
+                assertEquals(0,
+                                roulette.getBetsList().size(),
+                                "Alla partenza del nuovo round non devono esserci puntate attive");
+        }
+
 }
