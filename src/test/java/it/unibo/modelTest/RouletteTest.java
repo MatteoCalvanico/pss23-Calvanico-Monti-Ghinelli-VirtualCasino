@@ -79,4 +79,43 @@ public class RouletteTest {
                                 "Alla partenza del nuovo round non devono esserci puntate attive");
         }
 
+        // Testo che getWinningNumber sollevi un'eccezione se non è ancora stato
+        // generato un numero vincente.
+        @Test
+        void getWinningNumber_throwsWhenNotGenerated() {
+                Exception ex = assertThrows(Exception.class,
+                                () -> roulette.getWinningNumber(),
+                                "Se chiamato prima di showResult deve lanciare eccezione");
+
+                assertEquals("Winning number is null",
+                                ex.getMessage(),
+                                "Il messaggio di errore deve indicare che il numero è null");
+        }
+
+        // Testo che getRouletteTable restituisca una matrice di 12 righe e 3 colonne.
+        @Test
+        void getRouletteTable_hasExpectedDimensions() {
+                int[][] table = roulette.getRouletteTable();
+
+                assertEquals(12,
+                                table.length,
+                                "La matrice deve avere 12 righe");
+                for (int[] row : table) {
+                        assertEquals(3,
+                                        row.length,
+                                        "Ogni riga deve avere 3 colonne");
+                }
+        }
+
+        // Testo che la mappa numero‑colore contenga tutti i 37 numeri (0‑36).
+        @Test
+        void getColorNumberMap_containsThirtySevenEntries() {
+                assertEquals(37,
+                                roulette.getColorNumberMap().size(),
+                                "La mappa colore‑numero deve contenere 37 elementi");
+                // Controllo spot: 0 deve essere presente
+                assertTrue(roulette.getColorNumberMap().containsKey(0),
+                                "Il numero 0 deve essere presente nella mappa");
+        }
+
 }
