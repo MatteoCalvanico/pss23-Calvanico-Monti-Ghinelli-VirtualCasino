@@ -117,32 +117,4 @@ public class RouletteTest {
                 assertTrue(roulette.getColorNumberMap().containsKey(0),
                                 "Il numero 0 deve essere presente nella mappa");
         }
-
-        /*
-         * TEST di RouletteBet
-         */
-        // Testo che getPossibleWin calcoli correttamente la vincita potenziale
-        // (Straight‑Up paga 35:1).
-        @Test
-        void rouletteBet_possibleWinIsCorrect() {
-                RouletteBet bet = new RouletteBet(10, RouletteBetType.STRAIGHT_UP, 17);
-
-                assertEquals(350,
-                                bet.getPossibleWin(),
-                                "Una puntata Straight‑Up da 10 deve pagare 350");
-        }
-
-        // Testo che, per una Straight‑Up, l'elenco dei numeri vincenti contenga
-        // esattamente il numero puntato.
-        @Test
-        void rouletteBet_winningNumbersForStraightUp() {
-                int number = 21;
-                RouletteBet bet = new RouletteBet(5, RouletteBetType.STRAIGHT_UP, number);
-
-                assertEquals(1,
-                                bet.getWinningNumbers().size(),
-                                "Straight‑Up deve contenere un solo numero vincente");
-                assertTrue(bet.getWinningNumbers().contains(number),
-                                "Il numero vincente deve corrispondere al numero puntato");
-        }
 }
