@@ -59,4 +59,35 @@ public class RouletteBetTest {
                                 bet.getPossibleWin(),
                                 "Una puntata column da 15 deve pagare 30");
         }
+
+        // TEST METODO getWinningNumbers
+
+        // Controllo che una STRAIGHT_UP contenga esattamente il numero puntato.
+        @Test
+        void winningNumbers_straightUpContainsOnlyThatNumber() {
+                int number = 21;
+                RouletteBet bet = new RouletteBet(5, RouletteBetType.STRAIGHT_UP, number);
+
+                assertEquals(1,
+                                bet.getWinningNumbers().size(),
+                                "Straight-up deve avere un solo numero");
+                assertTrue(bet.getWinningNumbers().contains(number),
+                                "Il numero vincente deve corrispondere a quello puntato");
+        }
+
+        // Verifico che una SPLIT generi esattamente due numeri distinti compresi fra 1
+        // e 36.
+        @Test
+        void winningNumbers_splitHasTwoDistinctNumbers() {
+                RouletteBet bet = new RouletteBet(5, RouletteBetType.SPLIT, 1);
+
+                assertEquals(2,
+                                bet.getWinningNumbers().size(),
+                                "Uno split deve coprire due numeri");
+                Set<Integer> unique = new HashSet<>(bet.getWinningNumbers());
+                assertEquals(2, unique.size(), "I due numeri devono essere distinti");
+                bet.getWinningNumbers().forEach(n -> assertTrue(n >= 1 && n <= 36,
+                                "I numeri di uno split devono essere nel range 1-36"));
+        }
+
 }
