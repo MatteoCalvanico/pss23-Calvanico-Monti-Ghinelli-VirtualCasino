@@ -90,4 +90,30 @@ public class RouletteBetTest {
                                 "I numeri di uno split devono essere nel range 1-36"));
         }
 
+        // Verifico che una COLUMN copra 12 numeri e che tutti abbiano resto 2 (colonna
+        // centrale) se position=2.
+        @Test
+        void winningNumbers_columnHasTwelveNumbersWithCorrectSpacing() {
+                RouletteBet bet = new RouletteBet(5, RouletteBetType.COLUMN, 2);
+
+                assertEquals(12,
+                                bet.getWinningNumbers().size(),
+                                "Una column deve contenere 12 numeri");
+                bet.getWinningNumbers().forEach(n -> assertEquals(2,
+                                n % 3,
+                                "Tutti i numeri della colonna 2 devono avere resto 2 mod 3"));
+        }
+
+        // Verifico che una DOZEN (seconda dozzina) abbia 12 numeri fra 13 e 24.
+        @Test
+        void winningNumbers_dozenHasCorrectRangeAndSize() {
+                RouletteBet bet = new RouletteBet(5, RouletteBetType.DOZEN, 2);
+
+                assertEquals(12,
+                                bet.getWinningNumbers().size(),
+                                "Una dozen deve contenere 12 numeri");
+                bet.getWinningNumbers().forEach(n -> assertTrue(n >= 13 && n <= 24,
+                                "I numeri della seconda dozzina devono essere 13-24"));
+        }
+
 }
