@@ -116,4 +116,45 @@ public class RouletteBetTest {
                                 "I numeri della seconda dozzina devono essere 13-24"));
         }
 
+        // Verifico che una ODD_EVEN su EVEN ritorni solo numeri pari ed esattamente 18
+        // numeri.
+        @Test
+        void winningNumbers_evenBetContainsOnlyEvenNumbers() {
+                RouletteBet bet = new RouletteBet(5, RouletteBetType.ODD_EVEN, 1); // 1 = EVEN nel codice
+
+                assertEquals(18,
+                                bet.getWinningNumbers().size(),
+                                "La puntata EVEN deve avere 18 numeri");
+                bet.getWinningNumbers().forEach(n -> assertEquals(0,
+                                n % 2,
+                                "Tutti i numeri della puntata EVEN devono essere pari"));
+        }
+
+        // Verifico che una RED_BLACK su ROSSO ritorni 18 numeri tutti marcati RED nella
+        // mappa colori.
+        @Test
+        void winningNumbers_redBetAreAllRed() {
+                RouletteBet redBet = new RouletteBet(5, RouletteBetType.RED_BLACK, 1); // 1 = rosso
+
+                assertEquals(18,
+                                redBet.getWinningNumbers().size(),
+                                "La puntata su rosso deve coprire 18 numeri");
+                redBet.getWinningNumbers().forEach(n -> assertEquals(RouletteColors.RED,
+                                colorMap.get(n),
+                                "Ogni numero nella puntata ROSSO deve essere di colore RED"));
+        }
+
+        // Verifico che una HALF (primo half: 1-18) abbia 18 numeri tutti nel range
+        // corretto.
+        @Test
+        void winningNumbers_halfBetHasCorrectRange() {
+                RouletteBet halfBet = new RouletteBet(5, RouletteBetType.HALF, 1); // 1 = 1-18
+
+                assertEquals(18,
+                                halfBet.getWinningNumbers().size(),
+                                "La puntata 1-18 deve contenere 18 numeri");
+                halfBet.getWinningNumbers().forEach(n -> assertTrue(n >= 1 && n <= 18,
+                                "Ogni numero deve trovarsi fra 1 e 18"));
+        }
+
 }
