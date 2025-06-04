@@ -178,4 +178,45 @@ public class RouletteTest {
                                 "Con 37 puntate da 1 su tutti i numeri la perdita netta deve essere 1");
         }
 
+        // Testo il branch "addWin": con un trucco di reflection modifico la puntata
+        // in modo che vinca SEMPRE (contiene tutti i 37 numeri). In questo modo
+        // showResult deve incrementare il saldo di getPossibleWin().
+        @Test
+        void showResult_alwaysWinningBet_increasesAccount() throws Exception {
+                // Creo una puntata straight-up da 10 (payout 35:1 → 350 di vincita potenziale)
+                RouletteBet bet = new RouletteBet(10, RouletteBetType.STRAIGHT_UP, 0);
+
+                // ---- Reflection: faccio sì che winningNumbers contenga TUTTI i numeri 0-36
+                Field wn = RouletteBet.class.getDeclaredField("winningNumbers");
+                wn.setAccessible(true);
+                @SuppressWarnings("unchecked")
+                ArrayList<Integer> list = (ArrayList<Integer>) wn.get(bet);
+                list.clear(); // svuoto
+                for (int n = 0; n <= 36; n++) // aggiungo tutti i numeri
+                        list.add(n);
+
+                roulette.addRouletteBet(bet);
+
+                double initialBalance = player.getAccount();
+
+                // Act
+                roulette.showResult(); // qualunque numero esca, la puntata vince
+
+                // Assert
+                assertEquals(initialBalance + bet.getPossibleWin(),
+                                player.getAccount(),
+                                0.0001,
+                                "Il saldo deve aumentare esattamente della vincita potenziale");
+        }
+
+        // Dopo showResult il numero vincente deve essere valido (compreso fra 0 e 36).
+        @Test
+        void getWinningNumber_afterShowResult_isWithinRange() throws Exception {
+                roulette.showResult(); // estrae un numero
+                int winning = roulette.getWinningNumber();
+
+                assertTrue(winning >= 0 && winning <= 36,
+                                "Il numero vincente deve trovarsi nel range 0-36");
+        }
+
 }
