@@ -13,6 +13,9 @@ import it.unibo.virtualCasino.model.games.impl.roulette.Roulette;
 import it.unibo.virtualCasino.model.games.impl.roulette.RouletteBet;
 import it.unibo.virtualCasino.model.games.impl.roulette.enums.RouletteBetType;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+
 public class RouletteTest {
 
         private Player player;
@@ -117,4 +120,62 @@ public class RouletteTest {
                 assertTrue(roulette.getColorNumberMap().containsKey(0),
                                 "Il numero 0 deve essere presente nella mappa");
         }
+
+        // Verifico che quando NON ci sono puntate il saldo del giocatore rimanga
+        // invariato.
+        @Test
+        void showResult_withNoBets_doesNotChangeAccount() {
+                double initialBalance = player.getAccount();
+
+                roulette.showResult(); // nessuna puntata presente
+
+                assertEquals(initialBalance,
+                                player.getAccount(),
+                                0.0001,
+                                "Senza puntate il saldo del giocatore deve restare invariato");
+        }
+
+        // Verifico che, con una singola puntata straight-up, il saldo aumenti se il
+        // numero esce
+        // e diminuisca se non esce. Calcolo l’atteso in base al winningNumber
+        // restituito.
+        @Test
+        void showResult_singleStraightBet_updatesAccountCorrectly() throws Exception {
+                RouletteBet bet = new RouletteBet(10, RouletteBetType.STRAIGHT_UP, 7); // paga 10*35=350 in caso di
+                                                                                       // vittoria
+                roulette.addRouletteBet(bet);
+
+                double initialBalance = player.getAccount();
+
+                roulette.showResult(); // effetto casuale
+                int winning = roulette.getWinningNumber();
+
+                double expectedBalance = (winning == 7)
+                                ? initialBalance + bet.getPossibleWin()
+                                : initialBalance - bet.getBetAmount();
+
+                assertEquals(expectedBalance,
+                                player.getAccount(),
+                                0.0001,
+                                "Il saldo non è stato aggiornato correttamente in base all’esito");
+        }
+
+        // Creo 37 puntate straight-up da 1 su tutti i numeri: qualunque sia l’esito,
+        // la perdita netta deve essere sempre 1 (35 vinti - 36 persi).
+        @Test
+        void showResult_allNumbersBet_alwaysNetLossOfOne() throws Exception {
+                for (int n = 0; n <= 36; n++) {
+                        roulette.addRouletteBet(new RouletteBet(1, RouletteBetType.STRAIGHT_UP, n));
+                }
+
+                double initialBalance = player.getAccount();
+
+                roulette.showResult();
+                // (non serve controllare winningNumber: la perdita è fissa)
+                assertEquals(initialBalance - 1,
+                                player.getAccount(),
+                                0.0001,
+                                "Con 37 puntate da 1 su tutti i numeri la perdita netta deve essere 1");
+        }
+
 }
