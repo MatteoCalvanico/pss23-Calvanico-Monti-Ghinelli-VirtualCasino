@@ -5,9 +5,9 @@ package it.unibo.virtualCasino;
 
 import it.unibo.virtualCasino.view.menu.MenuView;
 import javafx.application.Application;
+import javafx.scene.text.Font;
 
 /** Main application entry-point's class. */
-
 public final class App {
     private App() {
     }
@@ -18,11 +18,23 @@ public final class App {
      * @param args
      */
     public static void main(final String[] args) {
+        loadCustomFonts();
         Application.launch(MenuView.class, args);
         // The following line raises: Error: class it.unibo.samplejavafx.App is not a
         // subclass of javafx.application.Application
         // JavaFXApp.launch(args);
         // While the following would do just fine:
         // JavaFXApp.run(args)
+    }
+
+    private static void loadCustomFonts() {
+        try {
+            // Load all font files from the resources/fonts directory
+            Font.loadFont(App.class.getResourceAsStream("/fonts/BOD_PSTC.ttf"), 12);
+            // Add more fonts as needed using the same pattern:
+            // Font.loadFont(App.class.getResourceAsStream("/fonts/AnotherFont.ttf"), 12);
+        } catch (Exception e) {
+            System.err.println("Error loading custom fonts: " + e.getMessage());
+        }
     }
 }
