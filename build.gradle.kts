@@ -50,6 +50,7 @@ dependencies {
     // JUnit API and testing engine
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$jUnitVersion")
 }
 
 tasks.withType<Test> {
