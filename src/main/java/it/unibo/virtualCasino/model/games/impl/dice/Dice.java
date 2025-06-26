@@ -47,6 +47,37 @@ public class Dice implements Games {
         return lastRoll == null ? -1 : lastRoll;
     }
 
+    /**
+     * Applica il “lucky factor” al saldo del giocatore.
+     *
+     * @param guess numero scelto dall’utente (2-12)
+     * @throws IllegalArgumentException se guess è fuori range
+     * @throws IllegalStateException    se roll() non è stato ancora chiamato
+     */
+    public void applyLuckyFactor(int guess) {
+        if (guess < MIN_SUM || guess > MAX_SUM) {
+            throw new IllegalArgumentException("Guess must be between 2 and 12");
+        }
+        if (lastRoll == null) {
+            throw new IllegalStateException("Roll the dice before applying the factor");
+        }
+
+        double oldBalance = player.getAccount();
+        double newBalance = (guess == lastRoll) ? oldBalance * 2 : oldBalance / 2;
+
+        // aggiorna il saldo mantenendo la semantica addWin / removeLoss
+        double delta = newBalance - oldBalance;
+        if (delta >= 0) {
+            player.addWin(delta);
+        } else {
+            player.removeLoss(-delta);
+        }
+    }
+
+    /*
+     * Metodi richiesti dall’interfaccia Games
+     */
+
     /** Azzera l’ultimo lancio, pronto per un nuovo turno. */
     @Override
     public void nextRound() {
