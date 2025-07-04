@@ -39,8 +39,8 @@ public class Dice implements Games {
 
     /** Lancia due dadi e restituisce la loro somma (2-12). */
     public int roll() {
-        int lastD1 = rng.nextInt(FACES) + 1;
-        int lastD2 = rng.nextInt(FACES) + 1;
+        lastD1 = rng.nextInt(FACES) + 1;
+        lastD2 = rng.nextInt(FACES) + 1;
         lastRoll = lastD1 + lastD2;
         return lastRoll;
     }
