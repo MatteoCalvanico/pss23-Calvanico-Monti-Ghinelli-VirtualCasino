@@ -22,6 +22,9 @@ public class Dice implements Games {
 
     private Integer lastRoll = null; // somma ultimo lancio (null → mai lanciato)
 
+    private int lastD1 = -1;
+    private int lastD2 = -1;
+
     public Dice(Player player) {
         this(player, new Random());
     }
@@ -36,9 +39,9 @@ public class Dice implements Games {
 
     /** Lancia due dadi e restituisce la loro somma (2-12). */
     public int roll() {
-        int d1 = rng.nextInt(FACES) + 1;
-        int d2 = rng.nextInt(FACES) + 1;
-        lastRoll = d1 + d2;
+        int lastD1 = rng.nextInt(FACES) + 1;
+        int lastD2 = rng.nextInt(FACES) + 1;
+        lastRoll = lastD1 + lastD2;
         return lastRoll;
     }
 
@@ -88,5 +91,13 @@ public class Dice implements Games {
     @Override
     public void showResult() {
         /* no-op */
+    }
+
+    public int getLastRollFirstDie() {
+        return lastD1;
+    }
+
+    public int getLastRollSecondDie() {
+        return lastD2;
     }
 }
