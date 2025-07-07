@@ -21,7 +21,9 @@ public class DiceController extends BaseController {
     @FXML
     private Button btnRoll, btnContinue;
     @FXML
-    private Label lblResult;
+    private Label lblRolled;
+    @FXML
+    private Label lblOutcome;
 
     private Dice dice;
 
@@ -58,7 +60,13 @@ public class DiceController extends BaseController {
         // Apply lucky factor
         dice.applyLuckyFactor(guess);
 
-        lblResult.setText("Rolled " + sum + (guess == sum ? " – YOU WIN x2!" : " – You lose (balance /2)"));
+        lblRolled.setText("Rolled: " + sum);
+        if (guess == sum) {
+            lblOutcome.setText("YOU WIN  ×2!");
+        } else {
+            lblOutcome.setText("You lose  (balance / 2)");
+        }
+
         btnRoll.setDisable(true);
         btnContinue.setDisable(false);
     }
