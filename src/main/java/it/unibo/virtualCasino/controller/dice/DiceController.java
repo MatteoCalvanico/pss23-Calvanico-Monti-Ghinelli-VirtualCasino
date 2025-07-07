@@ -29,6 +29,18 @@ public class DiceController extends BaseController {
 
     // Placeholder methods
     private void onRoll() {
+        int guess;
+        try {
+            guess = Integer.parseInt(txtGuess.getText());
+        } catch (NumberFormatException ex) {
+            it.unibo.virtualCasino.helpers.AlertHelper.show(AlertType.WARNING, "Invalid guess",
+                    "Enter a number between 2 and 12");
+            return;
+        }
+        if (guess < 2 || guess > 12) {
+            it.unibo.virtualCasino.helpers.AlertHelper.show(AlertType.WARNING, "Invalid guess", "Guess must be 2-12");
+            return;
+        }
     }
 
     private void onContinue(javafx.event.ActionEvent event) {
