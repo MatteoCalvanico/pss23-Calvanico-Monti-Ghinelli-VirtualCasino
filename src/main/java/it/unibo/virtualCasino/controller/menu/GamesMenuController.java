@@ -5,6 +5,7 @@ import it.unibo.virtualCasino.helpers.RoutingHelper;
 import it.unibo.virtualCasino.model.scoreboard.Scoreboard;
 import it.unibo.virtualCasino.model.scoreboard.dtos.ScoreboardRecord;
 import it.unibo.virtualCasino.view.blackjack.BlackjackView;
+import it.unibo.virtualCasino.view.dice.DiceView;
 import it.unibo.virtualCasino.view.menu.MenuView;
 import it.unibo.virtualCasino.view.roulette.RouletteView;
 import javafx.event.ActionEvent;
@@ -36,6 +37,12 @@ public class GamesMenuController extends BaseController {
 
     @FXML
     private Text txtPlayer;
+
+    @FXML
+    private HBox diceScreenBox;
+
+    @FXML
+    private Button btnDice;
 
     @FXML
     void playBlackjack(ActionEvent event) {
@@ -79,5 +86,16 @@ public class GamesMenuController extends BaseController {
         rlScreen.setFitHeight(rlScreenBox.getPrefHeight());
         rlScreen.setPreserveRatio(true);
         rlScreenBox.getChildren().add(rlScreen);
+    }
+
+    @FXML
+    void goToDice(ActionEvent event) {
+        RoutingHelper.goTo(event, new DiceView());
+
+        ImageView diceScreen = getImage("dieRed1.png"); // usa il PNG che già possiedi
+        diceScreen.setFitWidth(diceScreenBox.getPrefWidth());
+        diceScreen.setFitHeight(diceScreenBox.getPrefHeight());
+        diceScreen.setPreserveRatio(true);
+        diceScreenBox.getChildren().add(diceScreen);
     }
 }
