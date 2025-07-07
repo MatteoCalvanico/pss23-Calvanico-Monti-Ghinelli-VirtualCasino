@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.unibo.virtualCasino.controller.dice.DiceController"
+            prefWidth="1000" prefHeight="600"
+            style="-fx-background-color:#014508;
+                   -fx-border-color:#2b1a01;
+                   -fx-border-width:10;
+                   -fx-border-style:solid">
+
+    <!--Titolo-->
+    <Text text="VIRTUAL CASINO - DICE"
+          layoutX="210" layoutY="150"
+          stroke="#eade07" fill="#a91111"
+          textAlignment="CENTER" wrappingWidth="580">
+        <font><Font name="Bodoni MT Poster Compressed" size="60"/></font>
+    </Text>
+
+    <!-- Info giocatore -->
+    <Text fx:id="txtPlayer" text="PlayerName:"
+          layoutX="18"  layoutY="48"
+          fill="#b40202">
+        <font><Font name="Bodoni MT Poster Compressed" size="40"/></font>
+    </Text>
+
+    <Text fx:id="txtBalance" text="Balance"
+          layoutX="151" layoutY="49"
+          fill="#b40202">
+        <font><Font name="Bodoni MT Poster Compressed" size="40"/></font>
+    </Text>
+
+    <!-- Area centrale con dadi, guess e pulsanti -->
+    <VBox spacing="20" alignment="CENTER"
+          layoutX="350" layoutY="220" prefWidth="300">
+
+        <!-- Dadi -->
+        <HBox spacing="40" alignment="CENTER">
+            <ImageView fx:id="imgDie1" fitWidth="90" fitHeight="90"/>
+            <ImageView fx:id="imgDie2" fitWidth="90" fitHeight="90"/>
+        </HBox>
+
+        <!-- Campo guess -->
+        <HBox spacing="10" alignment="CENTER">
+            <Label text="Your guess (2-12):"
+                   textFill="#b40202">
+                <font><Font name="Bodoni MT Poster Compressed" size="24"/></font>
+            </Label>
+            <TextField fx:id="txtGuess" prefWidth="80"
+                       style="-fx-alignment:center;"/>
+        </HBox>
+
+        <!-- Pulsante roll -->
+        <Button fx:id="btnRoll" text="ROLL" prefWidth="120"
+                style="-fx-background-color:#FFD700;">
+            <font><Font name="Bodoni MT Poster Compressed" size="28"/></font>
+        </Button>
+
+        <!-- Risultato -->
+        <Label fx:id="lblResult" text=""
+               textFill="#ffffff"
+               style="-fx-font-size:22;"/>
+    </VBox>
+
+    <!-- ====== Pulsante Continue ====== -->
+    <Button fx:id="btnContinue" text="Continue"
+            layoutX="420" layoutY="520" prefWidth="160"
+            disable="true" style="-fx-background-color:#70d5fa;">
+        <font><Font name="Bodoni MT Poster Compressed" size="28"/></font>
+    </Button>
+
+    <!-- === CSS globali già usati dagli altri layout === -->
+    <stylesheets>
+        <URL value="@../css/style.css"/>
+    </stylesheets>
+</AnchorPane>
