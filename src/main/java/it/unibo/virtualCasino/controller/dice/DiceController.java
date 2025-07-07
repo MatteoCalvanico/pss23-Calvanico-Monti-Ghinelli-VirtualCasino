@@ -1,7 +1,12 @@
 package it.unibo.virtualCasino.controller.dice;
 
 import it.unibo.virtualCasino.controller.BaseController;
+import it.unibo.virtualCasino.helpers.RoutingHelper;
 import it.unibo.virtualCasino.model.games.impl.dice.Dice;
+import it.unibo.virtualCasino.model.scoreboard.Scoreboard;
+import it.unibo.virtualCasino.model.scoreboard.dtos.ScoreboardRecord;
+import it.unibo.virtualCasino.view.scoreboard.ScoreboardView;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -58,6 +63,13 @@ public class DiceController extends BaseController {
         btnContinue.setDisable(false);
     }
 
-    private void onContinue(javafx.event.ActionEvent event) {
+    private void onContinue(ActionEvent event) {
+        Scoreboard.addRecord(
+                new ScoreboardRecord(currentPlayer.getName(),
+                        currentPlayer.getAccount()));
+        // Salva Player nel singleton per la Scoreboard
+        sendData();
+        // Vai alla schermata successiva (Scoreboard)
+        RoutingHelper.goTo(event, new ScoreboardView());
     }
 }
