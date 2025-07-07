@@ -41,6 +41,21 @@ public class DiceController extends BaseController {
             it.unibo.virtualCasino.helpers.AlertHelper.show(AlertType.WARNING, "Invalid guess", "Guess must be 2-12");
             return;
         }
+        int sum = dice.roll();
+
+        // Update dice images
+        int d1 = dice.getLastRollFirstDie();
+        int d2 = dice.getLastRollSecondDie();
+
+        imgDie1.setImage(getImage("dieRed" + d1 + ".png").getImage());
+        imgDie2.setImage(getImage("dieRed" + d2 + ".png").getImage());
+
+        // Apply lucky factor
+        dice.applyLuckyFactor(guess);
+
+        lblResult.setText("Rolled " + sum + (guess == sum ? " – YOU WIN x2!" : " – You lose (balance /2)"));
+        btnRoll.setDisable(true);
+        btnContinue.setDisable(false);
     }
 
     private void onContinue(javafx.event.ActionEvent event) {
