@@ -62,9 +62,14 @@
         </Button>
 
         <!-- Risultato -->
-        <Label fx:id="lblResult" text=""
+        <Label fx:id="lblRolled" text=""
                textFill="#ffffff"
                style="-fx-font-size:22;"/>
+               
+        <!-- Esito: win / lose -->
+        <Label fx:id="lblOutcome"  text=""
+                textFill="#ffffff"
+                style="-fx-font-size:22;"/>
     </VBox>
 
     <!-- ====== Pulsante Continue ====== -->
