@@ -10,10 +10,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 import javafx.scene.control.Alert.AlertType;
 
 public class DiceController extends BaseController {
 
+    @FXML
+    private Text txtPlayer;
+    @FXML
+    private Text txtBalance;
     @FXML
     private ImageView imgDie1, imgDie2;
     @FXML
@@ -29,7 +34,11 @@ public class DiceController extends BaseController {
 
     @Override
     protected void setBaseController() {
+        txtPlayer.setText(currentPlayer.getName());
+        txtBalance.setText(String.format("%.2f $", currentPlayer.getAccount()));
+
         this.dice = new Dice(currentPlayer); // model
+
         btnRoll.setOnAction(e -> onRoll());
         btnContinue.setOnAction(this::onContinue);
     }
@@ -57,7 +66,7 @@ public class DiceController extends BaseController {
         imgDie1.setImage(getImage("dieRed" + d1 + ".png").getImage());
         imgDie2.setImage(getImage("dieRed" + d2 + ".png").getImage());
 
-        // Apply lucky factor
+        // Aggiorno il saldo
         dice.applyLuckyFactor(guess);
 
         lblRolled.setText("Rolled: " + sum);
