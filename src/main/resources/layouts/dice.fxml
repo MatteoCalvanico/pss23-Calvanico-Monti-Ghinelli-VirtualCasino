@@ -9,25 +9,27 @@
             fx:controller="it.unibo.virtualCasino.controller.dice.DiceController"
             style="-fx-background-color:#014508; -fx-border-color:#2b1a01; -fx-border-width:10;">
     
-    <!-- ❶ Player name & balance (angolo in alto a sx) -->
-    <Text fx:id="txtPlayer"  layoutX="18" layoutY="48"
-          fill="#b40202" fontSmoothingType="LCD">
+    <!-- Player name & balance -->
+    <Text fx:id="txtPlayer" layoutX="18"  layoutY="48"
+      fill="#b40202" text="PlayerName:"
+      strokeType="OUTSIDE" strokeWidth="0">
         <font><Font name="Bodoni MT Poster Compressed" size="40"/></font>
     </Text>
 
     <Text fx:id="txtBalance" layoutX="151" layoutY="49"
-          fill="#b40202">
+      fill="#b40202" text="Balance"
+      strokeType="OUTSIDE" strokeWidth="0">
         <font><Font name="Bodoni MT Poster Compressed" size="40"/></font>
     </Text>
 
-    <!-- ❷ Titolo -->
+    <!-- Titolo -->
     <Text text="ROLL THE DICE!"
           layoutX="268" layoutY="160" fill="#a91111" stroke="#eade07"
           textAlignment="CENTER">
         <font><Font name="Bodoni MT Poster Compressed" size="60"/></font>
     </Text>
 
-    <!-- ❸ Zona centrale con dadi + form -->
+    <!--  centrale con dadi + form -->
     <VBox alignment="CENTER" spacing="20"
           layoutX="275" layoutY="210" prefWidth="450">
 
