@@ -12,6 +12,10 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.scene.control.Alert.AlertType;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class DiceController extends BaseController {
 
@@ -34,13 +38,18 @@ public class DiceController extends BaseController {
 
     @Override
     protected void setBaseController() {
-        txtPlayer.setText(currentPlayer.getName());
-        txtBalance.setText(String.format("%.2f $", currentPlayer.getAccount()));
+        this.dice = new Dice(currentPlayer);
 
-        this.dice = new Dice(currentPlayer); // model
+        // immagini iniziali a faccia “1”
+        imgDie1.setImage(getImage("dieRed1.png").getImage());
+        imgDie2.setImage(getImage("dieRed1.png").getImage());
+
+        txtPlayer.setText(currentPlayer.getName());
+        txtBalance.setText(String.format("%.2f", currentPlayer.getAccount()));
 
         btnRoll.setOnAction(e -> onRoll());
         btnContinue.setOnAction(this::onContinue);
+        btnContinue.setDisable(true);
     }
 
     // Placeholder methods
@@ -57,27 +66,55 @@ public class DiceController extends BaseController {
             it.unibo.virtualCasino.helpers.AlertHelper.show(AlertType.WARNING, "Invalid guess", "Guess must be 2-12");
             return;
         }
-        int sum = dice.roll();
 
-        // Update dice images
-        int d1 = dice.getLastRollFirstDie();
-        int d2 = dice.getLastRollSecondDie();
+        btnRoll.setDisable(true); // blocca finché finisce
+        lblRolled.setText(""); // pulizia messaggi precedenti
+        lblOutcome.setText("");
 
-        imgDie1.setImage(getImage("dieRed" + d1 + ".png").getImage());
-        imgDie2.setImage(getImage("dieRed" + d2 + ".png").getImage());
+        playSound("/sound/dieShuffle.mp3");
 
-        // Aggiorno il saldo
-        dice.applyLuckyFactor(guess);
+        final int FRAMES = 24; // quanti scatti di “shake”
+        final int INTERVAL_MS = 80; // velocità
 
-        lblRolled.setText("Rolled: " + sum);
-        if (guess == sum) {
-            lblOutcome.setText("YOU WIN  ×2!");
-        } else {
-            lblOutcome.setText("You lose  (balance / 2)");
+        Timeline shake = new Timeline();
+        for (int i = 0; i < FRAMES; i++) {
+            shake.getKeyFrames().add(
+                    new KeyFrame(Duration.millis(i * INTERVAL_MS), ev -> {
+                        int f1 = ThreadLocalRandom.current().nextInt(1, 7);
+                        int f2 = ThreadLocalRandom.current().nextInt(1, 7);
+                        imgDie1.setImage(getImage("dieRed" + f1 + ".png").getImage());
+                        imgDie2.setImage(getImage("dieRed" + f2 + ".png").getImage());
+                    }));
         }
 
-        btnRoll.setDisable(true);
-        btnContinue.setDisable(false);
+        shake.setOnFinished(ev -> {
+
+            int sum = dice.roll();
+
+            // Update dice images
+            int d1 = dice.getLastRollFirstDie();
+            int d2 = dice.getLastRollSecondDie();
+
+            imgDie1.setImage(getImage("dieRed" + d1 + ".png").getImage());
+            imgDie2.setImage(getImage("dieRed" + d2 + ".png").getImage());
+
+            playSound("/sound/dieThrow.mp3");
+
+            // Aggiorno il saldo
+            dice.applyLuckyFactor(guess);
+
+            txtBalance.setText(String.format("%.2f", currentPlayer.getAccount()));
+
+            lblRolled.setText("Rolled: " + sum);
+            if (guess == sum) {
+                lblOutcome.setText("YOU WIN  ×2!");
+            } else {
+                lblOutcome.setText("You lose  (balance / 2)");
+            }
+
+            btnContinue.setDisable(false);
+        });
+        shake.play();
     }
 
     private void onContinue(ActionEvent event) {
