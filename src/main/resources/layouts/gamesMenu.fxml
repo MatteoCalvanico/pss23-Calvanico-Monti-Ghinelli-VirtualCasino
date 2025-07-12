@@ -40,14 +40,6 @@
             </font>
          </Button>
       </VBox>
-      <VBox alignment="CENTER" layoutX="900.0" layoutY="308.0">
-         <HBox fx:id="diceScreenBox" alignment="CENTER" maxHeight="146.0" maxWidth="288.0" prefHeight="146.0" prefWidth="288.0" />
-         <Button fx:id="btnDice" mnemonicParsing="false" onAction="#goToDice" prefHeight="54.0" prefWidth="170.0" style="-fx-background-color: #FFD700;" text="Dice" textAlignment="CENTER">
-            <font>
-               <Font name="Bodoni MT Poster Compressed" size="28.0"/>
-            </font>
-         </Button>
-      </VBox>
       <Button id="btnExit" fx:id="btnExit" cancelButton="true" layoutX="424.0" layoutY="515.0" mnemonicParsing="false" onAction="#exit" prefHeight="54.0" prefWidth="170.0" style="-fx-background-color: #FFD700;" text="Exit" textAlignment="CENTER">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="28.0" />
