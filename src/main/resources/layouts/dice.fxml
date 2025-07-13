@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefWidth="1000" prefHeight="600"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="it.unibo.virtualCasino.controller.dice.DiceController"
+            style="-fx-background-color:#014508; -fx-border-color:#2b1a01; -fx-border-width:10;">
+    
+    <!-- Player name & balance -->
+    <Text fx:id="txtPlayer" layoutX="18"  layoutY="48"
+      fill="#b40202" text="PlayerName:"
+      strokeType="OUTSIDE" strokeWidth="0">
+        <font><Font name="Bodoni MT Poster Compressed" size="40"/></font>
+    </Text>
+
+    <Text fx:id="txtBalance" layoutX="151" layoutY="49"
+      fill="#b40202" text="Balance"
+      strokeType="OUTSIDE" strokeWidth="0">
+        <font><Font name="Bodoni MT Poster Compressed" size="40"/></font>
+    </Text>
+
+    <!-- Titolo -->
+    <Text text="ROLL THE DICE!"
+          layoutX="268" layoutY="160" fill="#a91111" stroke="#eade07"
+          textAlignment="CENTER">
+        <font><Font name="Bodoni MT Poster Compressed" size="60"/></font>
+    </Text>
+
+    <!--  centrale con dadi + form -->
+    <VBox alignment="CENTER" spacing="20"
+          layoutX="275" layoutY="210" prefWidth="450">
+
+        <!-- immagini dadi -->
+        <HBox spacing="20" alignment="CENTER">
+            <ImageView fx:id="imgDie1" fitWidth="100" fitHeight="100"/>
+            <ImageView fx:id="imgDie2" fitWidth="100" fitHeight="100"/>
+        </HBox>
+
+        <!-- campo guess + label -->
+        <HBox spacing="10" alignment="CENTER">
+            <Label text="Your Guess (2-12):" textFill="#ffffff"
+                   style="-fx-font-size:22;"/>
+            <TextField fx:id="txtGuess" prefWidth="80"/>
+        </HBox>
+
+        <!-- pulsante Roll -->
+        <Button fx:id="btnRoll" text="ROLL"
+                style="-fx-background-color:#FFD700; -fx-font-size:22;"
+                prefWidth="200"/>
+
+        <!-- output -->
+        <Label fx:id="lblRolled"  textFill="#ffffff" style="-fx-font-size:22;"/>
+        <Label fx:id="lblOutcome" textFill="#ffffff" style="-fx-font-size:22;"/>
+
+        <!-- continua -->
+        <Button fx:id="btnContinue" text="Continue"
+                disable="true"
+                style="-fx-background-color:#70d5fa; -fx-font-size:22;"
+                prefWidth="200"/>
+    </VBox>
+</AnchorPane>
