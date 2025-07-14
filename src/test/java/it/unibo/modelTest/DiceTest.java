@@ -66,5 +66,19 @@ class DiceTest {
 
             assertEquals(2000.0, player.getAccount(), 0.0001);
         }
+
+        /**
+         * Verifica che se il guess è errato il saldo venga dimezzato.
+         */
+        @Test
+        @DisplayName("dimezza il saldo se il guess è sbagliato")
+        void halvesBalanceOnLose() {
+            dice.roll();
+            dice.applyLuckyFactor(2); // non corrisponde alla somma generata
+
+            assertEquals(500.0, player.getAccount(), 0.0001);
+        }
+
     }
+
 }
