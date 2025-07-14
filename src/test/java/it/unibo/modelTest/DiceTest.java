@@ -101,4 +101,16 @@ class DiceTest {
                             () -> dice.applyLuckyFactor(13)));
         }
     }
+
+    /**
+     * Verifica che nextRound() reimposti lo stato interno:
+     * dopo la chiamata getLastRoll() deve restituire –1.
+     */
+    @Test
+    @DisplayName("nextRound() azzera lo stato dell'ultimo lancio")
+    void testNextRound() {
+        dice.roll();
+        dice.nextRound();
+        assertEquals(-1, dice.getLastRoll());
+    }
 }
