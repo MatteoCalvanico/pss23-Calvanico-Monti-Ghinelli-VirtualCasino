@@ -79,6 +79,26 @@ class DiceTest {
             assertEquals(500.0, player.getAccount(), 0.0001);
         }
 
-    }
+        /**
+         * Verifica che chiamare applyLuckyFactor() prima di roll()
+         * lanci IllegalStateException.
+         */
+        @Test
+        @DisplayName("lancia IllegalStateException se non è stato fatto roll()")
+        void requireRollBeforeApply() {
+            assertThrows(IllegalStateException.class,
+                    () -> dice.applyLuckyFactor(7));
+        }
 
+        @Test
+        @DisplayName("lancia IllegalArgumentException per guess fuori range")
+        void invalidGuessRange() {
+            dice.roll();
+            assertAll(
+                    () -> assertThrows(IllegalArgumentException.class,
+                            () -> dice.applyLuckyFactor(1)),
+                    () -> assertThrows(IllegalArgumentException.class,
+                            () -> dice.applyLuckyFactor(13)));
+        }
+    }
 }
