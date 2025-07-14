@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.virtualCasino.model.Player;
@@ -50,4 +51,20 @@ class DiceTest {
         assertEquals(sum, dice.getLastRoll(), "getLastRoll() incoerente");
     }
 
+    @Nested
+    @DisplayName("applyLuckyFactor – raddoppio / dimezzamento e controlli di errore")
+    class ApplyLuckyFactor {
+
+        /**
+         * Verifica che se il guess è corretto il saldo venga raddoppiato.
+         */
+        @Test
+        @DisplayName("raddoppia il saldo se il guess è corretto")
+        void doublesBalanceOnWin() {
+            dice.roll(); // produce FIRST_ROLL_D1 + FIRST_ROLL_D2
+            dice.applyLuckyFactor(7); // 6+1 = 7 con seed 42
+
+            assertEquals(2000.0, player.getAccount(), 0.0001);
+        }
+    }
 }
