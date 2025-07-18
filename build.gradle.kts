@@ -28,6 +28,7 @@ val javaFXModules = listOf(
 )
 
 val supportedPlatforms = listOf("linux", "mac", "win") // All required for OOP
+val testFxVersion = "4.0.16-alpha"
 
 dependencies {
     // Suppressions for SpotBugs
@@ -39,7 +40,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.8")    // JSON serialization and deserialization
 
     // JavaFX: comment out if you do not need them
-    val javaFxVersion = 15
+    val javaFxVersion = "17.0.1"
     for (platform in supportedPlatforms) {
         for (module in javaFXModules) {
             implementation("org.openjfx:javafx-$module:$javaFxVersion:$platform")
@@ -51,11 +52,19 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$jUnitVersion")
+    testImplementation("org.testfx:testfx-junit5:$testFxVersion")
+    testRuntimeOnly("org.testfx:openjfx-monocle:17.0.1")
 }
 
 tasks.withType<Test> {
     // Enables JUnit 5 Jupiter module
     useJUnitPlatform()
+    
+    //proprietà usate da TestFX/Monocle per la modalità head-less
+    systemProperty("testfx.headless", "true")
+    systemProperty("testfx.robot",    "glass")
+    systemProperty("prism.order",     "sw")
+    systemProperty("java.awt.headless", "true")
 }
 
 application {
