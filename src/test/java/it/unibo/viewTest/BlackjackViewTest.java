@@ -92,4 +92,54 @@ class BlackjackViewTest {
                 "Dopo Exit deve comparire la Games-menu");
     }
 
+    @Test
+    @DisplayName("Set bet avvia il round → pulsanti di gioco abilitati")
+    void setBetEnablesGameControls(FxRobot robot) throws TimeoutException {
+
+        /* 1. puntiamo 100 */
+        robot.clickOn("#btnBet100");
+
+        /* 2. conferma con Set bet */
+        robot.clickOn("#btnPlaceBet");
+
+        /* attesa asincrona per l’avvio del round */
+        WaitForAsyncUtils.waitFor(3, TimeUnit.SECONDS,
+                () -> !robot.lookup("#btnCard0").queryButton().isDisabled());
+
+        /* ora i pulsanti principali NON devono essere disabilitati */
+        assertFalse(robot.lookup("#btnCard0").queryButton().isDisabled());
+        assertFalse(robot.lookup("#btnStay0").queryButton().isDisabled());
+        assertFalse(robot.lookup("#btnSplit").queryButton().isDisabled());
+
+        /* e quelli di modifica bet devono essere disabilitati */
+        assertTrue(robot.lookup("#btnBet100").queryButton().isDisabled());
+        assertTrue(robot.lookup("#btnBetMinus100").queryButton().isDisabled());
+    }
+
+    @Test
+    @DisplayName("Flusso breve: saldo invariato se si esce prima di giocare")
+    void balancePersistsAfterRound(FxRobot robot) throws TimeoutException {
+
+        /* saldo iniziale dalla Blackjack-view */
+        String balanceBefore = robot.lookup("#txtBalance")
+                .queryText().getText();
+
+        /* imposta 100 ma NON avvia la mano */
+        robot.clickOn("#btnBet100"); // saldo a rischio, ma mano non iniziata
+
+        /* click immediato su Exit (il bottone è ancora abilitato) */
+        robot.clickOn("#btnExit");
+
+        /* sincronizzazione JavaFX + attesa comparsa Games-menu */
+        WaitForAsyncUtils.waitForFxEvents();
+        WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS,
+                () -> robot.lookup("#btnBlackjack").tryQuery().isPresent());
+
+        /* ora leggiamo il saldo mostratato nella Games-menu */
+        String balanceAfter = robot.lookup("#txtBalance")
+                .queryText().getText();
+
+        assertEquals(balanceBefore, balanceAfter,
+                "Senza aver disputato una mano il saldo deve rimanere invariato");
+    }
 }
