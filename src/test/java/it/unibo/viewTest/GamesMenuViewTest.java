@@ -78,6 +78,19 @@ class GamesMenuViewTest {
     }
 
     @Test
+    @DisplayName("Exit → popup – Cancel → resta in Games-menu")
+    void exitCancelKeepsGamesMenu(FxRobot robot) {
+
+        robot.clickOn("#btnExit");
+        robot.clickOn("Cancel"); // terza scelta del dialogo
+
+        WaitForAsyncUtils.waitForFxEvents();
+
+        assertTrue(robot.lookup("#btnBlackjack").tryQuery().isPresent(),
+                "Con Cancel si deve restare nella Games-menu");
+    }
+
+    @Test
     @DisplayName("Exit → popup – Yes → scena dadi")
     void exitYesLoadsDice(FxRobot robot) {
 
