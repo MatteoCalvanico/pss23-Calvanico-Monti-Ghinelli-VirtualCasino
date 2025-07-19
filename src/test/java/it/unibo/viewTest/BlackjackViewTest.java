@@ -66,4 +66,30 @@ class BlackjackViewTest {
         assertEquals("0", betText);
     }
 
+    @Test
+    @DisplayName("Pulsanti +100 / -100 aggiornano la puntata")
+    void addAndRemoveBet(FxRobot robot) {
+
+        /* +100 due volte */
+        robot.clickOn("#btnBet100").clickOn("#btnBet100");
+        assertEquals("200", robot.lookup("#txtBet0").queryText().getText());
+
+        /* -100 una volta */
+        robot.clickOn("#btnBetMinus100");
+        assertEquals("100", robot.lookup("#txtBet0").queryText().getText());
+    }
+
+    @Test
+    @DisplayName("Exit riporta al Games-menu")
+    void exitReturnsToGamesMenu(FxRobot robot) throws TimeoutException {
+
+        robot.clickOn("#btnExit");
+
+        WaitForAsyncUtils.waitFor(3, TimeUnit.SECONDS,
+                () -> robot.lookup("#btnBlackjack").tryQuery().isPresent());
+
+        assertTrue(robot.lookup("#btnBlackjack").tryQuery().isPresent(),
+                "Dopo Exit deve comparire la Games-menu");
+    }
+
 }
