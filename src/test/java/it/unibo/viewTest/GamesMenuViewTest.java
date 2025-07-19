@@ -2,20 +2,24 @@ package it.unibo.viewTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import javafx.scene.text.Text;
 
 import it.unibo.virtualCasino.controller.singleton.PlayerHolder;
 import it.unibo.virtualCasino.model.Player;
-
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxRobot;
+import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.Start;
@@ -25,6 +29,20 @@ import org.testfx.util.WaitForAsyncUtils;
 class GamesMenuViewTest {
 
     private Stage stage;
+
+    @BeforeEach
+    void resetScene() throws Exception {
+        FxToolkit.setupFixture(() -> {
+            try {
+                Parent root = FXMLLoader.load(
+                        ClassLoader.getSystemResource("layouts/gamesMenu.fxml"));
+                stage.getScene().setRoot(root);
+            } catch (IOException ex) {
+                throw new RuntimeException("Impossibile caricare gamesMenu.fxml", ex);
+            }
+        });
+        WaitForAsyncUtils.waitForFxEvents(); // attende che JavaFX completi il cambio
+    }
 
     /*
      * Mettiamo un player nel singleton per non far crashare il
@@ -78,11 +96,39 @@ class GamesMenuViewTest {
     }
 
     @Test
+    @DisplayName("Passaggio a Blackjack: nome e saldo rimangono invariati")
+    void playerDataPersistsAcrossViews(FxRobot robot) throws TimeoutException {
+
+        /* --- stato iniziale nel Games-menu ----------------------------- */
+        Text txtPlayerNode = robot.lookup("#txtPlayer").queryAs(Text.class);
+        Text txtBalanceNode = robot.lookup("#txtBalance").queryAs(Text.class);
+
+        String playerBefore = txtPlayerNode.getText();
+        String balanceBefore = txtBalanceNode.getText();
+
+        /* --- naviga a Blackjack --------------------------------------- */
+        robot.clickOn("#btnBlackjack");
+
+        /* attendo che compaia un nodo caratteristico della Blackjack-view */
+        WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS,
+                () -> robot.lookup("#btnCard0").tryQuery().isPresent());
+
+        /* --- verifiche nella scena Blackjack -------------------------- */
+        Text txtPlayerBJ = robot.lookup("#txtPlayer").queryAs(Text.class);
+        Text txtBalanceBJ = robot.lookup("#txtBalance").queryAs(Text.class);
+
+        assertEquals(playerBefore, txtPlayerBJ.getText(),
+                "Il nome del player deve restare invariato");
+        assertEquals(balanceBefore, txtBalanceBJ.getText(),
+                "Il saldo deve restare invariato (nessuna puntata ancora)");
+    }
+
+    @Test
     @DisplayName("Exit → popup – Cancel → resta in Games-menu")
     void exitCancelKeepsGamesMenu(FxRobot robot) {
 
         robot.clickOn("#btnExit");
-        robot.clickOn("Cancel"); // terza scelta del dialogo
+        robot.clickOn("Annulla"); // terza scelta del dialogo
 
         WaitForAsyncUtils.waitForFxEvents();
 
