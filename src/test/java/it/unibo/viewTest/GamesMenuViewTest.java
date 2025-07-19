@@ -52,6 +52,32 @@ class GamesMenuViewTest {
     }
 
     @Test
+    @DisplayName("Pulsante Blackjack carica la blackjack-view")
+    void playBlackjackLoadsView(FxRobot robot) throws TimeoutException {
+
+        robot.clickOn("#btnBlackjack");
+
+        WaitForAsyncUtils.waitFor(3, TimeUnit.SECONDS,
+                () -> robot.lookup("#btnCard0").tryQuery().isPresent());
+
+        assertTrue(robot.lookup("#btnCard0").tryQuery().isPresent(),
+                "Dopo il click deve comparire la schermata Blackjack");
+    }
+
+    @Test
+    @DisplayName("Pulsante Roulette carica la roulette-view")
+    void playRouletteLoadsView(FxRobot robot) throws TimeoutException {
+
+        robot.clickOn("#btnRoulette");
+
+        WaitForAsyncUtils.waitFor(3, TimeUnit.SECONDS,
+                () -> robot.lookup("#btnSpeenWheel").tryQuery().isPresent());
+
+        assertTrue(robot.lookup("#btnSpeenWheel").tryQuery().isPresent(),
+                "Dopo il click deve comparire la schermata Roulette");
+    }
+
+    @Test
     @DisplayName("Exit → popup – Yes → scena dadi")
     void exitYesLoadsDice(FxRobot robot) {
 
