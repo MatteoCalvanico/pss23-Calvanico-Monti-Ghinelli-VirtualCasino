@@ -8,7 +8,6 @@ import it.unibo.virtualCasino.model.scoreboard.dtos.ScoreboardRecord;
 import it.unibo.virtualCasino.view.scoreboard.ScoreboardView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.scene.control.Alert.AlertType;
@@ -16,6 +15,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import java.util.concurrent.ThreadLocalRandom;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 
 public class DiceController extends BaseController {
 
@@ -30,9 +31,9 @@ public class DiceController extends BaseController {
     @FXML
     private Button btnRoll, btnContinue;
     @FXML
-    private Label lblRolled;
+    private Text lblRolled;
     @FXML
-    private Label lblOutcome;
+    private Text lblOutcome;
 
     private Dice dice;
 
