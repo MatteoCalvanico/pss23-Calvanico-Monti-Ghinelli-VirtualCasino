@@ -40,7 +40,7 @@ public class DiceController extends BaseController {
     protected void setBaseController() {
         this.dice = new Dice(currentPlayer);
 
-        // immagini iniziali a faccia “1”
+        // immagini iniziali a faccia "1"
         imgDie1.setImage(getImage("dieRed1.png").getImage());
         imgDie2.setImage(getImage("dieRed1.png").getImage());
 
@@ -73,7 +73,7 @@ public class DiceController extends BaseController {
 
         playSound("/sound/dieShuffle.mp3");
 
-        final int FRAMES = 24; // quanti scatti di “shake”
+        final int FRAMES = 24; // quanti scatti di "shake"
         final int INTERVAL_MS = 80; // velocità
 
         Timeline shake = new Timeline();
@@ -107,9 +107,9 @@ public class DiceController extends BaseController {
 
             lblRolled.setText("Rolled: " + sum);
             if (guess == sum) {
-                lblOutcome.setText("YOU WIN  ×2!");
+                lblOutcome.setText("YOU WIN  \u00D72");
             } else {
-                lblOutcome.setText("You lose  (balance / 2)");
+                lblOutcome.setText("YOU LOSE  (balance / 2)");
             }
 
             btnContinue.setDisable(false);
