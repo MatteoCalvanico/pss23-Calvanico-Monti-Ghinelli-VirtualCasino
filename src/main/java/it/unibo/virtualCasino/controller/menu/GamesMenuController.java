@@ -59,8 +59,7 @@ public class GamesMenuController extends BaseController {
         alert.setTitle("Exit the casino");
         alert.setHeaderText("Are you sure you want to leave?");
         alert.setContentText(
-                "Try your luck with the dice game to double your balance "
-                        + "— or risk cutting it in half!");
+                "Try your luck with the dice, double your balance OR risk cutting it in half!");
 
         ButtonType btnYesDice = new ButtonType("Roll the dice!");
         ButtonType btnNoExit = new ButtonType("Exit now");
