@@ -60,4 +60,36 @@ class RouletteViewTest {
         assertTrue(robot.lookup("#txtPlayer").tryQuery().isPresent());
         assertTrue(robot.lookup("#txtBalance").tryQuery().isPresent());
     }
+
+    @Test
+    @DisplayName("Creazione puntata: tipo > posizione > New Bet aggiunge alla lista")
+    void newBetAppearsInList(FxRobot robot) throws TimeoutException {
+
+        /* seleziono un tipo di puntata dal ComboBox */
+        @SuppressWarnings("unchecked")
+        ComboBox<RouletteBetType> cmb = robot.lookup("#cmbBetType").queryAs(ComboBox.class);
+        robot.interact(() -> cmb.getSelectionModel().select(RouletteBetType.STRAIGHT_UP));
+
+        /* scrivo l’importo */
+        robot.clickOn("#txtBetAmount").write("50");
+
+        /* il controller, dopo la scelta tipo, genera dei cerchietti cliccabili */
+        Pane indicators = robot.lookup("#betPositionsIndicatorsPane").queryAs(Pane.class);
+        /* aspetto che compaiano (max 3 s) */
+        WaitForAsyncUtils.waitFor(3, TimeUnit.SECONDS,
+                () -> !indicators.getChildren().isEmpty());
+
+        /* clicco sul primo indicatore disponibile */
+        robot.clickOn(indicators.getChildren().get(0), MouseButton.PRIMARY);
+
+        /* New Bet */
+        robot.clickOn("#btnPlaceBet");
+
+        /* la ListView dev’essere popolata di 1 elemento */
+        @SuppressWarnings("unchecked")
+        ListView<?> list = robot.lookup("#betList").queryAs(ListView.class);
+        assertEquals(1, list.getItems().size(),
+                "La puntata deve comparire nella ListView");
+    }
+
 }
