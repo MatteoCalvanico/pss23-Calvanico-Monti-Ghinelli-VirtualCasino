@@ -92,4 +92,24 @@ class RouletteViewTest {
                 "La puntata deve comparire nella ListView");
     }
 
+    @Test
+    @DisplayName("Clic sul bottone X rimuove la puntata dalla lista")
+    void deleteBetButtonWorks(FxRobot robot) throws TimeoutException {
+
+        /* pre-condizione: creiamo una piccola puntata */
+        newBetAppearsInList(robot); // ri-usa il test precedente
+
+        @SuppressWarnings("unchecked")
+        ListView<?> list = robot.lookup("#betList").queryAs(ListView.class);
+        assertEquals(1, list.getItems().size());
+
+        /* il pulsante X è il graphic della prima cella */
+        Button btnDelete = (Button) list.lookup(".button");
+        robot.clickOn(btnDelete);
+
+        WaitForAsyncUtils.waitForFxEvents();
+        assertEquals(0, list.getItems().size(),
+                "Dopo il click su X la puntata deve sparire");
+    }
+
 }
