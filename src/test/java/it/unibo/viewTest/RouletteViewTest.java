@@ -130,4 +130,28 @@ class RouletteViewTest {
                 "Dopo lo Spin il numero vincente deve cambiare");
     }
 
+    @Test
+    @DisplayName("Exit rimanda correttamente alla Games-menu")
+    void exitReturnsToGamesMenu(FxRobot robot) throws TimeoutException {
+
+        robot.clickOn("#btnExit");
+
+        /* aspettiamo che la nuova scena abbia il bottone #btnBlackjack */
+        WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS,
+                () -> robot.lookup("#btnBlackjack").tryQuery().isPresent());
+
+        assertTrue(robot.lookup("#btnBlackjack").tryQuery().isPresent(),
+                "Dopo Exit deve tornare la Games-menu");
+    }
+
+    /* — Utility — (se dovessero comparire alert inattesi) */
+    private void closeAlertIfAny(FxRobot robot) {
+        robot.lookup(".dialog-pane").tryQuery().ifPresent(node -> {
+            DialogPane pane = (DialogPane) node;
+            Button b0 = (Button) pane.lookupButton(pane.getButtonTypes().get(0));
+            robot.clickOn(b0);
+            WaitForAsyncUtils.waitForFxEvents();
+        });
+    }
+
 }
