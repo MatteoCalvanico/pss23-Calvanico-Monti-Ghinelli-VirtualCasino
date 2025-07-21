@@ -112,4 +112,22 @@ class RouletteViewTest {
                 "Dopo il click su X la puntata deve sparire");
     }
 
+    @Test
+    @DisplayName("Spin aggiorna il numero vincente (txtWinningNumber)")
+    void spinWheelUpdatesWinningNumber(FxRobot robot) throws TimeoutException {
+
+        String before = robot.lookup("#txtWinningNumber").queryText().getText();
+        robot.clickOn("#btnSpeenWheel");
+
+        /* attendiamo che il controller imposti il testo */
+        WaitForAsyncUtils.waitFor(3, TimeUnit.SECONDS, () -> {
+            String now = robot.lookup("#txtWinningNumber").queryText().getText();
+            return !now.equals(before); // deve cambiare
+        });
+
+        String after = robot.lookup("#txtWinningNumber").queryText().getText();
+        assertNotEquals(before, after,
+                "Dopo lo Spin il numero vincente deve cambiare");
+    }
+
 }
