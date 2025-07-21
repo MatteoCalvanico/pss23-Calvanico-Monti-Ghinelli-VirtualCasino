@@ -12,7 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DialogPane;
+
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
@@ -20,7 +20,6 @@ import javafx.stage.Stage;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
@@ -33,7 +32,7 @@ class RouletteViewTest {
 
     private Stage stage;
 
-    /** Inietta un giocatore nel singleton per inizializzare il controller. */
+    /** Inietta un giocatore nel singleton per inizializzare il controller */
     @BeforeAll
     static void preparePlayer() {
         PlayerHolder.getInstance().setPlayerHolded(new Player("Robot"));
@@ -65,28 +64,27 @@ class RouletteViewTest {
     @DisplayName("Creazione puntata: tipo > posizione > New Bet aggiunge alla lista")
     void newBetAppearsInList(FxRobot robot) throws TimeoutException {
 
-        /* seleziono un tipo di puntata dal ComboBox */
+        /* seleziona un tipo di puntata dal ComboBox */
         @SuppressWarnings("unchecked")
         ComboBox<RouletteBetType> cmb = robot.lookup("#cmbBetType").queryAs(ComboBox.class);
         robot.interact(() -> cmb.getSelectionModel().select(RouletteBetType.STRAIGHT_UP));
 
-        /* scrivo l’importo */
+        /* scrive l’importo */
         robot.clickOn("#txtBetAmount").write("50");
 
         /* il controller, dopo la scelta tipo, genera dei cerchietti cliccabili */
         Pane indicators = robot.lookup("#betPositionsIndicatorsPane").queryAs(Pane.class);
-        /* aspetto che compaiano (max 3 s) */
+        /* aspetta che compaiano (max 3 s) */
         WaitForAsyncUtils.waitFor(3, TimeUnit.SECONDS,
                 () -> !indicators.getChildren().isEmpty());
 
-        /* clicco sul primo indicatore disponibile */
+        /* click sul primo indicatore disponibile */
         robot.clickOn(indicators.getChildren().get(0), MouseButton.PRIMARY);
 
         /* New Bet */
         robot.clickOn("#btnPlaceBet");
 
         /* la ListView dev’essere popolata di 1 elemento */
-        @SuppressWarnings("unchecked")
         ListView<?> list = robot.lookup("#betList").queryAs(ListView.class);
         assertEquals(1, list.getItems().size(),
                 "La puntata deve comparire nella ListView");
@@ -97,9 +95,8 @@ class RouletteViewTest {
     void deleteBetButtonWorks(FxRobot robot) throws TimeoutException {
 
         /* pre-condizione: creiamo una piccola puntata */
-        newBetAppearsInList(robot); // ri-usa il test precedente
+        newBetAppearsInList(robot); // riusa il test precedente
 
-        @SuppressWarnings("unchecked")
         ListView<?> list = robot.lookup("#betList").queryAs(ListView.class);
         assertEquals(1, list.getItems().size());
 
@@ -119,7 +116,7 @@ class RouletteViewTest {
         String before = robot.lookup("#txtWinningNumber").queryText().getText();
         robot.clickOn("#btnSpeenWheel");
 
-        /* attendiamo che il controller imposti il testo */
+        /* attende che il controller imposti il testo */
         WaitForAsyncUtils.waitFor(3, TimeUnit.SECONDS, () -> {
             String now = robot.lookup("#txtWinningNumber").queryText().getText();
             return !now.equals(before); // deve cambiare
@@ -136,7 +133,7 @@ class RouletteViewTest {
 
         robot.clickOn("#btnExit");
 
-        /* aspettiamo che la nuova scena abbia il bottone #btnBlackjack */
+        /* aspetta 5s che la nuova scena abbia il bottone #btnBlackjack */
         WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS,
                 () -> robot.lookup("#btnBlackjack").tryQuery().isPresent());
 
@@ -144,19 +141,8 @@ class RouletteViewTest {
                 "Dopo Exit deve tornare la Games-menu");
     }
 
-    /* — Utility — (se dovessero comparire alert inattesi) */
-    private void closeAlertIfAny(FxRobot robot) {
-        robot.lookup(".dialog-pane").tryQuery().ifPresent(node -> {
-            DialogPane pane = (DialogPane) node;
-            Button b0 = (Button) pane.lookupButton(pane.getButtonTypes().get(0));
-            robot.clickOn(b0);
-            WaitForAsyncUtils.waitForFxEvents();
-        });
-    }
-
     @Test
-    @Order(99) // <-- IL NUOVO, eseguito per ultimo
-    @DisplayName("Flusso completo RED_BLACK: 50$ ► New Bet ► Spin")
+    @DisplayName("Flusso completo RED_BLACK: 50$ > New Bet > Spin")
     void redBlackBetFlow(FxRobot robot) throws TimeoutException {
 
         /* 1. importo */
@@ -176,11 +162,10 @@ class RouletteViewTest {
         robot.clickOn("#btnPlaceBet");
 
         /* conferma che la lista contenga almeno un elemento */
-        @SuppressWarnings("unchecked")
         ListView<?> list = robot.lookup("#betList").queryAs(ListView.class);
         assertTrue(list.getItems().size() >= 1);
 
-        /* 5. Spin! – verifica che il testo cambi */
+        /* 5. Spin! */
         String before = robot.lookup("#txtWinningNumber").queryText().getText();
         robot.clickOn("#btnSpeenWheel");
         WaitForAsyncUtils.waitFor(3, TimeUnit.SECONDS,
