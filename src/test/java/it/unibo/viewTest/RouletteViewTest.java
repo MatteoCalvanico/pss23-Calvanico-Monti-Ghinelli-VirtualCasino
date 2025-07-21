@@ -154,4 +154,37 @@ class RouletteViewTest {
         });
     }
 
+    @Test
+    @Order(99) // <-- IL NUOVO, eseguito per ultimo
+    @DisplayName("Flusso completo RED_BLACK: 50$ ► New Bet ► Spin")
+    void redBlackBetFlow(FxRobot robot) throws TimeoutException {
+
+        /* 1. importo */
+        robot.clickOn("#txtBetAmount").eraseText(10).write("50");
+
+        /* 2. select RED_BLACK nel combo */
+        @SuppressWarnings("unchecked")
+        ComboBox<RouletteBetType> cmb = robot.lookup("#cmbBetType").queryAs(ComboBox.class);
+        robot.interact(() -> cmb.getSelectionModel().select(RouletteBetType.RED_BLACK));
+
+        /* 3. attendi la comparsa indicatori e cliccane uno */
+        Pane indicators = robot.lookup("#betPositionsIndicatorsPane").queryAs(Pane.class);
+        WaitForAsyncUtils.waitFor(3, TimeUnit.SECONDS, () -> !indicators.getChildren().isEmpty());
+        robot.clickOn(indicators.getChildren().get(0), MouseButton.PRIMARY);
+
+        /* 4. New Bet */
+        robot.clickOn("#btnPlaceBet");
+
+        /* conferma che la lista contenga almeno un elemento */
+        @SuppressWarnings("unchecked")
+        ListView<?> list = robot.lookup("#betList").queryAs(ListView.class);
+        assertTrue(list.getItems().size() >= 1);
+
+        /* 5. Spin! – verifica che il testo cambi */
+        String before = robot.lookup("#txtWinningNumber").queryText().getText();
+        robot.clickOn("#btnSpeenWheel");
+        WaitForAsyncUtils.waitFor(3, TimeUnit.SECONDS,
+                () -> !robot.lookup("#txtWinningNumber").queryText().getText().equals(before));
+    }
+
 }
