@@ -282,8 +282,6 @@ Riuscire a mantenere salvata l'istanza del player, in modo da gestire le varie v
 
 Utilizzo del design patter _Singleton_, dove si salva il Player e si modifica utilizzando i metodi della classe singleton tramite l'istanza creata privatamente e resa disponibile tramite un metodo pubblico
 
-## Design dettagliato - Filippo Monti
-
 ## Design dettagliato – Filippo Monti
 
 ### Bonus Game – Dice
