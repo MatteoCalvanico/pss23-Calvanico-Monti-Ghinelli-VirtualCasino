@@ -284,6 +284,71 @@ Utilizzo del design patter _Singleton_, dove si salva il Player e si modifica ut
 
 ## Design dettagliato - Filippo Monti
 
+## Design dettagliato – Filippo Monti
+
+### Bonus Game – Dice
+
+#### Problema
+
+Alla fine dell’esperienza nel casinò, il giocatore deve poter accedere a un gioco opzionale e indipendente dagli altri: un bonus chiamato **Dadi**, in cui può tentare la fortuna scegliendo un numero tra 2 e 12, sperando che la somma di due dadi reali (valori 1–6) corrisponda alla sua previsione.
+
+Le principali sfide sono state:
+
+- Progettare una logica semplice ma solida che gestisca il lancio dei dadi, l’aggiornamento del saldo e la gestione degli esiti.
+- Separare completamente la logica di gioco dalla UI, mantenendo il rispetto dell’architettura MVC.
+- Garantire la **testabilità** dell’intera classe, permettendo di forzare i lanci di dadi in fase di test.
+- Coordinare le animazioni e gli effetti visivi in modo fluido senza compromettere la logica del gioco.
+
+#### Soluzione
+
+La logica del gioco è stata incapsulata in una classe `Dice`, che implementa l’interfaccia `Games`, come gli altri giochi presenti nel casinò. Essa si occupa di:
+
+- **Generare due valori casuali** tra 1 e 6, rappresentando il lancio di due dadi.
+- **Calcolare la somma dei due dadi** e confrontarla con il guess dell’utente.
+- **Applicare il “lucky factor” al saldo**: raddoppio in caso di successo, dimezzamento in caso di fallimento. Il metodo `applyLuckyFactor()` aggiorna il saldo usando `addWin()` o `removeLoss()` a seconda del delta.
+
+La classe `DiceController` si occupa invece della gestione dell’interfaccia e degli eventi, in particolare:
+
+- L’interazione con i bottoni e i campi di input (`txtGuess`, `btnRoll`, `btnContinue`).
+- L’**animazione realistica del lancio dei dadi** tramite `Timeline`, con frame di shaking e immagini dei dadi aggiornate dinamicamente.
+- La validazione dell’input dell’utente e il feedback immediato.
+- L’aggiornamento della scoreboard alla fine della partita.
+
+Il layout grafico è definito nel file `dice.fxml`, dove sono presenti due `ImageView` per i dadi, un campo di input per la previsione e due pulsanti per l’interazione.
+
+#### Schema UML
+
+```mermaid
+classDiagram
+class Dice {
+    +roll(): int
+    +getLastRoll(): int
+    +applyLuckyFactor(guess: int): void
+    +nextRound(): void
+    +showResult(): void
+    +getLastRollFirstDie(): int
+    +getLastRollSecondDie(): int
+}
+Dice --> Player : uses
+Dice ..|> Games
+
+class DiceController {
+    -onRoll(): void
+    -onContinue(): void
+}
+DiceController --> Dice : uses
+DiceController --> View : updates
+```
+
+### Pattern utilizzati
+Strategy (variante semplificata): la classe Dice implementa l’interfaccia Games, condivisa anche da Roulette e Blackjack. Questo permette di gestire uniformemente giochi con logiche differenti, secondo un principio affine al pattern Strategy. L’interfaccia Games agisce come strategia astratta, mentre Dice, Roulette e Blackjack ne sono le implementazioni concrete.
+
+Dependency Injection (manuale): per garantire la testabilità, Dice accetta nel costruttore un oggetto Random esterno. Questo consente di simulare scenari deterministici nei test, evitando il comportamento aleatorio dei lanci durante il testing automatico.
+
+Separazione dei ruoli (MVC): la logica del gioco è completamente separata dall’interfaccia grafica e dalla gestione degli eventi. Dice non gestisce né suoni né immagini: tutta la parte visiva e animata è delegata a DiceController e alla view FXML.
+
+Principio di responsabilità singola: ogni componente ha una responsabilità chiara e ben definita. Dice si occupa esclusivamente della logica di gioco e del saldo, mentre DiceController gestisce l'interazione e la transizione tra schermate.
+
 ## Design dettagliato - Giacomo Ghinelli
 
 ### Roulette Game
