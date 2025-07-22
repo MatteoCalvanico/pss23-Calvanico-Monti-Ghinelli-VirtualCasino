@@ -6,7 +6,7 @@ import it.unibo.virtualCasino.model.Player;
 import it.unibo.virtualCasino.model.games.Games;
 
 /**
- * Gioco bonus “Dadi”.
+ * Gioco bonus "Dadi".
  * – Si lanciano due dadi tradizionali (1-6).
  * – Il giocatore sceglie in anticipo la somma (guess 2-12).
  * – Se indovina il saldo viene raddoppiato, altrimenti dimezzato.
@@ -51,7 +51,7 @@ public class Dice implements Games {
     }
 
     /**
-     * Applica il “lucky factor” al saldo del giocatore.
+     * Applica il "lucky factor" al saldo del giocatore.
      *
      * @param guess numero scelto dall’utente (2-12)
      * @throws IllegalArgumentException se guess è fuori range

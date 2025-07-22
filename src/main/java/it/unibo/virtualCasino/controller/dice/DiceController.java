@@ -8,7 +8,6 @@ import it.unibo.virtualCasino.model.scoreboard.dtos.ScoreboardRecord;
 import it.unibo.virtualCasino.view.scoreboard.ScoreboardView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.scene.control.Alert.AlertType;
@@ -16,6 +15,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import java.util.concurrent.ThreadLocalRandom;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 
 public class DiceController extends BaseController {
 
@@ -30,9 +31,9 @@ public class DiceController extends BaseController {
     @FXML
     private Button btnRoll, btnContinue;
     @FXML
-    private Label lblRolled;
+    private Text lblRolled;
     @FXML
-    private Label lblOutcome;
+    private Text lblOutcome;
 
     private Dice dice;
 
@@ -40,7 +41,7 @@ public class DiceController extends BaseController {
     protected void setBaseController() {
         this.dice = new Dice(currentPlayer);
 
-        // immagini iniziali a faccia “1”
+        // immagini iniziali a faccia "1"
         imgDie1.setImage(getImage("dieRed1.png").getImage());
         imgDie2.setImage(getImage("dieRed1.png").getImage());
 
@@ -73,7 +74,7 @@ public class DiceController extends BaseController {
 
         playSound("/sound/dieShuffle.mp3");
 
-        final int FRAMES = 24; // quanti scatti di “shake”
+        final int FRAMES = 24; // quanti scatti di "shake"
         final int INTERVAL_MS = 80; // velocità
 
         Timeline shake = new Timeline();
@@ -107,9 +108,9 @@ public class DiceController extends BaseController {
 
             lblRolled.setText("Rolled: " + sum);
             if (guess == sum) {
-                lblOutcome.setText("YOU WIN  ×2!");
+                lblOutcome.setText("YOU WIN  \u00D72");
             } else {
-                lblOutcome.setText("You lose  (balance / 2)");
+                lblOutcome.setText("YOU LOSE  (balance / 2)");
             }
 
             btnContinue.setDisable(false);

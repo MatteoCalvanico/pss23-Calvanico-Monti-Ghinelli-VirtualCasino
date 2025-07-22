@@ -18,12 +18,12 @@
       <HBox fx:id="chipBox3" layoutX="229.0" layoutY="194.0" prefHeight="64.0" prefWidth="64.0" rotate="-81.9" />
       <HBox fx:id="cardBox1" layoutX="672.0" layoutY="34.0" prefHeight="190.0" prefWidth="140.0" rotate="-36.8" />
       <HBox fx:id="cardBox2" layoutX="754.0" layoutY="52.0" prefHeight="190.0" prefWidth="140.0" />
-      <Button id="btnExit" fx:id="btnPlay" cancelButton="true" layoutX="304.0" layoutY="331.0" mnemonicParsing="false" onAction="#showGames" prefHeight="54.0" prefWidth="170.0" style="-fx-background-color: #FFD700;" text="Enter in the Casinò" textAlignment="CENTER">
+      <Button fx:id="btnPlay" cancelButton="true" layoutX="304.0" layoutY="331.0" mnemonicParsing="false" onAction="#showGames" prefHeight="54.0" prefWidth="170.0" style="-fx-background-color: #FFD700;" text="Enter in the Casinò" textAlignment="CENTER">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="28.0" />
          </font>
       </Button>
-      <Button id="btnExit" fx:id="btnScoreboard" cancelButton="true" layoutX="544.0" layoutY="328.0" mnemonicParsing="false" onAction="#showScoreBoard" prefHeight="54.0" prefWidth="170.0" style="-fx-background-color: #FFD700;" text="Go to scoreboard" textAlignment="CENTER">
+      <Button fx:id="btnScoreboard" cancelButton="true" layoutX="544.0" layoutY="328.0" mnemonicParsing="false" onAction="#showScoreBoard" prefHeight="54.0" prefWidth="170.0" style="-fx-background-color: #FFD700;" text="Go to scoreboard" textAlignment="CENTER">
          <font>
             <Font name="Bodoni MT Poster Compressed" size="28.0" />
          </font>
