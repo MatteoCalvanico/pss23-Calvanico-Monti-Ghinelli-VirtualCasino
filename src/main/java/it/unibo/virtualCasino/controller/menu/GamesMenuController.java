@@ -5,11 +5,14 @@ import it.unibo.virtualCasino.helpers.RoutingHelper;
 import it.unibo.virtualCasino.model.scoreboard.Scoreboard;
 import it.unibo.virtualCasino.model.scoreboard.dtos.ScoreboardRecord;
 import it.unibo.virtualCasino.view.blackjack.BlackjackView;
+import it.unibo.virtualCasino.view.dice.DiceView;
 import it.unibo.virtualCasino.view.menu.MenuView;
 import it.unibo.virtualCasino.view.roulette.RouletteView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
@@ -47,17 +50,41 @@ public class GamesMenuController extends BaseController {
         RoutingHelper.goTo(event, new RouletteView());
     }
 
+    // GamesMenuController.java
     @FXML
     void exit(ActionEvent event) {
-        // TODO: go back to menu, but first ask the user if he wants to trow the dice
-        // and after that save the record (only if he made a new record)
 
-        Scoreboard.addRecord(
-                new ScoreboardRecord(
-                        this.currentPlayer.getName(),
-                        this.currentPlayer.getAccount()));
+        /* 1. popup di conferma */
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exit the casino");
+        alert.setHeaderText("Are you sure you want to leave?");
+        alert.setContentText(
+                "Try your luck with the dice game to double your balance "
+                        + "— or risk cutting it in half!");
 
-        RoutingHelper.goTo(event, new MenuView());
+        ButtonType btnYesDice = new ButtonType("Roll the dice!");
+        ButtonType btnNoExit = new ButtonType("Exit now");
+        ButtonType btnCancel = ButtonType.CANCEL;
+
+        alert.getButtonTypes().setAll(btnYesDice, btnNoExit, btnCancel);
+
+        alert.showAndWait().ifPresent(choice -> {
+            if (choice == btnYesDice) {
+                /* --- Vai al gioco dei dadi --- */
+                sendData(); // salvo il Player nel singleton
+                RoutingHelper.goTo(event, new DiceView());
+
+            } else if (choice == btnNoExit) {
+                /* --- Nessun dado: salvo il record e torno al menu iniziale --- */
+                Scoreboard.addRecord(
+                        new ScoreboardRecord(
+                                currentPlayer.getName(),
+                                currentPlayer.getAccount()));
+
+                RoutingHelper.goTo(event, new MenuView());
+            }
+            /* Se CANCEL non faccio nulla: resta nel games-menu */
+        });
     }
 
     @Override
