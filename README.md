@@ -7,7 +7,7 @@
 #
 ## Functionality
 The minimum and mandatory features are listed below:
-- *Two complete games* (Blackjack & Roulette) and *one bonus* [TODO Dice]:
+- *Two complete games* (Blackjack & Roulette) and *one bonus* (Dice):
 <p align = "center">
     <img src="./src/main/resources/sprite/screenshot/blackjackScreen.png"/>
 </p>
