@@ -760,7 +760,21 @@ Mostra l’uso di Alert JavaFX tramite helper comune e la tecnica
 dell’early-return per mantenere il metodo lineare e leggibile,
 evitando rami annidati.
 
+### Reflection nei test per scenari limite
+**Dove** `it.unibo.modelTest.BlackjackTest` – metodo forceEmptyPlayDeck()
 
+```java
+Copia
+Modifica
+Field playDeckField = Blackjack.class.getDeclaredField("playDeck");
+playDeckField.setAccessible(true);                       // reflection
+List<Deck> decks = (List<Deck>) playDeckField.get(game);
+decks.forEach(Deck::emptyDeck);                          // mazzi svuotati
+```
+
+Nei test integrazione svuoto i mazzi privati di Blackjack per
+verificare la corretta gestione di fallback quando il deck è
+esaurito. Reflection confinata alla suite di test (no impatto runtime).
 
 ## Note di sviluppo - Giacomo Ghinelli
 
@@ -877,6 +891,11 @@ Vorrei aggiungere che mi piacerebbe molto implementare altri giochi in futuro, r
 
 ### Filippo Monti
 
+Sono complessivamente soddisfatto del mio contributo all’interno del progetto, in particolare per quanto riguarda l’implementazione del gioco dei Dadi e la realizzazione dell’intero sistema di test automatici. Portare a termine un progetto così ampio e strutturato rappresentava per me una sfida importante, che inizialmente percepivo come uno degli ostacoli più grandi della mia carriera universitaria. Averlo superato è motivo di grande orgoglio personale.
+
+Sono felice di essere riuscito a sviluppare un gioco completo, con tanto di animazione, una cosa che prima di questa esperienza non avrei mai pensato di saper fare. Allo stesso modo, sono soddisfatto della copertura test che ho garantito al progetto: ho scritto test automatici per tutte le classi, con particolare attenzione alla correttezza funzionale e alla stabilità delle interfacce grafiche.
+
+Un ringraziamento sincero va al mio team, che con grande pazienza mi ha aspettato e supportato durante tutto il percorso. Sono stato l’ultimo a concludere il mio lavoro, molto oltre la scadenza che ci eravamo prefissati, eppure i miei colleghi non hanno mai smesso di incoraggiarmi e sostenermi. Mi sono spesso sentito meno esperto rispetto a loro, ma proprio grazie al loro aiuto e alla loro fiducia sono riuscito a crescere e a dare un contributo concreto e significativo al progetto.
 ---
 
 ### Giacomo Ghinelli
