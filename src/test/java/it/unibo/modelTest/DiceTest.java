@@ -14,100 +14,83 @@ import it.unibo.virtualCasino.model.games.impl.dice.Dice;
 
 class DiceTest {
 
-    private static final long SEED = 42L; // RNG deterministico
+    private static final long SEED = 42L; // deterministic RNG
 
     private Player player;
     private Dice dice;
 
-    /*
-     * Crea un nuovo Player (saldo 1000) e un Dice con Random fissato.
-     */
     @BeforeEach
     void setUp() {
-        player = new Player("TestPlayer"); // balance iniziale 1000
-        dice = new Dice(player, new Random(SEED)); // RNG iniettato
+        player = new Player("TestPlayer"); // initial balance 1000
+        dice = new Dice(player, new Random(SEED)); // injected RNG
     }
 
     /**
-     * Verifica che roll():
-     * -restituisca sempre una somma compresa tra 2 e 12;
-     * -aggiorni correttamente i getter getLastRoll;
-     * -mantenga coerenza tra d1+d2 e somma restituita.
+     * Ensures roll() returns 2-12, synchronizes accessors, and keeps d1+d2
+     * coherent.
      */
     @Test
-    @DisplayName("roll() produce una somma valida e sincronizza gli accessor")
+    @DisplayName("roll() produces a valid sum and synchronizes accessors")
     void testRoll() {
         int sum = dice.roll();
 
-        // Somma nel range 2-12
-        assertTrue(sum >= 2 && sum <= 12, "Somma fuori range (2-12)");
+        // Sum in range 2-12
+        assertTrue(sum >= 2 && sum <= 12, "Sum out of range (2-12)");
 
-        // Somma coerente con le due facce restituite dai getter
+        // d1 + d2 matches the reported sum
         int d1 = dice.getLastRollFirstDie();
         int d2 = dice.getLastRollSecondDie();
-        assertEquals(sum, d1 + d2, "d1+d2 deve corrispondere alla somma");
+        assertEquals(sum, d1 + d2, "d1+d2 must equal the sum");
 
-        // Getter lastRoll allineato
-        assertEquals(sum, dice.getLastRoll(), "getLastRoll() incoerente");
+        // getLastRoll aligned
+        assertEquals(sum, dice.getLastRoll(), "getLastRoll() inconsistent");
     }
 
     @Nested
-    @DisplayName("applyLuckyFactor – raddoppio / dimezzamento e controlli di errore")
+    @DisplayName("applyLuckyFactor – doubling/halving and error checks")
     class ApplyLuckyFactor {
 
-        /**
-         * Verifica che se il guess è corretto il saldo venga raddoppiato.
-         */
+        /** Doubles the balance when the guess is correct. */
         @Test
-        @DisplayName("raddoppia il saldo se il guess è corretto")
+        @DisplayName("doubles balance on win")
         void doublesBalanceOnWin() {
-            dice.roll(); // produce FIRST_ROLL_D1 + FIRST_ROLL_D2
-            dice.applyLuckyFactor(7); // 6+1 = 7 con seed 42
+            dice.roll(); // 6 + 1 = 7 with seed 42
+            dice.applyLuckyFactor(7);
 
             assertEquals(2000.0, player.getAccount(), 0.0001);
         }
 
-        /**
-         * Verifica che se il guess è errato il saldo venga dimezzato.
-         */
+        /** Halves the balance when the guess is wrong. */
         @Test
-        @DisplayName("dimezza il saldo se il guess è sbagliato")
+        @DisplayName("halves balance on lose")
         void halvesBalanceOnLose() {
             dice.roll();
-            dice.applyLuckyFactor(2); // non corrisponde alla somma generata
+            dice.applyLuckyFactor(2); // wrong guess
 
             assertEquals(500.0, player.getAccount(), 0.0001);
         }
 
-        /**
-         * Verifica che chiamare applyLuckyFactor() prima di roll()
-         * lanci IllegalStateException.
-         */
+        /** Throws IllegalStateException if applyLuckyFactor is called before roll(). */
         @Test
-        @DisplayName("lancia IllegalStateException se non è stato fatto roll()")
+        @DisplayName("throws IllegalStateException when roll() was not called")
         void requireRollBeforeApply() {
-            assertThrows(IllegalStateException.class,
-                    () -> dice.applyLuckyFactor(7));
+            assertThrows(IllegalStateException.class, () -> dice.applyLuckyFactor(7));
         }
 
+        /** Throws IllegalArgumentException for a guess outside 2-12. */
         @Test
-        @DisplayName("lancia IllegalArgumentException per guess fuori range")
+        @DisplayName("throws IllegalArgumentException for guess out of range")
         void invalidGuessRange() {
             dice.roll();
             assertAll(
-                    () -> assertThrows(IllegalArgumentException.class,
-                            () -> dice.applyLuckyFactor(1)),
-                    () -> assertThrows(IllegalArgumentException.class,
-                            () -> dice.applyLuckyFactor(13)));
+                    () -> assertThrows(IllegalArgumentException.class, () -> dice.applyLuckyFactor(1)),
+                    () -> assertThrows(IllegalArgumentException.class, () -> dice.applyLuckyFactor(13)));
         }
     }
 
-    /**
-     * Verifica che nextRound() reimposti lo stato interno:
-     * dopo la chiamata getLastRoll() deve restituire –1.
-     */
+    /** Ensures nextRound() resets last roll state to –1. */
     @Test
-    @DisplayName("nextRound() azzera lo stato dell'ultimo lancio")
+    @DisplayName("nextRound() resets last roll state")
     void testNextRound() {
         dice.roll();
         dice.nextRound();
