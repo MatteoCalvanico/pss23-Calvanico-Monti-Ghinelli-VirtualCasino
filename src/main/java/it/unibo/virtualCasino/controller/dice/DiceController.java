@@ -41,7 +41,7 @@ public class DiceController extends BaseController {
     protected void setBaseController() {
         this.dice = new Dice(currentPlayer);
 
-        // immagini iniziali a faccia "1"
+        // initial images showing face “1”
         imgDie1.setImage(getImage("dieRed1.png").getImage());
         imgDie2.setImage(getImage("dieRed1.png").getImage());
 
@@ -68,14 +68,14 @@ public class DiceController extends BaseController {
             return;
         }
 
-        btnRoll.setDisable(true); // blocca finché finisce
-        lblRolled.setText(""); // pulizia messaggi precedenti
+        btnRoll.setDisable(true); // disables until animation finishes
+        lblRolled.setText("");    // clear previous messages
         lblOutcome.setText("");
 
         playSound("/sound/dieShuffle.mp3");
 
-        final int FRAMES = 24; // quanti scatti di "shake"
-        final int INTERVAL_MS = 80; // velocità
+        final int FRAMES = 24;     // number of “shake” frames
+        final int INTERVAL_MS = 80; // speed (ms)
 
         Timeline shake = new Timeline();
         for (int i = 0; i < FRAMES; i++) {
@@ -101,7 +101,7 @@ public class DiceController extends BaseController {
 
             playSound("/sound/dieThrow.mp3");
 
-            // Aggiorno il saldo
+            // Update the balance
             dice.applyLuckyFactor(guess);
 
             txtBalance.setText(String.format("%.2f", currentPlayer.getAccount()));
@@ -122,9 +122,9 @@ public class DiceController extends BaseController {
         Scoreboard.addRecord(
                 new ScoreboardRecord(currentPlayer.getName(),
                         currentPlayer.getAccount()));
-        // Salva Player nel singleton per la Scoreboard
+        // Saves Player in the singleton for the Scoreboard
         sendData();
-        // Vai alla schermata successiva (Scoreboard)
+        // Go to the next screen (Scoreboard)
         RoutingHelper.goTo(event, new ScoreboardView());
     }
 }
