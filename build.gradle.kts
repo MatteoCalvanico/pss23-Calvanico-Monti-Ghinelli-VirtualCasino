@@ -53,7 +53,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$jUnitVersion")
     testImplementation("org.testfx:testfx-junit5:$testFxVersion")
-    testRuntimeOnly("org.testfx:openjfx-monocle:17.0.1")
+    testRuntimeOnly("org.testfx:openjfx-monocle:jdk-12.0.1+2")
 }
 
 tasks.withType<Test> {

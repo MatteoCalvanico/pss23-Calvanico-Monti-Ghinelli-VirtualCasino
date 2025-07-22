@@ -41,9 +41,9 @@ class MainMenuViewTest {
                 assertNotNull(stage.getScene().getRoot());
         }
 
-        /** Clicking Play → enter name → navigates to Games menu. */
+        /** Clicking Play -> enter name -> navigates to Games menu. */
         @Test
-        @DisplayName("Play → enter name → shows Games menu")
+        @DisplayName("Play -> enter name -> shows Games menu")
         void playGoesToGamesMenu(FxRobot robot) throws TimeoutException {
 
                 robot.clickOn("#btnPlay"); // "Enter in the Casinò"

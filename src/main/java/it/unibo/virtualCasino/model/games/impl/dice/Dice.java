@@ -20,7 +20,7 @@ public class Dice implements Games {
     private final Player player; // giocatore corrente
     private final Random rng; // random injection (utile nei test)
 
-    private Integer lastRoll = null; // somma ultimo lancio (null → mai lanciato)
+    private Integer lastRoll = null; // somma ultimo lancio (null -> mai lanciato)
 
     private int lastD1 = -1;
     private int lastD2 = -1;

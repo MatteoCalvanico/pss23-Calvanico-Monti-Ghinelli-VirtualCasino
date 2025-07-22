@@ -64,7 +64,7 @@ class RouletteViewTest {
 
     /** Creating a bet adds it to the ListView. */
     @Test
-    @DisplayName("Create bet → appears in list")
+    @DisplayName("Create bet -> appears in list")
     void newBetAppearsInList(FxRobot robot) throws TimeoutException {
         @SuppressWarnings("unchecked")
         ComboBox<RouletteBetType> cmb = robot.lookup("#cmbBetType").queryAs(ComboBox.class);
@@ -122,7 +122,7 @@ class RouletteViewTest {
 
     /** Full RED_BLACK flow: 50 $, New Bet, Spin. */
     @Test
-    @DisplayName("Full RED_BLACK flow: 50 $ → New Bet → Spin")
+    @DisplayName("Full RED_BLACK flow: 50 $ -> New Bet -> Spin")
     void redBlackBetFlow(FxRobot robot) throws TimeoutException {
         robot.clickOn("#txtBetAmount").eraseText(10).write("50");
 

@@ -107,9 +107,9 @@ class GamesMenuViewTest {
         assertEquals(balanceBefore, balanceAfter);
     }
 
-    /** Exit → Cancel keeps the Games menu. */
+    /** Exit -> Cancel keeps the Games menu. */
     @Test
-    @DisplayName("Exit → Cancel keeps Games menu")
+    @DisplayName("Exit -> Cancel keeps Games menu")
     void exitCancelKeepsGamesMenu(FxRobot robot) {
         robot.clickOn("#btnExit");
         robot.clickOn("Cancel");
@@ -117,9 +117,9 @@ class GamesMenuViewTest {
         assertTrue(robot.lookup("#btnBlackjack").tryQuery().isPresent());
     }
 
-    /** Exit → Yes loads the Dice view. */
+    /** Exit -> Yes loads the Dice view. */
     @Test
-    @DisplayName("Exit → Yes loads Dice view")
+    @DisplayName("Exit -> Yes loads Dice view")
     void exitYesLoadsDice(FxRobot robot) {
         robot.clickOn("#btnExit");
         assertTrue(robot.lookup(".dialog-pane").tryQuery().isPresent());
@@ -127,9 +127,9 @@ class GamesMenuViewTest {
         assertTrue(robot.lookup("#btnRoll").tryQuery().isPresent());
     }
 
-    /** Exit → No returns to the Main menu. */
+    /** Exit -> No returns to the Main menu. */
     @Test
-    @DisplayName("Exit → No returns to Main menu")
+    @DisplayName("Exit -> No returns to Main menu")
     void exitNoReturnsToMainMenu(FxRobot robot) {
         robot.clickOn("#btnExit");
         robot.clickOn("Exit now");
