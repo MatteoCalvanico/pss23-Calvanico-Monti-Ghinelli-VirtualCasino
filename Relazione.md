@@ -486,8 +486,6 @@ Il sistema per pizzare le scommesse utilizza il **pattern Strategy**. Tutti i gi
 
 # Sviluppo
 
-## Testing automatizzato
-
 ## Testing automatizzato – Filippo Monti
 
 ### Struttura generale della suite
@@ -500,10 +498,9 @@ L’intero progetto è stato corredato da una **suite JUnit 5** che copre:
 | **Blackjack**  | `Blackjack`, `Deck` (funzioni di supporto) | 24      | Call/receive, split, regola del dealer ≥ 17, cambio mazzo a run-time, blackjack naturale |
 | **Roulette**   | `Roulette`, `RouletteBet`, `RouletteBetType` | 22      | Gestione mappa puntate, payout, calcolo numeri vincenti, effetti sul saldo, edge-case “tutti i numeri” |
 | **Dice**       | `Dice`                              | 11      | Lancio deterministico, lucky-factor, gestione errori, reset round     |
+---
 
 Totale: **≈ 90 test unitari/integrati**, tutti completamente automatici e senza necessità di intervento dell’utente.
-
----
 
 ### Tipologie di test
 
