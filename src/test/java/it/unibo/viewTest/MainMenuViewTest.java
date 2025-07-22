@@ -13,16 +13,17 @@ import javafx.stage.Stage;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.Start;
 import org.testfx.util.WaitForAsyncUtils;
 
 @ExtendWith(ApplicationExtension.class)
 class MainMenuViewTest {
 
-        private Stage stage; // lo teniamo per controllare la scena corrente
+        private Stage stage; // kept for checking the current scene
 
         @Start
         private void start(Stage stage) throws Exception {
@@ -33,48 +34,40 @@ class MainMenuViewTest {
                 this.stage = stage;
         }
 
+        /** Smoke test: mainMenu.fxml loads. */
         @Test
-        @DisplayName("Smoke-test: mainMenu.fxml si carica")
+        @DisplayName("Smoke-test: mainMenu.fxml loads")
         void rootNotNull() {
                 assertNotNull(stage.getScene().getRoot());
         }
 
+        /** Clicking Play → enter name → navigates to Games menu. */
         @Test
-        @DisplayName("Play → inserisci nome → arriva alla Games-menu")
+        @DisplayName("Play → enter name → shows Games menu")
         void playGoesToGamesMenu(FxRobot robot) throws TimeoutException {
 
-                /* 1) click sul bottone “Enter in the Casinò” */
-                robot.clickOn("#btnPlay");
+                robot.clickOn("#btnPlay"); // “Enter in the Casinò”
 
-                /* 2) compare il TextInputDialog */
                 String uniqueName = "Test-" + Instant.now().toEpochMilli();
-                robot.clickOn(".text-field") // campo di input del dialogo
+                robot.clickOn(".text-field")
                                 .write(uniqueName)
                                 .clickOn((Button b) -> "OK".equals(b.getText()));
 
-                /* 3. aspetta che compaia la label #txtPlayer (max 3 s) */
                 WaitForAsyncUtils.waitFor(3, TimeUnit.SECONDS,
                                 () -> robot.lookup("#txtPlayer").tryQuery().isPresent());
 
-                assertTrue(robot.lookup("#txtPlayer").tryQuery().isPresent(),
-                                "La Games-menu deve essere in scena");
+                assertTrue(robot.lookup("#txtPlayer").tryQuery().isPresent());
 
-                /* 5) il testo della label deve contenere il nome inserito */
-                String txt = ((javafx.scene.text.Text) robot.lookup("#txtPlayer").query())
-                                .getText();
-                assertTrue(txt.contains(uniqueName));
+                String labelText = robot.lookup("#txtPlayer").queryLabeled().getText();
+                assertTrue(labelText.contains(uniqueName));
         }
 
+        /** Clicking Scoreboard loads the scoreboard view. */
         @Test
-        @DisplayName("Click su Scoreboard apre la scoreboard-view")
+        @DisplayName("Scoreboard button loads scoreboard view")
         void scoreboardButtonLoadsView(FxRobot robot) {
-
                 robot.clickOn("#btnScoreboard");
-
-                WaitForAsyncUtils.waitForFxEvents(); // attende cambio scena
-
-                /* presence of the ListView defined in scoreboard.fxml */
-                assertTrue(robot.lookup("#scoreboardList").tryQuery().isPresent(),
-                                "Dopo il click deve comparire la scoreboard");
+                WaitForAsyncUtils.waitForFxEvents();
+                assertTrue(robot.lookup("#scoreboardList").tryQuery().isPresent());
         }
 }

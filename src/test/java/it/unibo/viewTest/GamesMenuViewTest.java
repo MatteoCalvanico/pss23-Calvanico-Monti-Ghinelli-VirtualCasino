@@ -5,23 +5,25 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import javafx.scene.text.Text;
 
-import it.unibo.virtualCasino.controller.singleton.PlayerHolder;
-import it.unibo.virtualCasino.model.Player;
+import javafx.scene.text.Text;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import it.unibo.virtualCasino.controller.singleton.PlayerHolder;
+import it.unibo.virtualCasino.model.Player;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.Start;
 import org.testfx.util.WaitForAsyncUtils;
 
@@ -38,16 +40,13 @@ class GamesMenuViewTest {
                         ClassLoader.getSystemResource("layouts/gamesMenu.fxml"));
                 stage.getScene().setRoot(root);
             } catch (IOException ex) {
-                throw new RuntimeException("Impossibile caricare gamesMenu.fxml", ex);
+                throw new RuntimeException("Unable to load gamesMenu.fxml", ex);
             }
         });
-        WaitForAsyncUtils.waitForFxEvents(); // attende che JavaFX completi il cambio
+        WaitForAsyncUtils.waitForFxEvents();
     }
 
-    /*
-     * Mettiamo un player nel singleton per non far crashare il
-     * controller
-     */
+    /** Inserts a dummy player into the singleton. */
     @BeforeAll
     static void preparePlayer() {
         PlayerHolder.getInstance().setPlayerHolded(new Player("TestPlayer"));
@@ -55,113 +54,85 @@ class GamesMenuViewTest {
 
     @Start
     private void start(Stage stage) throws Exception {
-        Parent root = javafx.fxml.FXMLLoader.load(
+        Parent root = FXMLLoader.load(
                 ClassLoader.getSystemResource("layouts/gamesMenu.fxml"));
         stage.setScene(new Scene(root));
         stage.show();
         this.stage = stage;
     }
 
+    /** Games menu shows player name and balance. */
     @Test
-    @DisplayName("La Games-menu mostra nome e saldo")
+    @DisplayName("Games menu displays name and balance")
     void playerAndBalanceVisible(FxRobot robot) {
         assertTrue(robot.lookup("#txtPlayer").tryQuery().isPresent());
         assertTrue(robot.lookup("#txtBalance").tryQuery().isPresent());
     }
 
+    /** Clicking Blackjack loads the Blackjack view. */
     @Test
-    @DisplayName("Pulsante Blackjack carica la blackjack-view")
+    @DisplayName("Blackjack button loads Blackjack view")
     void playBlackjackLoadsView(FxRobot robot) throws TimeoutException {
-
         robot.clickOn("#btnBlackjack");
-
         WaitForAsyncUtils.waitFor(3, TimeUnit.SECONDS,
                 () -> robot.lookup("#btnCard0").tryQuery().isPresent());
-
-        assertTrue(robot.lookup("#btnCard0").tryQuery().isPresent(),
-                "Dopo il click deve comparire la schermata Blackjack");
+        assertTrue(robot.lookup("#btnCard0").tryQuery().isPresent());
     }
 
+    /** Clicking Roulette loads the Roulette view. */
     @Test
-    @DisplayName("Pulsante Roulette carica la roulette-view")
+    @DisplayName("Roulette button loads Roulette view")
     void playRouletteLoadsView(FxRobot robot) throws TimeoutException {
-
         robot.clickOn("#btnRoulette");
-
         WaitForAsyncUtils.waitFor(3, TimeUnit.SECONDS,
                 () -> robot.lookup("#btnSpeenWheel").tryQuery().isPresent());
-
-        assertTrue(robot.lookup("#btnSpeenWheel").tryQuery().isPresent(),
-                "Dopo il click deve comparire la schermata Roulette");
+        assertTrue(robot.lookup("#btnSpeenWheel").tryQuery().isPresent());
     }
 
+    /** Player name and balance persist after switching to Blackjack view. */
     @Test
-    @DisplayName("Passaggio a Blackjack: nome e saldo rimangono invariati")
+    @DisplayName("Player data persists across views")
     void playerDataPersistsAcrossViews(FxRobot robot) throws TimeoutException {
+        String playerBefore = robot.lookup("#txtPlayer").queryAs(Text.class).getText();
+        String balanceBefore = robot.lookup("#txtBalance").queryAs(Text.class).getText();
 
-        /* --- stato iniziale nel Games-menu ----------------------------- */
-        Text txtPlayerNode = robot.lookup("#txtPlayer").queryAs(Text.class);
-        Text txtBalanceNode = robot.lookup("#txtBalance").queryAs(Text.class);
-
-        String playerBefore = txtPlayerNode.getText();
-        String balanceBefore = txtBalanceNode.getText();
-
-        /* --- naviga a Blackjack --------------------------------------- */
         robot.clickOn("#btnBlackjack");
-
-        /* attendo che compaia un nodo caratteristico della Blackjack-view */
         WaitForAsyncUtils.waitFor(5, TimeUnit.SECONDS,
                 () -> robot.lookup("#btnCard0").tryQuery().isPresent());
 
-        /* --- verifiche nella scena Blackjack -------------------------- */
-        Text txtPlayerBJ = robot.lookup("#txtPlayer").queryAs(Text.class);
-        Text txtBalanceBJ = robot.lookup("#txtBalance").queryAs(Text.class);
+        String playerAfter = robot.lookup("#txtPlayer").queryAs(Text.class).getText();
+        String balanceAfter = robot.lookup("#txtBalance").queryAs(Text.class).getText();
 
-        assertEquals(playerBefore, txtPlayerBJ.getText(),
-                "Il nome del player deve restare invariato");
-        assertEquals(balanceBefore, txtBalanceBJ.getText(),
-                "Il saldo deve restare invariato (nessuna puntata ancora)");
+        assertEquals(playerBefore, playerAfter);
+        assertEquals(balanceBefore, balanceAfter);
     }
 
+    /** Exit → Cancel keeps the Games menu. */
     @Test
-    @DisplayName("Exit → popup – Cancel → resta in Games-menu")
+    @DisplayName("Exit → Cancel keeps Games menu")
     void exitCancelKeepsGamesMenu(FxRobot robot) {
-
         robot.clickOn("#btnExit");
-        robot.clickOn("Annulla"); // terza scelta del dialogo
-
+        robot.clickOn("Cancel");
         WaitForAsyncUtils.waitForFxEvents();
-
-        assertTrue(robot.lookup("#btnBlackjack").tryQuery().isPresent(),
-                "Con Cancel si deve restare nella Games-menu");
+        assertTrue(robot.lookup("#btnBlackjack").tryQuery().isPresent());
     }
 
+    /** Exit → Yes loads the Dice view. */
     @Test
-    @DisplayName("Exit → popup – Yes → scena dadi")
+    @DisplayName("Exit → Yes loads Dice view")
     void exitYesLoadsDice(FxRobot robot) {
-
         robot.clickOn("#btnExit");
-
-        /* il dialogo deve comparire */
         assertTrue(robot.lookup(".dialog-pane").tryQuery().isPresent());
-
-        /* clicchiamo sul bottone “Roll the dice!” */
         robot.clickOn("Roll the dice!");
-
-        /* ora c’è la dice-view (ha il bottone #btnRoll) */
-        assertTrue(robot.lookup("#btnRoll").tryQuery().isPresent(),
-                "Dopo Yes deve comparire la scena del gioco dei dadi");
+        assertTrue(robot.lookup("#btnRoll").tryQuery().isPresent());
     }
 
+    /** Exit → No returns to the Main menu. */
     @Test
-    @DisplayName("Exit → popup – No → torna al Main-menu")
+    @DisplayName("Exit → No returns to Main menu")
     void exitNoReturnsToMainMenu(FxRobot robot) {
-
         robot.clickOn("#btnExit");
-        robot.clickOn("Exit now"); // scegliamo l’altra opzione
-
-        /* bottone #btnPlay è del mainMenu.fxml */
-        assertTrue(robot.lookup("#btnPlay").tryQuery().isPresent(),
-                "Dopo Exit now si torna al main-menu");
+        robot.clickOn("Exit now");
+        assertTrue(robot.lookup("#btnPlay").tryQuery().isPresent());
     }
 }
