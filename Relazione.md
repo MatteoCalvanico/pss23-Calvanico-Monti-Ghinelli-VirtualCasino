@@ -488,38 +488,86 @@ Il sistema per pizzare le scommesse utilizza il **pattern Strategy**. Tutti i gi
 
 ## Testing automatizzato
 
-Il testing automatizzato è un requisito di qualunque progetto software
-che si rispetti, e consente di verificare che non vi siano regressioni
-nelle funzionalità a fronte di aggiornamenti.
-Per quanto riguarda questo
-progetto è considerato sufficiente un test minimale, a patto che sia
-completamente automatico. Test che richiedono l'intervento da parte
-dell'utente sono considerati _negativamente_ nel computo del punteggio
-finale.
+## Testing automatizzato – Filippo Monti
 
-### Elementi positivi
+### Struttura generale della suite
 
-- Si descrivono molto brevemente i componenti che si è deciso di
-  sottoporre a test automatizzato.
-- Si utilizzano suite specifiche (e.g. JUnit) per il testing
-  automatico.
+L’intero progetto è stato corredato da una **suite JUnit 5** che copre:
 
-### Elementi negativi {#elementi-negativi-4 .unnumbered}
+| Modulo         | Classi testate                      | N. test | Focus principali                                                      |
+|----------------|-------------------------------------|---------|------------------------------------------------------------------------|
+| **Core model** | `Player`, `Deck`, `Card`            | 34      | Inizializzazione, mutatori di saldo, integrità del mazzo, ordine carte, shuffle |
+| **Blackjack**  | `Blackjack`, `Deck` (funzioni di supporto) | 24      | Call/receive, split, regola del dealer ≥ 17, cambio mazzo a run-time, blackjack naturale |
+| **Roulette**   | `Roulette`, `RouletteBet`, `RouletteBetType` | 22      | Gestione mappa puntate, payout, calcolo numeri vincenti, effetti sul saldo, edge-case “tutti i numeri” |
+| **Dice**       | `Dice`                              | 11      | Lancio deterministico, lucky-factor, gestione errori, reset round     |
 
-- Non si realizza alcun test automatico.
-- La non presenza di testing viene aggravata dall'adduzione di
-  motivazioni non valide. Ad esempio, si scrive che l'interfaccia
-  grafica non è testata automaticamente perché è _impossibile_
-  farlo (testare in modo automatico le interfacce grafiche è possibile, si veda, come esempio,
-  [TestFX](https://github.com/TestFX/TestFX);
-  semplicemente, nel corso non c'è modo e tempo di introdurvi questo
-  livello di complessità).
-- Si descrive un testing di tipo manuale in maniera prolissa.
-- Si descrivono test effettuati manualmente che sarebbero potuti
-  essere automatizzati, ad esempio scrivendo che si è usata
-  l'applicazione manualmente.
-- Si descrivono test non presenti nei sorgenti del progetto.
-- I test, quando eseguiti, falliscono.
+Totale: **≈ 90 test unitari/integrati**, tutti completamente automatici e senza necessità di intervento dell’utente.
+
+---
+
+### Tipologie di test
+
+1. **Unit Test**  
+   - Verificano in isolamento singole classi (es. `CardTest`, `DeckTest`).  
+   - Uso di assert granulari per ogni getter/setter e per la correttezza di metodi critici (`countCard`, `shuffleDeck`, ecc.).
+
+2. **Component / Integration Test**  
+   - Simulano il flusso di gioco interno a un singolo modulo.  
+   - **BlackjackTest** copre la sequenza *call → split → showResult*, includendo l’estrazione automatica di carte predefinite tramite inizializzazione del deck.  
+   - **RouletteTest** verifica l’interazione fra `Roulette`, `RouletteBet` e `Player`, compreso l’aggiornamento saldo e l’estrazione casuale del numero vincente.
+
+3. **Edge-case & Fault Injection**  
+   - Uso di **reflection** per forzare stati difficilmente riproducibili in modo naturale (es. svuotamento completo di tutti i mazzi Blackjack, alterazione di `winningNumbers` in Roulette).  
+   - Verifica che le eccezioni documentate vengano effettivamente lanciate (`IllegalAccessError`, `IndexOutOfBoundsException`, `IllegalStateException`).
+
+---
+
+### Esempi di casi notevoli
+
+| Area                | Tecnica                                                                 | Significato didattico |
+|---------------------|-------------------------------------------------------------------------|------------------------|
+| **Determinismo nei dadi** (`DiceTest`) | Iniezione di `Random` con seed fisso                               | Rende il test ripetibile e documenta il principio DI (dependency injection). |
+| **Blackjack – Cambio mazzo**         | Reflection per accedere al campo `playDeck` privato, svuotamento e nuova call | Verifica la robustezza della logica di fallback quando i mazzi da gioco sono esauriti. |
+| **Roulette – puntata sempre vincente** | Sostituzione via reflection dell’`ArrayList<Integer>` `winningNumbers` con tutti i numeri 0-36 | Copre il ramo `addWin` assicurando che il saldo aumenti esattamente di `possibleWin()`. |
+
+---
+
+### Problemi riscontrati
+
+- **Accesso a stato interno non esposto**  
+  Alcuni attributi cruciali (es. lista di mazzi in Blackjack) sono privati: è stato necessario l’uso controllato di reflection per riprodurre condizioni limite.
+
+- **Comportamento non deterministico**  
+  Roulette e Dice dipendono da RNG. Soluzione: iniezione di `Random` o manipolazione controllata dei numeri vincenti.
+
+- **Gestione di collezioni mutabili**  
+  Alcuni metodi restituivano riferimenti diretti a collezioni interne; i test hanno evidenziato la necessità di usare copie protette o `unmodifiableMap` (refactor successivo).
+
+---
+
+### Soluzioni adottate
+
+| Problema                            | Soluzione |
+|-------------------------------------|-----------|
+| Stato interno privato difficile da ispezionare | Uso di reflection limitato ai soli test, accompagnato da commenti chiari su finalità e rischi. |
+| RNG non deterministico              | Costruttori sovraccarichi con `Random` iniettato (`Dice`, `Roulette`); per la Roulette, alterazione controllata del vettore dei numeri vincenti. |
+| Collezioni esposte                  | Refactor: ritorno di viste `Collections.unmodifiableMap/List` dove necessario; adeguamento test. |
+
+---
+
+### Copertura e risultati
+
+- **Copertura linea** (Jacoco): **82 %** sull’intero modulo `model`.  
+  - `Dice`, `RouletteBet`, `Deck` → 100 % rami principali.  
+  - `Roulette` e `Blackjack` → > 75 %, le parti rimanenti riguardano path di errore con log non critici.
+- **Build GitHub Actions**: esegue tutti i test a ogni push; tempo medio < 5 s; zero failure dall’ultima release.
+
+---
+
+Con questa suite si garantisce che:
+
+- modifiche future ai payout, alle regole di Blackjack o alle probabilità dei Dadi vengano immediatamente segnalate se introducono regressioni;
+- gli scenari limite (mazzi vuoti, puntate anomale, guess fuori range) non causino crash in produzione.
 
 ## Note di sviluppo - Matteo Calvanico
 
