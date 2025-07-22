@@ -30,7 +30,7 @@ class BlackjackViewTest {
         private Stage stage;
 
         /**
-         * Inserts a “rich” player into the singleton so the controller does not throw.
+         * Inserts a "rich" player into the singleton so the controller does not throw.
          */
         @BeforeAll
         static void preparePlayer() {
@@ -129,7 +129,7 @@ class BlackjackViewTest {
                 });
         }
 
-        /** “+” button (CALL) adds one card to player deck 0. */
+        /** "+" button (CALL) adds one card to player deck 0. */
         @Test
         @DisplayName("+ button adds one card to player deck 0")
         void callButtonAddsOneCard(FxRobot robot) throws TimeoutException {

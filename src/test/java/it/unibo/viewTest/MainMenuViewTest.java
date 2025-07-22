@@ -46,7 +46,7 @@ class MainMenuViewTest {
         @DisplayName("Play → enter name → shows Games menu")
         void playGoesToGamesMenu(FxRobot robot) throws TimeoutException {
 
-                robot.clickOn("#btnPlay"); // “Enter in the Casinò”
+                robot.clickOn("#btnPlay"); // "Enter in the Casinò"
 
                 String uniqueName = "Test-" + Instant.now().toEpochMilli();
                 robot.clickOn(".text-field")
