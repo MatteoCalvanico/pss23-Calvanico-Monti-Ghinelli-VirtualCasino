@@ -21,7 +21,6 @@ import org.junit.jupiter.api.Test;
 public class BlackjackTest {
     private Blackjack blackjack;
     private Player player;
-    private Deck deck;
 
     /**
      * Crea un Blackgiak con 2 mazzi di carte
