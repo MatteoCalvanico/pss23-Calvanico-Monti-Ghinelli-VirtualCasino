@@ -673,6 +673,95 @@ void showGames(ActionEvent event) {
 
 ## Note di sviluppo - Filippo Monti
 
+### 1. Dependency Injection di `Random` (testabilità)
+
+**Dove** `it.unibo.virtualCasino.model.games.impl.dice.Dice` – costruttore overload  
+
+**Snippet**:
+
+```java
+public Dice(Player player, Random rng) {     // <-- Random iniettato
+    this.player = player;
+    this.rng = rng;
+}
+```
+La possibilità di fornire un Random esterno rende la classe completamente
+deterministica nei test (seed fissato) senza toccare la logica di produzione:
+un esempio di constructor-based dependency injection minimale ma efficace.
+
+### Animazione con Timeline + Lambda JavaFX
+**Dove** `it.unibo.virtualCasino.controller.dice.DiceController` – metodo onRoll()
+
+**Snippet**:
+
+```java
+Copia
+Modifica
+Timeline shake = new Timeline();
+for (int i = 0; i < FRAMES; i++) {
+    shake.getKeyFrames().add(
+        new KeyFrame(Duration.millis(i * INTERVAL_MS), ev -> {   // ← lambda
+            int f1 = ThreadLocalRandom.current().nextInt(1, 7);
+            int f2 = ThreadLocalRandom.current().nextInt(1, 7);
+            imgDie1.setImage(getImage("dieRed" + f1 + ".png").getImage());
+            imgDie2.setImage(getImage("dieRed" + f2 + ".png").getImage());
+        }));
+}
+shake.play();
+```
+Sfrutta Timeline e KeyFrame di JavaFX con una lambda expression
+inline per creare un’animazione di shake dei dadi (24 frame,
+80 ms di passo) senza thread espliciti né Timer.
+
+### Aggiornamento saldo tramite delta semantics
+**Dove** `Dice.applyLuckyFactor()`
+
+**Snippet**:
+
+```java
+Copia
+Modifica
+double oldBalance = player.getAccount();
+double newBalance = (guess == lastRoll) ? oldBalance * 2 : oldBalance / 2;
+
+double delta = newBalance - oldBalance;
+if (delta >= 0) {                // vincita → metodo semantico addWin
+    player.addWin(delta);
+} else {                         // perdita → metodo semantico removeLoss
+    player.removeLoss(-delta);
+}
+```
+Invece di impostare direttamente il saldo, si calcola un delta e
+si delega a addWin / removeLoss, mantenendo coerenza con
+l’invariante del Player (saldo ≥ 0) e centralizzando i controlli.
+
+### Validazione input con AlertHelper e early-return
+**Dove** `DiceController.onRoll()`
+
+**Snippet**:
+
+```java
+Copia
+Modifica
+try {
+    guess = Integer.parseInt(txtGuess.getText());
+} catch (NumberFormatException ex) {
+    AlertHelper.show(AlertType.WARNING, "Invalid guess",
+                     "Enter a number between 2 and 12");
+    return;                                   // early-return: esce subito
+}
+if (guess < 2 || guess > 12) {
+    AlertHelper.show(AlertType.WARNING, "Invalid guess",
+                     "Guess must be 2-12");
+    return;
+}
+```
+Mostra l’uso di Alert JavaFX tramite helper comune e la tecnica
+dell’early-return per mantenere il metodo lineare e leggibile,
+evitando rami annidati.
+
+
+
 ## Note di sviluppo - Giacomo Ghinelli
 
 ### Calcolo dinamico dei selettori di posizione delle scommesse nella tabella dei numeri.
