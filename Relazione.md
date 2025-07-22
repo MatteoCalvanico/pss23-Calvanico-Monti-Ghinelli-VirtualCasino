@@ -319,23 +319,20 @@ Il layout grafico è definito nel file `dice.fxml`, dove sono presenti due `Imag
 ```mermaid
 classDiagram
 class Dice {
-    +roll(): int
-    +getLastRoll(): int
-    +applyLuckyFactor(guess: int): void
-    +nextRound(): void
-    +showResult(): void
-    +getLastRollFirstDie(): int
-    +getLastRollSecondDie(): int
+  +Dice(Player)
+  +Dice(Player, Random)
+  +int roll()
+  +void applyLuckyFactor(int guess)
+  +int getLastRoll()
+  +nextRound()
+  +showResult()
 }
-Dice --> Player : uses
-Dice ..|> Games
-
 class DiceController {
-    -onRoll(): void
-    -onContinue(): void
+  -onRoll()
+  -onContinue()
 }
-DiceController --> Dice : uses
-DiceController --> View : updates
+DiceController --> Dice
+Dice --> Player
 ```
 
 ### Pattern utilizzati
