@@ -19,13 +19,13 @@ All'avvio della applicazione viene visualizzato il **menu principale**, qui è p
 
 Se si entra nella **classifica** viene visualizzata una lista di record contententi nome del giocatore ed il valore del capitale con cui il giocatore è uscito dal casinò. Proprio perchè questa lista rappresenta la top 10 dei migliori giocatori, sarà limitata solamente a dieci record ed ordinata in maniera decrescente rispetto al capitale. Da qui l'utente potrà solo tornare indietro al **menu principale**.<br/>
 
-Se dal **menu principale** si entra nel casinò viene richiessto all'utente di inserire un nome, con il quale sarà registrato ed eventualmente salvato in **classifica**. Una volta completata la registrazione viene visualizzato un secondo menu, il **menu dei giochi**, in cui è possibile scegliere tra **Roulette** e **BlackJack**.
+Se dal **menu principale** si entra nel casinò viene richiesto all'utente di inserire un nome, con il quale sarà registrato ed eventualmente salvato in **classifica**. Una volta completata la registrazione viene visualizzato un secondo menu, il **menu dei giochi**, in cui è possibile scegliere tra **Roulette** e **BlackJack**.
 
 Nella **Roulette** sarà possibile selezionare e piazzare più tipi di scommesse, eliminare le scommesse precedentemente piazzate e premere un bottone per mostrare il numero uscente.
 
 Nel **Blackjack**, tramite interfaccia apposita, i giocatori possono ricevere carte e decidere se "restare" o richiedere carte, il banco si occupa di dare e mescolare le carte.
 
-Ricapitolando, l'utente può fare avanti ed indietro tra il **menu dei giochi** ed i giochi stessi ma nel momento in cui dedice di uscire dal casino ha la possibilità di scegliere se giocare o meno ad il gioco dei **Dadi**.
+Ricapitolando, l'utente può fare avanti ed indietro tra il **menu dei giochi** ed i giochi stessi ma nel momento in cui dedice di uscire dal casino ha la possibilità di scegliere se giocare o meno al gioco dei **Dadi**.
 
 Quello dei **Dadi** è un gioco bonus in cui il giocatore deve inserire un numero per indovinare la combinazione uscente dopo il lancio dei dadi.
 
@@ -201,7 +201,7 @@ La sfida principale nell'implementazione del gioco è stata la gestione di tutti
 
 #### Problema
 
-Fin da subito si è capito che il mazzo più complicato da gestire sarebbe stato quello da gioco, creato tramite una lista di **Deck**, infatti è necessario tenere conto del numero di mazzo utilizzato e, se necessario, cambiarlo prima di ogni azione per evitare di andare in eccessione.
+Fin da subito si è capito che il mazzo più complicato da gestire sarebbe stato quello da gioco, creato tramite una lista di **Deck**, infatti è necessario tenere conto del numero di mazzo utilizzato e, se necessario, cambiarlo prima di ogni azione per evitare di andare in eccezione.
 
 #### Soluzione
 
@@ -285,36 +285,7 @@ Utilizzo del design patter _Singleton_, dove si salva il Player e si modifica ut
 ## Design dettagliato – Filippo Monti
 
 ### Bonus Game – Dice
-
-#### Problema
-
-Alla fine dell’esperienza nel casinò, il giocatore deve poter accedere a un gioco opzionale e indipendente dagli altri: un bonus chiamato **Dadi**, in cui può tentare la fortuna scegliendo un numero tra 2 e 12, sperando che la somma di due dadi reali (valori 1–6) corrisponda alla sua previsione.
-
-Le principali sfide sono state:
-
-- Progettare una logica semplice ma solida che gestisca il lancio dei dadi, l’aggiornamento del saldo e la gestione degli esiti.
-- Separare completamente la logica di gioco dalla UI, mantenendo il rispetto dell’architettura MVC.
-- Garantire la **testabilità** dell’intera classe, permettendo di forzare i lanci di dadi in fase di test.
-- Coordinare le animazioni e gli effetti visivi in modo fluido senza compromettere la logica del gioco.
-
-#### Soluzione
-
-La logica del gioco è stata incapsulata in una classe `Dice`, che implementa l’interfaccia `Games`, come gli altri giochi presenti nel casinò. Essa si occupa di:
-
-- **Generare due valori casuali** tra 1 e 6, rappresentando il lancio di due dadi.
-- **Calcolare la somma dei due dadi** e confrontarla con il guess dell’utente.
-- **Applicare il “lucky factor” al saldo**: raddoppio in caso di successo, dimezzamento in caso di fallimento. Il metodo `applyLuckyFactor()` aggiorna il saldo usando `addWin()` o `removeLoss()` a seconda del delta.
-
-La classe `DiceController` si occupa invece della gestione dell’interfaccia e degli eventi, in particolare:
-
-- L’interazione con i bottoni e i campi di input (`txtGuess`, `btnRoll`, `btnContinue`).
-- L’**animazione realistica del lancio dei dadi** tramite `Timeline`, con frame di shaking e immagini dei dadi aggiornate dinamicamente.
-- La validazione dell’input dell’utente e il feedback immediato.
-- L’aggiornamento della scoreboard alla fine della partita.
-
-Il layout grafico è definito nel file `dice.fxml`, dove sono presenti due `ImageView` per i dadi, un campo di input per la previsione e due pulsanti per l’interazione.
-
-#### Schema UML
+Rappresentazione UML del gioco bonus **Dice**:
 
 ```mermaid
 classDiagram
@@ -338,14 +309,13 @@ DiceController --> Dice : uses
 DiceController --> View : updates
 ```
 
-### Pattern utilizzati
-Strategy (variante semplificata): la classe Dice implementa l’interfaccia Games, condivisa anche da Roulette e Blackjack. Questo permette di gestire uniformemente giochi con logiche differenti, secondo un principio affine al pattern Strategy. L’interfaccia Games agisce come strategia astratta, mentre Dice, Roulette e Blackjack ne sono le implementazioni concrete.
+#### Problema
 
-Dependency Injection (manuale): per garantire la testabilità, Dice accetta nel costruttore un oggetto Random esterno. Questo consente di simulare scenari deterministici nei test, evitando il comportamento aleatorio dei lanci durante il testing automatico.
+Garantire che il lancio del dato sia deterministico durante la fase di test.
 
-Separazione dei ruoli (MVC): la logica del gioco è completamente separata dall’interfaccia grafica e dalla gestione degli eventi. Dice non gestisce né suoni né immagini: tutta la parte visiva e animata è delegata a DiceController e alla view FXML.
+#### Soluzione
 
-Principio di responsabilità singola: ogni componente ha una responsabilità chiara e ben definita. Dice si occupa esclusivamente della logica di gioco e del saldo, mentre DiceController gestisce l'interazione e la transizione tra schermate.
+Per garantire la testabilità è stato sfruttato il design pattern chiamato: **Dependency Injection (manuale)**, cioè Dice accetta nel costruttore un oggetto Random esterno. Questo consente di simulare scenari deterministici nei test, evitando il comportamento aleatorio dei lanci durante il testing automatico.
 
 ## Design dettagliato - Giacomo Ghinelli
 
@@ -415,7 +385,7 @@ L’applicazione richiede la gestione di una classifica persistente tra diverse 
 
 Classe statica **Scoreboard** che funge da servizio per il salvataggio e il recupero dei dati relativi alla scoreboard su file.
 
-**PersistentStorageHelper**: helper generico per la gestione dei file e cartelle usate come storage. Contiente della logica che in futuro potrà essere riutilizzata da altri modelli che richiedono l'inserimento di dati in uno storage persistente.
+**PersistentStorageHelper**: helper generico per la gestione dei file e cartelle usate come storage. Contiene della logica che in futuro potrà essere riutilizzata da altri modelli che richiedono l'inserimento di dati in uno storage persistente.
 
 ```mermaid
 classDiagram
@@ -448,7 +418,7 @@ Scoreboard --> PersistentStorageHelper : uses
 In un casinò tutti i giochi danno la possibilità di piazzare scommesse.
 L'azione di piazzare una scommessa però non è effettuata dal gioco stesso, il gioco si limita ad esporre al giocatore la modalità con cui è possibile piazzare le scommesse. Sarà poi il giocatore a controllare di aver soldi da scommettere ed effettivamente piazzare la scommessa.
 
-Rappresentazione UML del pattarn Strategy per esporre le modalità con cui il player può scommettere.
+Rappresentazione UML del pattern Strategy per esporre le modalità con cui il player può scommettere.
 
 ```mermaid
 classDiagram
@@ -486,7 +456,7 @@ Il sistema per pizzare le scommesse utilizza il **pattern Strategy**. Tutti i gi
 
 # Sviluppo
 
-## Testing automatizzato – Filippo Monti (core model)
+## Testing automatizzato – Filippo Monti
 
 ### Struttura generale della suite
 
@@ -496,12 +466,9 @@ test è headless e completamente automatico.
 | Modulo         | Classi testate                                   | N. test | Focus principali                                                          |
 |----------------|--------------------------------------------------|---------|---------------------------------------------------------------------------|
 | **Core model** | `Player`, `Deck`, `Card`                         | 34      | Costruttori, mutatori di saldo, integrità mazzo, shuffle                  |
-| **Blackjack**  | `Blackjack` (+ supporto `Deck`)                  | 24      | Call / Receive, Split, regola dealer ≥ 17, cambio mazzo run-time           |
+| **Blackjack**  | `Blackjack` (+ supporto `Deck`)                  | 24      | Call / Receive, Split, regola dealer ≥ 17, cambio mazzo run-time          |
 | **Roulette**   | `Roulette`, `RouletteBet`, `RouletteBetType`     | 22      | Mappa puntate, payout, calcolo numeri vincenti, aggiornamento saldo       |
 | **Dice**       | `Dice`                                           | 11      | Lancio deterministico, lucky-factor, gestione errori, reset round         |
-
-**Totale core model:** **≈ 91 test unitari + di integrazione**  
-(eseguiti in < 10 s su GitHub Actions).
 
 ---
 
@@ -517,39 +484,6 @@ test è headless e completamente automatico.
 3. **Edge-case & Fault Injection**  
    Uso controllato di *reflection* per riprodurre stati limite  
    (mazzi esauriti, vittoria certa in Roulette, roll non ancora effettuato in Dice).
-
----
-
-### Esempi di casi notevoli
-
-| Area                               | Tecnica                                   | Significato |
-|------------------------------------|-------------------------------------------|-------------|
-| **Determinismo nei Dice**          | Iniezione `new Random(42)` nel costruttore| Test ripetibile → DI (dependency injection) |
-| **Cambio mazzo in Blackjack**      | Reflection → svuotamento `playDeck`       | Verifica auto-fallback su nuovo mazzo |
-| **Payout massimo Roulette**        | Override di `winningNumber` con 0-36      | Copertura ramo di vincita certa      |
-
----
-
-### Problemi riscontrati & soluzioni
-
-| Problema                        | Soluzione adottata                                        |
-|---------------------------------|-----------------------------------------------------------|
-| Attributi chiave privati        | Reflection usata **solo nei test** + commento esplicativo |
-| RNG non deterministico          | Costruttori sovraccarichi con `Random` iniettato          |
-| Collezioni mutabili esposte     | Refactor → viste `Collections.unmodifiableList/Map`       |
-
----
-
-### Copertura & CI
-
-* **Jacoco line coverage**: **82 %** sul **solo** modulo `model`
-  (100 % per `Dice`, > 75 % per `Blackjack` e `Roulette` – rami di log errore).
-* **GitHub Actions**: job dedicato che lancia tutti i test JUnit ad ogni _push_; nessuna
-  regressione dalla release finale.
-
-Questa suite intercetta immediatamente variazioni indebite su payout, regole di
-gioco o validazione degli input, garantendo stabilità al dominio logico.
-
 
 ---
 
@@ -673,7 +607,7 @@ void showGames(ActionEvent event) {
 
 ## Note di sviluppo - Filippo Monti
 
-### 1. Dependency Injection di `Random` (testabilità)
+### Dependency Injection di `Random` (testabilità)
 
 **Dove** `it.unibo.virtualCasino.model.games.impl.dice.Dice` – costruttore overload  
 
