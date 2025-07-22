@@ -486,85 +486,114 @@ Il sistema per pizzare le scommesse utilizza il **pattern Strategy**. Tutti i gi
 
 # Sviluppo
 
-## Testing automatizzato – Filippo Monti
+## Testing automatizzato – Filippo Monti (core model)
 
 ### Struttura generale della suite
 
-L’intero progetto è stato corredato da una **suite JUnit 5** che copre:
+Il progetto è corredato da una **suite JUnit 5** che copre i package di dominio; ogni
+test è headless e completamente automatico.
 
-| Modulo         | Classi testate                      | N. test | Focus principali                                                      |
-|----------------|-------------------------------------|---------|------------------------------------------------------------------------|
-| **Core model** | `Player`, `Deck`, `Card`            | 34      | Inizializzazione, mutatori di saldo, integrità del mazzo, ordine carte, shuffle |
-| **Blackjack**  | `Blackjack`, `Deck` (funzioni di supporto) | 24      | Call/receive, split, regola del dealer ≥ 17, cambio mazzo a run-time, blackjack naturale |
-| **Roulette**   | `Roulette`, `RouletteBet`, `RouletteBetType` | 22      | Gestione mappa puntate, payout, calcolo numeri vincenti, effetti sul saldo, edge-case “tutti i numeri” |
-| **Dice**       | `Dice`                              | 11      | Lancio deterministico, lucky-factor, gestione errori, reset round     |
+| Modulo         | Classi testate                                   | N. test | Focus principali                                                          |
+|----------------|--------------------------------------------------|---------|---------------------------------------------------------------------------|
+| **Core model** | `Player`, `Deck`, `Card`                         | 34      | Costruttori, mutatori di saldo, integrità mazzo, shuffle                  |
+| **Blackjack**  | `Blackjack` (+ supporto `Deck`)                  | 24      | Call / Receive, Split, regola dealer ≥ 17, cambio mazzo run-time           |
+| **Roulette**   | `Roulette`, `RouletteBet`, `RouletteBetType`     | 22      | Mappa puntate, payout, calcolo numeri vincenti, aggiornamento saldo       |
+| **Dice**       | `Dice`                                           | 11      | Lancio deterministico, lucky-factor, gestione errori, reset round         |
+
+**Totale core model:** **≈ 91 test unitari + di integrazione**  
+(eseguiti in < 10 s su GitHub Actions).
+
 ---
-
-Totale: **≈ 90 test unitari/integrati**, tutti completamente automatici e senza necessità di intervento dell’utente.
 
 ### Tipologie di test
 
 1. **Unit Test**  
-   - Verificano in isolamento singole classi (es. `CardTest`, `DeckTest`).  
-   - Uso di assert granulari per ogni getter/setter e per la correttezza di metodi critici (`countCard`, `shuffleDeck`, ecc.).
+   Verificano in isolamento singole classi (`CardTest`, `DeckTest`, …).
 
-2. **Component / Integration Test**  
-   - Simulano il flusso di gioco interno a un singolo modulo.  
-   - **BlackjackTest** copre la sequenza *call → split → showResult*, includendo l’estrazione automatica di carte predefinite tramite inizializzazione del deck.  
-   - **RouletteTest** verifica l’interazione fra `Roulette`, `RouletteBet` e `Player`, compreso l’aggiornamento saldo e l’estrazione casuale del numero vincente.
+2. **Integration Test**  
+   Simulano flussi completi di gioco  
+   (es. `Blackjack`: *call → split → showResult*; `Roulette`: creazione puntata → estrazione → saldo).
 
 3. **Edge-case & Fault Injection**  
-   - Uso di **reflection** per forzare stati difficilmente riproducibili in modo naturale (es. svuotamento completo di tutti i mazzi Blackjack, alterazione di `winningNumbers` in Roulette).  
-   - Verifica che le eccezioni documentate vengano effettivamente lanciate (`IllegalAccessError`, `IndexOutOfBoundsException`, `IllegalStateException`).
+   Uso controllato di *reflection* per riprodurre stati limite  
+   (mazzi esauriti, vittoria certa in Roulette, roll non ancora effettuato in Dice).
 
 ---
 
 ### Esempi di casi notevoli
 
-| Area                | Tecnica                                                                 | Significato didattico |
-|---------------------|-------------------------------------------------------------------------|------------------------|
-| **Determinismo nei dadi** (`DiceTest`) | Iniezione di `Random` con seed fisso                               | Rende il test ripetibile e documenta il principio DI (dependency injection). |
-| **Blackjack – Cambio mazzo**         | Reflection per accedere al campo `playDeck` privato, svuotamento e nuova call | Verifica la robustezza della logica di fallback quando i mazzi da gioco sono esauriti. |
-| **Roulette – puntata sempre vincente** | Sostituzione via reflection dell’`ArrayList<Integer>` `winningNumbers` con tutti i numeri 0-36 | Copre il ramo `addWin` assicurando che il saldo aumenti esattamente di `possibleWin()`. |
+| Area                               | Tecnica                                   | Significato |
+|------------------------------------|-------------------------------------------|-------------|
+| **Determinismo nei Dice**          | Iniezione `new Random(42)` nel costruttore| Test ripetibile → DI (dependency injection) |
+| **Cambio mazzo in Blackjack**      | Reflection → svuotamento `playDeck`       | Verifica auto-fallback su nuovo mazzo |
+| **Payout massimo Roulette**        | Override di `winningNumber` con 0-36      | Copertura ramo di vincita certa      |
 
 ---
 
-### Problemi riscontrati
+### Problemi riscontrati & soluzioni
 
-- **Accesso a stato interno non esposto**  
-  Alcuni attributi cruciali (es. lista di mazzi in Blackjack) sono privati: è stato necessario l’uso controllato di reflection per riprodurre condizioni limite.
-
-- **Comportamento non deterministico**  
-  Roulette e Dice dipendono da RNG. Soluzione: iniezione di `Random` o manipolazione controllata dei numeri vincenti.
-
-- **Gestione di collezioni mutabili**  
-  Alcuni metodi restituivano riferimenti diretti a collezioni interne; i test hanno evidenziato la necessità di usare copie protette o `unmodifiableMap` (refactor successivo).
+| Problema                        | Soluzione adottata                                        |
+|---------------------------------|-----------------------------------------------------------|
+| Attributi chiave privati        | Reflection usata **solo nei test** + commento esplicativo |
+| RNG non deterministico          | Costruttori sovraccarichi con `Random` iniettato          |
+| Collezioni mutabili esposte     | Refactor → viste `Collections.unmodifiableList/Map`       |
 
 ---
 
-### Soluzioni adottate
+### Copertura & CI
 
-| Problema                            | Soluzione |
-|-------------------------------------|-----------|
-| Stato interno privato difficile da ispezionare | Uso di reflection limitato ai soli test, accompagnato da commenti chiari su finalità e rischi. |
-| RNG non deterministico              | Costruttori sovraccarichi con `Random` iniettato (`Dice`, `Roulette`); per la Roulette, alterazione controllata del vettore dei numeri vincenti. |
-| Collezioni esposte                  | Refactor: ritorno di viste `Collections.unmodifiableMap/List` dove necessario; adeguamento test. |
+* **Jacoco line coverage**: **82 %** sul **solo** modulo `model`
+  (100 % per `Dice`, > 75 % per `Blackjack` e `Roulette` – rami di log errore).
+* **GitHub Actions**: job dedicato che lancia tutti i test JUnit ad ogni _push_; nessuna
+  regressione dalla release finale.
 
----
+Questa suite intercetta immediatamente variazioni indebite su payout, regole di
+gioco o validazione degli input, garantendo stabilità al dominio logico.
 
-### Copertura e risultati
-
-- **Copertura linea** (Jacoco): **82 %** sull’intero modulo `model`.  
-  - `Dice`, `RouletteBet`, `Deck` → 100 % rami principali.  
-  - `Roulette` e `Blackjack` → > 75 %, le parti rimanenti riguardano path di errore con log non critici.
-- **Build GitHub Actions**: esegue tutti i test a ogni push; tempo medio < 5 s; zero failure dall’ultima release.
 
 ---
 
-Con questa suite si garantisce che:
+### Test dell’interfaccia grafica (TestFX)
 
-- modifiche future ai payout, alle regole di Blackjack o alle probabilità dei Dadi vengano immediatamente segnalate se introducono regressioni;
-- gli scenari limite (mazzi vuoti, puntate anomale, guess fuori range) non causino crash in produzione.
+Per verificare la correttezza del comportamento delle view abbiamo realizzato una **seconda suite** basata su **TestFX**.  
+I test risiedono nel package `it.unibo.viewTest`
+e vengono eseguiti in modalità **headless**  
+(TestFX + Monocle tramite `xvfb-run` nella GitHub Action).
+
+
+| View / Scena                     | Classe di test          | N. test | Obiettivi principali                                                                                  |
+|----------------------------------|-------------------------|---------|--------------------------------------------------------------------------------------------------------|
+| **Main-menu**                    | `MainMenuViewTest`      | 4       | Smoke-load FXML, dialogo inserimento nome, routing a Games-menu, apertura Scoreboard                  |
+| **Games-menu**                   | `GamesMenuViewTest`     | 8       | Visualizzazione nome/saldo, lancio Blackjack/Roulette/Dice, dialogo Exit (Yes / No / Cancel)          |
+| **Blackjack**                    | `BlackjackViewTest`     | 10      | Flusso completo puntata → gioco (*Card / Stay / Split*), abilitazione pulsanti, uscita sicura         |
+| **Roulette**                     | `RouletteViewTest`      | 9       | Creazione/annullo puntate, Spin ruota, update numero vincente, scommessa *RED_BLACK*, ritorno a menu  |
+
+**Totale UI:** **31 test**.
+
+#### Aspetti verificati
+
+* **Smoke-load** di ogni FXML (`assertNotNull(root)`).
+* **Binding di pulsanti e campi**: corretta transizione `disable / enable`.
+* **Routing tra scene**: `MainMenu → GamesMenu → (Game)` e ritorno, con `WaitForAsyncUtils`.
+* **Persistenza di stato** (nome giocatore, saldo) tramite `PlayerHolder`.
+* **Azioni di gameplay**:
+  * **Blackjack** – sequenza `+100 → Set bet → Card → Stay → Split`.
+  * **Roulette** – `Bet amount 50 → RED_BLACK → click posizione → New Bet → Spin`.
+* **Dialoghi / Alert** – lookup `.dialog-pane` e chiusura automatica.
+
+#### Problemi riscontrati e workaround
+
+| Problema                         | Work-around nei test                                 |
+|---------------------------------|------------------------------------------------------|
+| Animazioni / caricamento FXML   | `WaitForAsyncUtils.waitForFxEvents()` + timeout      |
+| Componenti senza `fx:id`        | Aggiunta degli `fx:id` negli FXML per il lookup      |
+| Pop-up modali (alert Split, Exit)| Helper `closeAnyAlert(robot)` per premere *OK*       |
+
+#### Copertura UI
+
+Non misuriamo la **line coverage** sulla GUI, bensì la **copertura scenari**: tutti i flussi utente principali (avvio, puntata, gioco, exit) sono ora eseguiti in modo automatico, così ogni regressione visibile viene intercettata in CI prima del rilascio.
+
+---
 
 ## Note di sviluppo - Matteo Calvanico
 
