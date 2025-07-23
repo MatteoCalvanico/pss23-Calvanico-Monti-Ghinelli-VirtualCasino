@@ -317,10 +317,10 @@ Garantire che il lancio del dato sia deterministico durante la fase di test.
 
 È stato applicato il pattern di *Dependency Injection*: la classe `Dice` accetta nel costruttore un `java.util.Random` esterno che, nei test, viene creato con *seed* fisso (`42`). In questo modo ogni esecuzione produce la stessa sequenza di valori, rendendo i test perfettamente riproducibili.
 
-## Problema   
+#### Problema   
 Eseguire in automatico i test delle viste Java FX senza un display fisico.
 
-## Soluzione
+#### Soluzione
 Utilizzo di TestFX con back‑end *Monocle* in modalità head‑less. Nel task `test` di Gradle sono impostate le proprietà:
 
 - `testfx.headless=true`  
@@ -330,12 +330,10 @@ Utilizzo di TestFX con back‑end *Monocle* in modalità head‑less. Nel task `
 
 Questo consente l’esecuzione dei test anche su runner CI o macchine prive di display grafico.
 
----
-
-## Problema  
+#### Problema  
 Evitare interferenze dovute a singleton, file di persistenza e `Stage` JavaFX aperti tra un test e l’altro.
 
-## Soluzione  
+#### Soluzione  
 È stata creata una utility `TestUtils.cleanAfterFxTest`, invocata in `@AfterEach`, che:
 
 - chiude tutti gli `Stage` aperti con `FxToolkit.cleanupStages()`  
@@ -344,39 +342,29 @@ Evitare interferenze dovute a singleton, file di persistenza e `Stage` JavaFX ap
 
 Così ogni test parte sempre da uno stato neutro.
 
----
-
-## Problema  
+#### Problema  
 Verificare ramificazioni interne non esposte dall’API pubblica.
 
-## Soluzione  
+#### Soluzione  
 Uso mirato della *Reflection* nei test (es. accesso al campo `playDeck` in `Blackjack`) per ispezionare o manipolare lo stato interno. In questo modo l’interfaccia pubblica del codice di produzione resta pulita, mentre i test raggiungono una copertura completa.
 
----
-
-## Problema  
+###### Problema  
 Gestire correttamente animazioni e caricamenti asincroni dei file FXML che potrebbero non essere completati quando il test interroga il DOM.
 
-## Soluzione
+#### Soluzione
 Dopo ogni azione che avvia un’animazione o un `FXMLLoader.load(...)`, i test invocano `WaitForAsyncUtils.waitForFxEvents()` (eventualmente incapsulato in `waitFor(timeout, ...)`) per attendere che il Java FX Application Thread svuoti la coda degli eventi prima di procedere con le asserzioni.
 
----
-
-## Problema   
+#### Problema   
 Alcuni nodi dell’interfaccia non erano referenziabili nei test perché privi di attributo `fx:id`.
 
-## Soluzione  
+#### Soluzione  
 Sono stati aggiunti gli `fx:id` necessari direttamente nei file FXML, mantenendo un naming coerente (`btnPlaceBet`, `txtWinningNumber`, ecc.). In questo modo TestFX può effettuare il `lookup` dei nodi con `robot.lookup("#fxId")`.
 
----
-
-## Problema  
+#### Problema  
 I dialoghi modali bloccano l’esecuzione automatica se non vengono chiusi.
 
-## Soluzione  
+#### Soluzione  
 È stato implementato l’helper `closeAnyAlert(robot)` che intercetta la `DialogPane` aperta, individua il primo pulsante (`OK`, `Yes`, ecc.) e lo clicca tramite `FxRobot`. I test lo richiamano subito dopo l’azione che genera il pop‑up, garantendo che il flusso prosegua senza intervento umano.
-
-
 
 
 ## Design dettagliato - Giacomo Ghinelli
