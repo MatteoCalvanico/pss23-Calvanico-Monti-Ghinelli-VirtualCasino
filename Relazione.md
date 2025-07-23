@@ -284,29 +284,22 @@ Utilizzo del design patter _Singleton_, dove si salva il Player e si modifica ut
 
 ## Design dettagliato – Filippo Monti
 
-### Bonus Game – Dice
-Rappresentazione UML del gioco bonus **Dice**:
+### Test deterministico Bonus Games - Dice
+Rappresentazione UML del gioco bonus **Dice**, con la classe di test:
 
 ```mermaid
 classDiagram
 class Dice {
-    +roll(): int
-    +getLastRoll(): int
-    +applyLuckyFactor(guess: int): void
-    +nextRound(): void
-    +showResult(): void
-    +getLastRollFirstDie(): int
-    +getLastRollSecondDie(): int
+    +Dice(Player): void
+    +Dice(Player, Random): void
 }
 Dice --> Player : uses
 Dice ..|> Games
 
-class DiceController {
-    -onRoll(): void
-    -onContinue(): void
+class DiceTest {
+    +setUp(): void
 }
-DiceController --> Dice : uses
-DiceController --> View : updates
+DiceTest --> Dice : tests
 ```
 
 #### Problema
@@ -317,54 +310,46 @@ Garantire che il lancio del dato sia deterministico durante la fase di test.
 
 È stato applicato il pattern di *Dependency Injection*: la classe `Dice` accetta nel costruttore un `java.util.Random` esterno che, nei test, viene creato con *seed* fisso (`42`). In questo modo ogni esecuzione produce la stessa sequenza di valori, rendendo i test perfettamente riproducibili.
 
-#### Problema   
-Eseguire in automatico i test delle viste Java FX senza un display fisico.
+### Creazione classe di utility per test
+Rappresentazione UML minimale della classe di Utility:
 
-#### Soluzione
-Utilizzo di TestFX con back‑end *Monocle* in modalità head‑less. Nel task `test` di Gradle sono impostate le proprietà:
+```mermaid
+classDiagram
+class TestUtils {
+    +cleanAfterFxTest()$: void
+    +closeAnyAlert(FxRobot)$: void
+}
 
-- `testfx.headless=true`  
-- `testfx.robot=glass`  
-- `prism.order=sw`  
-- `java.awt.headless=true`
+class BlackjackViewTest {
+    +tearDown(): void
+}
+BlackjackViewTest --> TestUtils : uses
 
-Questo consente l’esecuzione dei test anche su runner CI o macchine prive di display grafico.
+class GamesMenuViewTest {
+    +tearDown(): void
+}
+GamesMenuViewTest --> TestUtils : uses
 
-#### Problema  
-Evitare interferenze dovute a singleton, file di persistenza e `Stage` JavaFX aperti tra un test e l’altro.
+class MainMenuViewTest {
+    +tearDown(): void
+}
+MainMenuViewTest --> TestUtils : uses
 
-#### Soluzione  
-È stata creata una utility `TestUtils.cleanAfterFxTest`, invocata in `@AfterEach`, che:
-
-- chiude tutti gli `Stage` aperti con `FxToolkit.cleanupStages()`  
-- azzera il singleton `PlayerHolder`  
-- svuota il file `scoreboard.json` con `Scoreboard.clear()` e `deleteStorageFile()`
-
-Così ogni test parte sempre da uno stato neutro.
-
-#### Problema  
-Verificare ramificazioni interne non esposte dall’API pubblica.
-
-#### Soluzione  
-Uso mirato della *Reflection* nei test (es. accesso al campo `playDeck` in `Blackjack`) per ispezionare o manipolare lo stato interno. In questo modo l’interfaccia pubblica del codice di produzione resta pulita, mentre i test raggiungono una copertura completa.
-
-###### Problema  
-Gestire correttamente animazioni e caricamenti asincroni dei file FXML che potrebbero non essere completati quando il test interroga il DOM.
-
-#### Soluzione
-Dopo ogni azione che avvia un’animazione o un `FXMLLoader.load(...)`, i test invocano `WaitForAsyncUtils.waitForFxEvents()` (eventualmente incapsulato in `waitFor(timeout, ...)`) per attendere che il Java FX Application Thread svuoti la coda degli eventi prima di procedere con le asserzioni.
-
-#### Problema   
-Alcuni nodi dell’interfaccia non erano referenziabili nei test perché privi di attributo `fx:id`.
-
-#### Soluzione  
-Sono stati aggiunti gli `fx:id` necessari direttamente nei file FXML, mantenendo un naming coerente (`btnPlaceBet`, `txtWinningNumber`, ecc.). In questo modo TestFX può effettuare il `lookup` dei nodi con `robot.lookup("#fxId")`.
+class RouletteViewTest {
+    +tearDown(): void
+}
+RouletteViewTest --> TestUtils : uses
+```
 
 #### Problema  
-I dialoghi modali bloccano l’esecuzione automatica se non vengono chiusi.
+Avere una classe di utility contenente vari metodi per risolvere problemi comuni come:
+ - evitare interferenze dovute a singleton, file di persistenza e `Stage` JavaFX aperti tra un test e l’altro.
+ - evitare che i dialog modali bloccano l’esecuzione automatica se non vengono chiusi.
 
-#### Soluzione  
-È stato implementato l’helper `closeAnyAlert(robot)` che intercetta la `DialogPane` aperta, individua il primo pulsante (`OK`, `Yes`, ecc.) e lo clicca tramite `FxRobot`. I test lo richiamano subito dopo l’azione che genera il pop‑up, garantendo che il flusso prosegua senza intervento umano.
+#### Soluzione 
+Creazione della final class `TestUtils`, con i metodi:
+ - `cleanAfterFxTest`: invocato in `@AfterEach` in ogni classe di test;
+ - `closeAnyAlert(robot)`: utilizzato in `BlackjackViewTest` ed intercetta la `DialogPane` aperta, individua il primo pulsante (`OK`, `Yes`, ecc.) e lo clicca tramite `FxRobot`.
 
 
 ## Design dettagliato - Giacomo Ghinelli
