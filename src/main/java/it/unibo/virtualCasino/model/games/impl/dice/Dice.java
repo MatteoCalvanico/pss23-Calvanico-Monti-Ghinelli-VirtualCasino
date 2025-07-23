@@ -6,7 +6,7 @@ import it.unibo.virtualCasino.model.Player;
 import it.unibo.virtualCasino.model.games.Games;
 
 /**
- * Bonus game “Dice”.
+ * Bonus game "Dice".
  * – Two traditional dice (faces 1-6) are rolled.
  * – The player chooses the expected sum in advance (guess 2-12).
  * – If the guess is correct, the balance is doubled; otherwise it is halved.
@@ -49,7 +49,7 @@ public class Dice implements Games {
     }
 
     /**
-     * Applies the “lucky factor” to the player’s balance.
+     * Applies the "lucky factor" to the player’s balance.
      *
      * @param guess number chosen by the player (2 – 12)
      * @throws IllegalArgumentException if the guess is out of range

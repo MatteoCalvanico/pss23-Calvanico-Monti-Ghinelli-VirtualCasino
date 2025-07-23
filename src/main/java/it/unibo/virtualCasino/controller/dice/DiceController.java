@@ -41,7 +41,7 @@ public class DiceController extends BaseController {
     protected void setBaseController() {
         this.dice = new Dice(currentPlayer);
 
-        // initial images showing face “1”
+        // initial images showing face "1"
         imgDie1.setImage(getImage("dieRed1.png").getImage());
         imgDie2.setImage(getImage("dieRed1.png").getImage());
 
@@ -69,12 +69,12 @@ public class DiceController extends BaseController {
         }
 
         btnRoll.setDisable(true); // disables until animation finishes
-        lblRolled.setText("");    // clear previous messages
+        lblRolled.setText(""); // clear previous messages
         lblOutcome.setText("");
 
         playSound("/sound/dieShuffle.mp3");
 
-        final int FRAMES = 24;     // number of “shake” frames
+        final int FRAMES = 24; // number of "shake" frames
         final int INTERVAL_MS = 80; // speed (ms)
 
         Timeline shake = new Timeline();

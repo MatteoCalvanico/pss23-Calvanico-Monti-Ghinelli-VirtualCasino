@@ -31,7 +31,7 @@ public class BlackjackTest {
         blackjack = new Blackjack(2, player);
     }
 
-    /*
+    /**
      * Verifies that the dealer and player decks are correctly
      * initialized and not null
      */
@@ -50,7 +50,7 @@ public class BlackjackTest {
         assertEquals(0, blackjack.getDealerDeck().size(), "Dealer deck should initially be empty");
     }
 
-    /*
+    /**
      * Checks that calling call(0) adds one card to player deck 0
      */
     @Test
@@ -61,7 +61,7 @@ public class BlackjackTest {
         assertEquals(1, blackjack.getPlayerDeck(0).size(), "Player deck 0 should have 1 card after call");
     }
 
-    /*
+    /**
      * Verifies that the dealer receives the correct number of cards
      * when receive(2) is called
      */
@@ -73,7 +73,7 @@ public class BlackjackTest {
         assertEquals(2, blackjack.getDealerDeck().size(), "Dealer deck should have 2 cards after receive");
     }
 
-    /*
+    /**
      * Ensures that isBlackjack returns true when the player has a blackjack
      */
     @Test
@@ -88,7 +88,7 @@ public class BlackjackTest {
         assertTrue(blackjack.isBlackjack(), "isBlackjack should return true when player has blackjack");
     }
 
-    /*
+    /**
      * Checks that isBlackjack returns false when the player
      * does not have a blackjack
      */
@@ -104,7 +104,7 @@ public class BlackjackTest {
         assertFalse(blackjack.isBlackjack(), "isBlackjack should return false when player does not have blackjack");
     }
 
-    /*
+    /**
      * Verifies that a split is successful when the player's first two
      * cards have the same value
      */
@@ -127,7 +127,7 @@ public class BlackjackTest {
         assertEquals(1, playerDeck1.size(), "Player deck 1 should have 1 card after split");
     }
 
-    /*
+    /**
      * Ensures that a RuntimeException is thrown when attempting
      * an invalid split
      */
@@ -146,7 +146,7 @@ public class BlackjackTest {
         }, "split should throw RuntimeException when split is not possible");
     }
 
-    /*
+    /**
      * Checks that the dealer draws additional cards until reaching
      * at least 17 points, according to blackjack rules
      */
@@ -228,7 +228,7 @@ public class BlackjackTest {
                 "call() deve lanciare un’eccezione quando non ci sono carte nei mazzi");
     }
 
-    /*
+    /**
      * Verifies that countCard correctly calculates the total points
      * in the deck
      */
