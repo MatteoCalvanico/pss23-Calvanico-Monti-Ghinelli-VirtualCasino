@@ -2,8 +2,11 @@ package it.unibo.viewTest;
 
 import org.testfx.api.FxToolkit;
 import org.testfx.util.WaitForAsyncUtils;
-import it.unibo.virtualCasino.controller.singleton.PlayerHolder;
 import it.unibo.virtualCasino.model.scoreboard.Scoreboard;
+import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
+
+import org.testfx.api.FxRobot;
 
 public final class TestUtils {
 
@@ -11,15 +14,18 @@ public final class TestUtils {
     }
 
     public static void cleanAfterFxTest() throws Exception {
-        // 1) chiude tutti gli Stage aperti
         FxToolkit.cleanupStages();
-        WaitForAsyncUtils.waitForFxEvents();
 
-        // 2) reset del singleton PlayerHolder
-        PlayerHolder.getInstance().setPlayerHolded(null);
-
-        // 3) scoreboard "in-mem" + file (se usi storage locale)
         Scoreboard.clear();
         Scoreboard.deleteStorageFile();
+    }
+
+    public static void closeAnyAlert(FxRobot robot) {
+        robot.lookup(".dialog-pane").tryQuery().ifPresent(node -> {
+            DialogPane pane = (DialogPane) node;
+            Button firstBtn = (Button) pane.lookupButton(pane.getButtonTypes().get(0));
+            robot.clickOn(firstBtn);
+            WaitForAsyncUtils.waitForFxEvents();
+        });
     }
 }

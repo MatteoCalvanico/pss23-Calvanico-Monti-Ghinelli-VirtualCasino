@@ -10,8 +10,6 @@ import it.unibo.virtualCasino.model.Player;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.DialogPane;
 import javafx.stage.Stage;
 
 import org.junit.jupiter.api.AfterEach;
@@ -125,16 +123,6 @@ class BlackjackViewTest {
                 assertEquals(balanceBefore, balanceAfter);
         }
 
-        /** Utility: closes any open alert dialog. */
-        private void closeAnyAlert(FxRobot robot) {
-                robot.lookup(".dialog-pane").tryQuery().ifPresent(node -> {
-                        DialogPane pane = (DialogPane) node;
-                        Button firstBtn = (Button) pane.lookupButton(pane.getButtonTypes().get(0));
-                        robot.clickOn(firstBtn);
-                        WaitForAsyncUtils.waitForFxEvents();
-                });
-        }
-
         /** "+" button (CALL) adds one card to player deck 0. */
         @Test
         @DisplayName("+ button adds one card to player deck 0")
@@ -148,7 +136,7 @@ class BlackjackViewTest {
                 int before = Integer.parseInt(robot.lookup("#txtDeckCards0").queryText().getText());
                 robot.clickOn("#btnCard0");
                 WaitForAsyncUtils.waitForFxEvents();
-                closeAnyAlert(robot);
+                TestUtils.closeAnyAlert(robot);
                 int after = Integer.parseInt(robot.lookup("#txtDeckCards0").queryText().getText());
 
                 assertTrue(after > before);
@@ -166,7 +154,7 @@ class BlackjackViewTest {
 
                 robot.clickOn("#btnStay0");
                 WaitForAsyncUtils.waitForFxEvents();
-                closeAnyAlert(robot);
+                TestUtils.closeAnyAlert(robot);
 
                 assertAll(
                                 () -> assertTrue(robot.lookup("#btnCard0").queryButton().isDisabled()),
@@ -189,7 +177,7 @@ class BlackjackViewTest {
 
                 boolean alertShown = robot.lookup(".dialog-pane").tryQuery().isPresent();
                 if (alertShown) {
-                        closeAnyAlert(robot);
+                        TestUtils.closeAnyAlert(robot);
                 }
 
                 boolean secondDeckEnabled = !robot.lookup("#btnCard1").queryButton().isDisabled()
