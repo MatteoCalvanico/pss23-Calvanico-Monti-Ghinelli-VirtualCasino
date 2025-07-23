@@ -718,7 +718,9 @@ void showGames(ActionEvent event) {
 
 ### Dependency Injection di `Random` (testabilità)
 
-**Dove** `it.unibo.virtualCasino.model.games.impl.dice.Dice` – costruttore overload  
+**Dove** `it.unibo.virtualCasino.model.games.impl.dice.Dice` – costruttore overload
+
+**Permalink**: https://github.com/MatteoCalvanico/pss23-Calvanico-Monti-Ghinelli-VirtualCasino/blob/723dd9d2691e4b7918aa5e013b1dd03ae6fbb262/src/main/java/it/unibo/virtualCasino/model/games/impl/dice/Dice.java#L33
 
 **Snippet**:
 
@@ -733,23 +735,27 @@ deterministica nei test (seed fissato) senza toccare la logica di produzione:
 un esempio di constructor-based dependency injection minimale ma efficace.
 
 ### Animazione con Timeline + Lambda JavaFX
+
 **Dove** `it.unibo.virtualCasino.controller.dice.DiceController` – metodo onRoll()
+
+**Permalink**: https://github.com/MatteoCalvanico/pss23-Calvanico-Monti-Ghinelli-VirtualCasino/blob/723dd9d2691e4b7918aa5e013b1dd03ae6fbb262/src/main/java/it/unibo/virtualCasino/controller/dice/DiceController.java#L80
 
 **Snippet**:
 
 ```java
-Copia
-Modifica
 Timeline shake = new Timeline();
 for (int i = 0; i < FRAMES; i++) {
     shake.getKeyFrames().add(
-        new KeyFrame(Duration.millis(i * INTERVAL_MS), ev -> {   // ← lambda
+        new KeyFrame(Duration.millis(i * INTERVAL_MS), ev -> {   // lambda
             int f1 = ThreadLocalRandom.current().nextInt(1, 7);
             int f2 = ThreadLocalRandom.current().nextInt(1, 7);
             imgDie1.setImage(getImage("dieRed" + f1 + ".png").getImage());
             imgDie2.setImage(getImage("dieRed" + f2 + ".png").getImage());
         }));
 }
+
+// ...
+
 shake.play();
 ```
 Sfrutta Timeline e KeyFrame di JavaFX con una lambda expression
@@ -757,20 +763,24 @@ inline per creare un’animazione di shake dei dadi (24 frame,
 80 ms di passo) senza thread espliciti né Timer.
 
 ### Aggiornamento saldo tramite delta semantics
-**Dove** `Dice.applyLuckyFactor()`
+
+**Dove** `it.unibo.virtualCasino.model.games.impl.dice.Dice` - applyLuckyFactor()
+
+**Permalink**: https://github.com/MatteoCalvanico/pss23-Calvanico-Monti-Ghinelli-VirtualCasino/blob/723dd9d2691e4b7918aa5e013b1dd03ae6fbb262/src/main/java/it/unibo/virtualCasino/model/games/impl/dice/Dice.java#L66
 
 **Snippet**:
 
 ```java
-Copia
-Modifica
+
+// ...
+
 double oldBalance = player.getAccount();
 double newBalance = (guess == lastRoll) ? oldBalance * 2 : oldBalance / 2;
 
 double delta = newBalance - oldBalance;
-if (delta >= 0) {                // vincita → metodo semantico addWin
+if (delta >= 0) {                // vincita: metodo semantico addWin
     player.addWin(delta);
-} else {                         // perdita → metodo semantico removeLoss
+} else {                         // perdita: metodo semantico removeLoss
     player.removeLoss(-delta);
 }
 ```
@@ -779,13 +789,17 @@ si delega a addWin / removeLoss, mantenendo coerenza con
 l’invariante del Player (saldo ≥ 0) e centralizzando i controlli.
 
 ### Validazione input con AlertHelper e early-return
-**Dove** `DiceController.onRoll()`
+
+**Dove** `it.unibo.virtualCasino.controller.dice.Dice` - DiceController.onRoll()
+
+**Permalink**: https://github.com/MatteoCalvanico/pss23-Calvanico-Monti-Ghinelli-VirtualCasino/blob/723dd9d2691e4b7918aa5e013b1dd03ae6fbb262/src/main/java/it/unibo/virtualCasino/controller/dice/DiceController.java#L60
 
 **Snippet**:
 
 ```java
-Copia
-Modifica
+
+// ...
+
 try {
     guess = Integer.parseInt(txtGuess.getText());
 } catch (NumberFormatException ex) {
@@ -798,21 +812,32 @@ if (guess < 2 || guess > 12) {
                      "Guess must be 2-12");
     return;
 }
+
+// ...
+
 ```
 Mostra l’uso di Alert JavaFX tramite helper comune e la tecnica
 dell’early-return per mantenere il metodo lineare e leggibile,
 evitando rami annidati.
 
 ### Reflection nei test per scenari limite
+
 **Dove** `it.unibo.modelTest.BlackjackTest` – metodo forceEmptyPlayDeck()
 
+**Permalink**: https://github.com/MatteoCalvanico/pss23-Calvanico-Monti-Ghinelli-VirtualCasino/blob/c3239ee6df6f09e6c7f9f0527e6d8833bdb40037/src/test/java/it/unibo/modelTest/BlackjackTest.java#L218
+
 ```java
-Copia
-Modifica
+// ...
+
 Field playDeckField = Blackjack.class.getDeclaredField("playDeck");
-playDeckField.setAccessible(true);                       // reflection
-List<Deck> decks = (List<Deck>) playDeckField.get(game);
-decks.forEach(Deck::emptyDeck);                          // mazzi svuotati
+    playDeckField.setAccessible(true);
+
+    @SuppressWarnings("unchecked")
+    List<Deck> playDeck = (List<Deck>) playDeckField.get(blackjack);
+
+    playDeck.forEach(Deck::emptyDeck);
+
+// ...
 ```
 
 Nei test integrazione svuoto i mazzi privati di Blackjack per
@@ -951,17 +976,6 @@ Nonostante ciò penso che come team abbiamo dato tutti il massimo e per questo m
 
 ## Difficoltà incontrate e commenti per i docenti
 
-Questa sezione, **opzionale**, può essere utilizzata per segnalare ai
-docenti eventuali problemi o difficoltà incontrate nel corso o nello
-svolgimento del progetto, può essere vista come una seconda possibilità
-di valutare il corso (dopo quella offerta dalle rilevazioni della
-didattica) avendo anche conoscenza delle modalità e delle difficoltà
-collegate all'esame, cosa impossibile da fare usando le valutazioni in
-aula per ovvie ragioni. È possibile che alcuni dei commenti forniti
-vengano utilizzati per migliorare il corso in futuro: sebbene non andrà
-a vostro beneficio, potreste fare un favore ai vostri futuri colleghi.
-Ovviamente **il contenuto della sezione non impatterà il voto finale**.
-
 # Guida utente
 
 L'utilizzo dell'applicativo è abbastanza intuitivo, all'avvio sarà possibile iniziare una nuova partita o vedere la classifica (in caso di primo avvio la classifica sarà normalmente vuota).
@@ -1015,3 +1029,31 @@ Si può uscire in qualsiasi momento (tranne quando è in corso un turno) dal com
   - Il gioco non permette di scommettere più di quanto possiedi
 
 ## Dadi
+
+**Obiettivo del Gioco**: Indovina la somma dei due dadi (da 2 a 12). Se ci riesci, il tuo saldo viene raddoppiato; in caso contrario viene dimezzato. È un round “all-in” — perfetto per chiudere la serata con un colpo di fortuna (o di sfortuna!).
+
+**Inserisci la tua previsione**
+- Nella casella Your Guess (2-12) digita il numero che pensi uscirà sommando i due dadi.
+
+- Premi ROLL per lanciare.
+
+Nota: valori fuori dall’intervallo 2-12 vengono rifiutati con un messaggio d’errore.
+
+**Assisti al lancio**
+- I dadi “vibrano” per qualche secondo (animazione shake).
+
+- Sentirai l’audio del lancio mentre le facce cambiano.
+
+- Al termine compare:
+
+    - Rolled: la somma effettiva uscita.
+
+    - YOU WIN ×2! se hai indovinato, You lose (balance / 2) altrimenti.
+
+- Il tuo saldo in alto a sinistra si aggiorna immediatamente.
+
+**Prosegui o torna alla classifica**
+- Clicca Continue per registrare il risultato nella Scoreboard e rivedere la Top 10.
+
+- Se vuoi semplicemente chiudere la finestra, il punteggio viene comunque salvato.
+
