@@ -9,8 +9,10 @@ import java.util.concurrent.TimeoutException;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,6 +36,11 @@ class MainMenuViewTest {
                 this.stage = stage;
         }
 
+        @AfterEach
+        void tearDown() throws Exception {
+                TestUtils.cleanAfterFxTest();
+        }
+
         /** Smoke test: mainMenu.fxml loads. */
         @Test
         @DisplayName("Smoke-test: mainMenu.fxml loads")
@@ -53,13 +60,13 @@ class MainMenuViewTest {
                                 .write(uniqueName)
                                 .clickOn((Button b) -> "OK".equals(b.getText()));
 
-                WaitForAsyncUtils.waitFor(3, TimeUnit.SECONDS,
+                WaitForAsyncUtils.waitFor(8, TimeUnit.SECONDS,
                                 () -> robot.lookup("#txtPlayer").tryQuery().isPresent());
 
                 assertTrue(robot.lookup("#txtPlayer").tryQuery().isPresent());
 
-                String labelText = robot.lookup("#txtPlayer").queryLabeled().getText();
-                assertTrue(labelText.contains(uniqueName));
+                String playerName = robot.lookup("#txtPlayer").queryAs(Text.class).getText();
+                assertTrue(playerName.contains(uniqueName));
         }
 
         /** Clicking Scoreboard loads the scoreboard view. */

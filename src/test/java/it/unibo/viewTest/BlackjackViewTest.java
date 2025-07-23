@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DialogPane;
 import javafx.stage.Stage;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,6 +47,11 @@ class BlackjackViewTest {
                 stage.setScene(new Scene(root));
                 stage.show();
                 this.stage = stage;
+        }
+
+        @AfterEach
+        void tearDown() throws Exception {
+                TestUtils.cleanAfterFxTest();
         }
 
         /** Smoke test: Blackjack scene loads. */

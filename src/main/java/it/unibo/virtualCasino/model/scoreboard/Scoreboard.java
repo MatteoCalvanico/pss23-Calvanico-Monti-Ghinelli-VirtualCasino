@@ -7,8 +7,11 @@ import it.unibo.virtualCasino.helpers.PersistentStorageHelper;
 import it.unibo.virtualCasino.model.scoreboard.dtos.ScoreboardRecord;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * The {@code Scoreboard} class provides static methods to manage the scoreboard
@@ -29,6 +32,10 @@ public final class Scoreboard {
 
     /** Gson instance for JSON serialization and deserialization. */
     private static final Gson gson = new Gson();
+
+    private static final List<ScoreboardRecord> records = new ArrayList<>();
+    private static final Path STORAGE_FILE = Path.of(System.getProperty("user.home"), ".virtual-casino",
+            "scoreboard.json");
 
     /**
      * Private constructor to prevent instantiation of this class.
@@ -131,6 +138,17 @@ public final class Scoreboard {
         // Remove last item until the list is of the correct size
         while (records.size() > MAX_SCOREBOARD_RECORDS) {
             records.remove(records.size() - 1);
+        }
+    }
+
+    public static void clear() {
+        records.clear();
+    }
+
+    public static void deleteStorageFile() {
+        try {
+            Files.deleteIfExists(STORAGE_FILE);
+        } catch (IOException ignored) {
         }
     }
 }

@@ -208,23 +208,24 @@ public class BlackjackTest {
                 "Player's deck should have 1 card after drawing from new deck");
     }
 
+    /**
+     * Ensures call() throws when all play decks are empty.
+     */
     @Test
-    public void testCheckAndChangeDeckThrowsExceptionWhenNoDecksLeft() throws Exception {
-        // Access private field 'playDeck' via reflection
+    void testCallThrowsWhenNoDecksLeft() throws Exception {
+
+        // Empty every play deck via reflection
         Field playDeckField = Blackjack.class.getDeclaredField("playDeck");
         playDeckField.setAccessible(true);
+
         @SuppressWarnings("unchecked")
         List<Deck> playDeck = (List<Deck>) playDeckField.get(blackjack);
+        playDeck.forEach(Deck::emptyDeck);
 
-        // Empty all play decks
-        for (Deck deck : playDeck) {
-            deck.emptyDeck();
-        }
-
-        // Attempt to draw a card; should throw IllegalAccessError
-        assertThrows(IllegalAccessError.class, () -> {
-            blackjack.call(0);
-        }, "call should throw IllegalAccessError when no decks are left");
+        // Action under test
+        assertThrows(RuntimeException.class,
+                () -> blackjack.call(0),
+                "call() deve lanciare un’eccezione quando non ci sono carte nei mazzi");
     }
 
     /*

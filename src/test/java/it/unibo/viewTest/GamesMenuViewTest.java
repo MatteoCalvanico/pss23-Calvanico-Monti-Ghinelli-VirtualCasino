@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import it.unibo.virtualCasino.controller.singleton.PlayerHolder;
 import it.unibo.virtualCasino.model.Player;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -59,6 +60,11 @@ class GamesMenuViewTest {
         stage.setScene(new Scene(root));
         stage.show();
         this.stage = stage;
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        TestUtils.cleanAfterFxTest();
     }
 
     /** Games menu shows player name and balance. */
@@ -112,7 +118,7 @@ class GamesMenuViewTest {
     @DisplayName("Exit -> Cancel keeps Games menu")
     void exitCancelKeepsGamesMenu(FxRobot robot) {
         robot.clickOn("#btnExit");
-        robot.clickOn("Cancel");
+        robot.clickOn("Annulla");
         WaitForAsyncUtils.waitForFxEvents();
         assertTrue(robot.lookup("#btnBlackjack").tryQuery().isPresent());
     }
