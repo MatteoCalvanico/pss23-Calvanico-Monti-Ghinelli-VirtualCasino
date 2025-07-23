@@ -71,3 +71,9 @@ application {
     // Define the main class for the application
     mainClass.set("it.unibo.virtualCasino.App")
 }
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "it.unibo.virtualCasino.App"
+    }
+}
