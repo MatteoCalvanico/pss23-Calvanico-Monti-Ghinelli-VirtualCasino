@@ -184,7 +184,7 @@ public class Blackjack implements Games {
     public void call(int deckNumber) {
         checkAndChangeDeck(); // Check if the deck is over and change it if necessary
 
-        this.playerDeck[deckNumber].insert(this.playDeck.get(usedPlayDeck()).draw());
+        this.playerDeck[deckNumber].insert(this.playDeck.get(usedPlayDeckIndex()).draw());
         this.playerDeck[deckNumber].flipAll();
     }
 
@@ -197,7 +197,7 @@ public class Blackjack implements Games {
         for (int i = 0; i < numberOfCard; i++) {
             checkAndChangeDeck(); // Check if the deck is over and change it if necessary
 
-            this.dealerDeck.insert(this.playDeck.get(usedPlayDeck()).draw());
+            this.dealerDeck.insert(this.playDeck.get(usedPlayDeckIndex()).draw());
         }
     }
 
@@ -206,14 +206,14 @@ public class Blackjack implements Games {
      * 
      * @return the index
      */
-    private int usedPlayDeck() {
+    private int usedPlayDeckIndex() {
         return this.playDeckIndex;
     }
 
     /**
      * Increment by one playDeckIndex
      */
-    private void setplayDeckIndex() {
+    private void setPlayDeckIndex() {
         this.playDeckIndex++;
     }
 
@@ -224,10 +224,10 @@ public class Blackjack implements Games {
      * @throws IllegalAccessError if all the deck used to play are over
      */
     private void checkAndChangeDeck() throws IllegalAccessError {
-        if (this.playDeck.get(usedPlayDeck() + 1) != null) {
-            Deck currentPlayDeck = this.playDeck.get(usedPlayDeck());
+        if (this.playDeck.get(usedPlayDeckIndex() + 1) != null) {
+            Deck currentPlayDeck = this.playDeck.get(usedPlayDeckIndex());
             if (currentPlayDeck.size() == 0) {
-                setplayDeckIndex();
+                setPlayDeckIndex();
             }
         } else {
             throw new IllegalAccessError("All playDecks are over");
