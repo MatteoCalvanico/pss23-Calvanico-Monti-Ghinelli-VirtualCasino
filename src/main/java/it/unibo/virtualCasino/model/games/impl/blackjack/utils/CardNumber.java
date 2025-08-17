@@ -5,7 +5,7 @@ package it.unibo.virtualCasino.model.games.impl.blackjack.utils;
  */
 public enum CardNumber {
   ACE_ONE(1, "ACE"),
-  ACE_ELEVEN(11, "ACE"), // The ACE can be both one or eleven [PLAYER DECIDE]
+  ACE_ELEVEN(11, "ACE"),
   TWO(2, "TWO"),
   THREE(3, "THREE"),
   FOUR(4, "FOUR"),
