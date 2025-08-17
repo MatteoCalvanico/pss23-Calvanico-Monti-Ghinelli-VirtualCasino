@@ -113,7 +113,7 @@ public class BlackjackController extends BaseGameController {
         btnBetMinus100.disableProperty().set(true);
         btnPlaceBet.disableProperty().set(true);
 
-        // Disable the buttons to exitù
+        // Disable the buttons to exit
         btnExit.disableProperty().set(true);
 
         // The bet is set, we can start the game
